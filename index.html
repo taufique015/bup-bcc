@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BUP Business &amp; Communication Club | Allow yourself to dream big</title>
+<meta name="description" content="BUP Business &amp; Communication Club — allow yourself to dream big." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: { DEFAULT: '#0B0B0D', secondary: '#17171B' },
+          gold: { DEFAULT: '#F2B90D', dark: '#C99A00' },
+          paper: '#F5F4F1',
+        },
+        fontFamily: {
+          display: ['Poppins', 'sans-serif'],
+          sans: ['Inter', 'sans-serif'],
+          unique1: ['Roboto', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  section[id] { scroll-margin-top: 92px; }
+  .dot-grid {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1.5px);
+    background-size: 26px 26px;
+  }
+  .clip-diagonal-1 { clip-path: polygon(0 0, 58% 0, 42% 100%, 0 100%); }
+  .clip-diagonal-2 { clip-path: polygon(58% 0, 100% 0, 100% 100%, 42% 100%); }
+  .ribbon-corner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-top: 34px solid #F2B90D;
+    border-right: 34px solid transparent;
+    z-index: 10;
+  }
+  .marquee-wrap { overflow: hidden; }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 34s linear infinite;
+  }
+  .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .marquee-track { animation: none; }
+  }
+
+  :focus-visible {
+    outline: 2px solid #F2B90D;
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body class="bg-white font-sans text-ink antialiased">
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 px-4 sm:px-6 pt-4 sm:pt-5">
+  <div class="max-w-7xl mx-auto rounded-2xl bg-gradient-to-r from-[#4a4a50]/90 via-[#1f1f23]/90 to-ink-secondary/90 backdrop-blur-md border border-x-0 border-white/5 shadow-lg shadow-black/30">
+    <div class="flex items-center gap-3 sm:gap-7 h-16 px-4 sm:px-6 lg:px-8">
+
+      <a href="#home" class="flex items-center gap-2 shrink-0">
+        <img src="assets/bcc-logo.png" class="w-8 sm:w-12 h-auto" alt="BUP BCC logo" />
+        <span class="font-display font-semibold text-base sm:text-xl tracking-wide text-white whitespace-nowrap">BUP Business & Communication Club</span>
+      </a>
+
+      <nav class="flex items-center gap-4 sm:gap-6 lg:gap-8 text-xs sm:text-sm lg:text-[15px] font-medium text-gray-300 overflow-x-auto scrollbar-hide min-w-0">
+        <a href="#home" class="hover:text-gold text-white shrink-0 whitespace-nowrap">Home</a>
+        <a href="about-us/" class="hover:text-gold transition-colors shrink-0 whitespace-nowrap">About Us</a>
+        <a href="#events" class="hover:text-gold transition-colors shrink-0 whitespace-nowrap">Events</a>
+        <a href="team/" class="hover:text-gold transition-colors shrink-0 whitespace-nowrap">Team</a>
+        <a href="resources/" class="hover:text-gold transition-colors shrink-0 whitespace-nowrap">Resources</a>
+        <a href="bizfeed/" class="hover:text-gold transition-colors shrink-0 whitespace-nowrap">BizFeed</a>
+        <a href="hall-of-fame/" class="hover:text-gold transition-colors shrink-0 whitespace-nowrap">Hall of Fame</a>
+      </nav>
+
+      <a href="join-us/" class="shrink-0 whitespace-nowrap inline-flex items-center bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-xs sm:text-sm px-4 sm:px-6 py-2 sm:py-2.5 rounded-full transition-colors">
+        Join Us
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="home" class="relative bg-ink dot-grid overflow-hidden pt-28 sm:pt-32">
+    <div class="max-w-4xl mx-auto px-5 sm:px-8 text-center relative">
+      <span class="inline-flex items-center gap-2 border border-white/15 bg-white/5 rounded-full px-4 py-1.5 text-xs sm:text-sm text-gray-300 mb-7">
+        <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+        Creadive 2026 Registration Open
+      </span>
+
+      <h1 class="font-display font-extrabold uppercase text-white leading-[1.08] tracking-tight text-[2.5rem] sm:text-6xl md:text-7xl">
+        Allow Yourself<span class="text-gold"><br/>to Dream Big</span>
+      </h1>
+
+      <div class="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#events" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-7 py-3.5 rounded-full transition-colors">
+          Explore Events
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+        </a>
+        <a href="join-us/" class="inline-flex items-center gap-2 border border-white/25 hover:border-gold hover:text-gold text-white font-display font-semibold px-7 py-3.5 rounded-full transition-colors">
+          Join BUP BCC
+        </a>
+      </div>
+    </div>
+
+    <div class="relative mt-14 sm:mt-16 h-[320px] sm:h-[400px] lg:h-[460px]">
+      <video src="assets/home-video.mp4" autoplay muted loop class="absolute inset-0 w-full h-full object-cover"></video>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/30"></div>
+
+      <div class="absolute bottom-0 inset-x-0 pb-6 sm:pb-8 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+
+          <div class="flex items-center gap-3.5 bg-ink/70 backdrop-blur-sm border-l-4 border-gold rounded-lg px-4 py-3.5">
+            <div class="w-11 h-11 shrink-0 border-2 border-gold rounded-md flex items-center justify-center text-gold">
+              <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3L2 8l10 5 10-5-10-5z"/>
+                <path d="M6 10.5v4.5c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/>
+                <path d="M22 8v6"/>
+              </svg>
+            </div>
+            <span class="text-white font-display font-semibold text-sm sm:text-[15px] leading-snug">Workshops &amp; Seminars</span>
+          </div>
+
+          <div class="flex items-center gap-3.5 bg-ink/70 backdrop-blur-sm border-l-4 border-gold rounded-lg px-4 py-3.5">
+            <div class="w-11 h-11 shrink-0 border-2 border-gold rounded-md flex items-center justify-center text-gold">
+              <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 4h10v4a5 5 0 01-10 0V4z"/>
+                <path d="M7 5H4.5A1.5 1.5 0 004 6.5 3 3 0 007 9.5"/>
+                <path d="M17 5h2.5A1.5 1.5 0 0121 6.5 3 3 0 0117 9.5"/>
+                <path d="M12 13v3.5"/>
+                <path d="M8.5 20h7"/>
+                <path d="M9.5 16.5h5v1a2 2 0 01-2 2h-1a2 2 0 01-2-2v-1z"/>
+              </svg>
+            </div>
+            <span class="text-white font-display font-semibold text-sm sm:text-[15px] leading-snug">Case Competitions</span>
+          </div>
+
+          <div class="flex items-center gap-3.5 bg-ink/70 backdrop-blur-sm border-l-4 border-gold rounded-lg px-4 py-3.5">
+            <div class="w-11 h-11 shrink-0 border-2 border-gold rounded-md flex items-center justify-center text-gold">
+              <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="8" r="3.2"/>
+                <path d="M3 19a6 6 0 0112 0"/>
+                <circle cx="17.5" cy="8.5" r="2.6"/>
+                <path d="M15 12.2a5 5 0 016 4.8"/>
+              </svg>
+            </div>
+            <span class="text-white font-display font-semibold text-sm sm:text-[15px] leading-snug">Networking Events</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="bg-ink-secondary py-14 sm:py-16">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 grid grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-6 text-center">
+      <div>
+        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="500">0+</p>
+        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Active Members</p>
+      </div>
+      <div>
+        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="50">0+</p>
+        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Events Organized</p>
+      </div>
+      <div>
+        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="30">0+</p>
+        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Partners</p>
+      </div>
+      <div>
+        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="8">0+</p>
+        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Years of Excellence</p>
+      </div>
+    </div>
+  </section>
+  <section id="events" class="bg-white py-20 sm:py-24">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <h2 class="font-display text-gold text-3xl sm:text-5xl font-bold">FLAGSHIP EVENTS</h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-7 lg:gap-8">
+        <div class="group relative rounded-2xl overflow-hidden bg-ink shadow-lg hover:-translate-y-1.5 transition-transform duration-300">
+          <div class="ribbon-corner"></div>
+          <div class="relative h-44 sm:h-48 overflow-hidden">
+            <img src="https://bupbcc.com/wp-content/uploads/2021/09/CREADIVE-ZOOM.png" alt="CreADive competition" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-br from-ink/85 via-ink/40 to-gold/40"></div>
+          </div>
+          <div class="p-6">
+            <h3 class="font-display text-xl font-bold text-white">CreADive</h3>
+            <p class="mt-2 text-sm text-gray-400 leading-relaxed">A nationwide 360° marketing competition challenging student teams to build complete ad campaigns for real brand briefs.</p>
+            <a href="creadive/" class="mt-4 inline-flex items-center gap-1.5 text-gold font-display font-semibold text-sm group-hover:gap-2.5 transition-all">
+              Learn More
+              <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="group relative rounded-2xl overflow-hidden bg-ink shadow-lg hover:-translate-y-1.5 transition-transform duration-300">
+          <div class="ribbon-corner"></div>
+          <div class="relative h-44 sm:h-48 overflow-hidden">
+            <img src="https://bupbcc.com/wp-content/uploads/2021/09/CorpoZOOM.png" alt="Corporiddlerz competition" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-br from-ink/85 via-ink/40 to-gold/40"></div>
+          </div>
+          <div class="p-6">
+            <h3 class="font-display text-xl font-bold text-white">Corporiddlerz</h3>
+            <p class="mt-2 text-sm text-gray-400 leading-relaxed">A national business strategy competition where inter-university teams solve real case challenges across multiple high-pressure rounds.</p>
+            <a href="corporiddlerz/" class="mt-4 inline-flex items-center gap-1.5 text-gold font-display font-semibold text-sm group-hover:gap-2.5 transition-all">
+              Learn More
+              <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="group relative rounded-2xl overflow-hidden bg-ink shadow-lg hover:-translate-y-1.5 transition-transform duration-300 sm:col-span-2 lg:col-span-1">
+          <div class="ribbon-corner"></div>
+          <div class="relative h-44 sm:h-48 overflow-hidden">
+            <img src="https://bupbcc.com/wp-content/uploads/2021/09/Biz-Quest-ZOOM.png" alt="Biz Quest event" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-br from-ink/85 via-ink/40 to-gold/40"></div>
+          </div>
+          <div class="p-6">
+            <h3 class="font-display text-xl font-bold text-white">Biz Quest</h3>
+            <p class="mt-2 text-sm text-gray-400 leading-relaxed">An inter-university business seminar sharing practical strategies from industry leaders to help students get ahead.</p>
+            <a href="biz-quest/" class="mt-4 inline-flex items-center gap-1.5 text-gold font-display font-semibold text-sm group-hover:gap-2.5 transition-all">
+              Learn More
+              <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <section id="about" class="bg-paper py-20 sm:py-24">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+      <div class="relative h-[340px] sm:h-[420px] lg:h-[480px] rounded-3xl overflow-hidden shadow-xl">
+        <div class="absolute inset-0 clip-diagonal-1">
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Award.png" alt="BUP BCC receiving the Best Club recognition" loading="lazy" class="w-full h-full object-cover" />
+        </div>
+        <div class="absolute inset-0 clip-diagonal-2">
+          <img src="https://picsum.photos/seed/bupbcc-event-2026/700/900" alt="BUP BCC event on stage" loading="lazy" class="w-full h-full object-cover" />
+        </div>
+      </div>
+
+      <div>
+        <p class="text-gold font-display font-semibold text-sm tracking-[0.2em] uppercase mb-3">About Us</p>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">Bridging Business &amp; Communication</h2>
+        <p class="mt-5 text-gray-600 leading-relaxed">
+          Formed in 2016 through the merger of BUP Business Club and BUP Communication Club — both active since 2010 — BUP BCC has grown into one of the most prestigious and active clubs at Bangladesh University of Professionals. We give students hands-on, team-based experience that sharpens their strengths and builds the confidence to lead in the corporate world.
+        </p>
+        <a href="about-us/" class="mt-7 inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">
+          Read Our Story
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+  <section id="partners" class="bg-white py-16 sm:py-20 border-t border-gray-100">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 text-center mb-10">
+      <h2 class="font-display text-2xl sm:text-3xl font-bold text-gray-900">Our Trusted Partners</h2>
+    </div>
+
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <div class="flex items-center gap-10 sm:gap-14 pr-10 sm:pr-14">
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/unilever-logo-png-transparent-1.png" alt="Unilever" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Nestle-Logo-1.png" alt="Nestlé" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/marico-logo-C3D2F9F0E3-seeklogo-1.png" alt="Marico" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/banglalink-logo-vector-1.png" alt="Banglalink" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Berger-Logo.jpg" alt="Berger" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/brac-logo-big-1.png" alt="BRAC" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/1200px-Standard_Chartered.png" alt="Standard Chartered" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/BKash-Logo-1.png" alt="bKash" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Pathao-logo-1.png" alt="Pathao" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/IDLC-Logo.png" alt="IDLC Finance" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Lankabangla-Logo-e1638535330628.jpg" alt="LankaBangla" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Daily-Star-Logo.png" alt="The Daily Star" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+        </div>
+        <div class="flex items-center gap-10 sm:gap-14 pr-10 sm:pr-14" aria-hidden="true">
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/unilever-logo-png-transparent-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Nestle-Logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/marico-logo-C3D2F9F0E3-seeklogo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/banglalink-logo-vector-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Berger-Logo.jpg" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/brac-logo-big-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/1200px-Standard_Chartered.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/BKash-Logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Pathao-logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/IDLC-Logo.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Lankabangla-Logo-e1638535330628.jpg" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Daily-Star-Logo.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="bg-ink pt-16 pb-8">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 grid md:grid-cols-2 gap-12">
+
+    <div>
+      <h3 class="font-display font-extrabold uppercase text-white text-2xl sm:text-3xl leading-snug">
+        Allow Yourself<br />to <span class="text-gold">Dream Big</span>
+      </h3>
+      <div class="flex items-center gap-3 mt-6">
+        <a href="https://www.facebook.com/bupbcc" aria-label="Facebook" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-gray-300 hover:text-ink hover:bg-gold hover:border-gold transition-colors">
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor"><path d="M22 12.06C22 6.5 17.5 2 12 2S2 6.5 2 12.06c0 5 3.66 9.17 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.89h2.78l-.45 2.91h-2.33v7.03C18.34 21.23 22 17.06 22 12.06z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/bupbcc/" aria-label="Instagram" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-gray-300 hover:text-ink hover:bg-gold hover:border-gold transition-colors">
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="0.9" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/bupbcc/" aria-label="LinkedIn" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-gray-300 hover:text-ink hover:bg-gold hover:border-gold transition-colors">
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor"><path d="M6.94 8.5H3.56V20.5H6.94V8.5z"/><path d="M5.25 3.5a2 2 0 100 4 2 2 0 000-4z"/><path d="M20.44 20.5h-3.37v-5.9c0-1.4-.03-3.2-1.96-3.2-1.96 0-2.26 1.53-2.26 3.1v6h-3.37V8.5h3.24v1.64h.04c.45-.86 1.55-1.76 3.19-1.76 3.42 0 4.49 2.25 4.49 5.17v6.95z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/channel/UCjqs3aUHctWzISjbX0IDTwg" aria-label="YouTube" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-gray-300 hover:text-ink hover:bg-gold hover:border-gold transition-colors">
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="6" width="19" height="12" rx="4"/><path d="M10.5 9.5l5 2.5-5 2.5v-5z" fill="currentColor" stroke="none"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4 md:items-end text-gray-400 text-sm">
+      <div class="flex items-center gap-3 md:flex-row-reverse">
+        <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold shrink-0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.1 7-11.5A7 7 0 105 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+        <span>Mirpur Cantonment, Dhaka, Bangladesh</span>
+      </div>
+      <div class="flex items-center gap-3 md:flex-row-reverse">
+        <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold shrink-0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 005 5L14 13l5 2v3a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg>
+        <a href="tel:+8801854008410" class="hover:text-gold transition-colors">+880 1854-008410</a>
+      </div>
+      <div class="flex items-center gap-3 md:flex-row-reverse">
+        <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold shrink-0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        <a href="mailto:bupbcc@gmail.com" class="hover:text-gold transition-colors">bupbcc@gmail.com</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 mt-12">
+    <div class="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent"></div>
+    <p class="text-center text-xs text-gray-500 mt-6">Copyright © <span id="year"></span> BUP Business &amp; Communication Club. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function animateCount(el) {
+    const target = parseInt(el.dataset.target, 10);
+    if (prefersReducedMotion || Number.isNaN(target)) {
+      el.textContent = target + '+';
+      return;
+    }
+    const duration = 1400;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(eased * target) + '+';
+      if (progress < 1) requestAnimationFrame(tick);
+      else el.textContent = target + '+';
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        animateCount(entry.target);
+        statObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  document.querySelectorAll('.stat-number').forEach((el) => statObserver.observe(el));
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
