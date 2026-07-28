@@ -75,29 +75,74 @@
 </style>
 </head>
 <body class="bg-white font-sans text-ink antialiased">
-<header id="navbar" class="fixed top-0 inset-x-0 z-50 px-4 sm:px-6 pt-4 sm:pt-5">
-  <div class="max-w-7xl mx-auto rounded-2xl bg-gradient-to-r from-[#4a4a50]/90 via-[#1f1f23]/90 to-ink-secondary/90 backdrop-blur-md border border-x-0 border-white/5 shadow-lg shadow-black/30">
-    <div class="flex items-center gap-3 sm:gap-7 h-16 px-4 sm:px-6 lg:px-8">
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 px-3 sm:px-6 pt-3 sm:pt-5">
+  <div 
+    id="glass-card" 
+    class="relative max-w-7xl mx-auto rounded-2xl bg-slate-900/40 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden transition-colors duration-500"
+  >
+    <div 
+      id="glass-glow" 
+      class="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 rounded-2xl z-0"
+      style="background: radial-gradient(400px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.03) 40%, transparent 80%);"
+    ></div>
 
-      <a href="#home" class="flex items-center gap-2 shrink-0">
-        <img src="assets/bcc-logo.png" class="w-8 sm:w-12 h-auto" alt="BUP BCC logo" />
-        <span class="font-display font-semibold text-base sm:text-xl tracking-wide text-white whitespace-nowrap">BUP Business & Communication Club</span>
+    <div 
+      class="pointer-events-none absolute inset-0 rounded-2xl border border-white/20 opacity-0 transition-opacity duration-300 z-0"
+      id="glass-border-glow"
+      style="mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"
+    ></div>
+
+    <div class="relative z-10 flex items-center justify-between gap-3 lg:gap-6 h-16 px-4 sm:px-6 lg:px-8">
+
+      <a href="#home" class="flex items-center gap-2.5 shrink-0 group">
+        <img src="assets/bcc-logo.png" class="w-8 sm:w-10 h-auto transition-transform duration-300 group-hover:scale-105" alt="BUP BCC logo" />
+        <span class="font-display hidden md:inline font-normal text-white/80 text-sm sm:text-base lg:text-lg tracking-wide text-white whitespace-nowrap">
+          BUP Business & Communication Club
+        </span>
       </a>
 
-      <nav class="flex items-center gap-4 sm:gap-6 lg:gap-8 text-xs sm:text-sm lg:text-[15px] font-medium text-gray-300 overflow-x-auto scrollbar-hide min-w-0">
-        <a href="#home" class="hover:text-gold text-white shrink-0 whitespace-nowrap">Home</a>
-        <a href="about-us/" class="hover:text-gold transition-colors shrink-0 whitespace-nowrap">About Us</a>
-        <a href="#events" class="hover:text-gold transition-colors shrink-0 whitespace-nowrap">Events</a>
-        <a href="team/" class="hover:text-gold transition-colors shrink-0 whitespace-nowrap">Team</a>
-        <a href="resources/" class="hover:text-gold transition-colors shrink-0 whitespace-nowrap">Resources</a>
-        <a href="bizfeed/" class="hover:text-gold transition-colors shrink-0 whitespace-nowrap">BizFeed</a>
-        <a href="hall-of-fame/" class="hover:text-gold transition-colors shrink-0 whitespace-nowrap">Hall of Fame</a>
+      <nav class="hidden md:flex items-center gap-4 lg:gap-8 text-xs sm:text-sm lg:text-[15px] font-medium text-gray-300">
+        <a href="#home" class="hover:text-amber-400 text-white transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-amber-400 after:rounded-full">Home</a>
+        <a href="about-us/" class="hover:text-amber-400 transition-colors py-1">About Us</a>
+        <a href="#events" class="hover:text-amber-400 transition-colors py-1">Events</a>
+        <a href="team/" class="hover:text-amber-400 transition-colors py-1">Team</a>
+        <a href="resources/" class="hover:text-amber-400 transition-colors py-1">Resources</a>
+        <a href="bizfeed/" class="hover:text-amber-400 transition-colors py-1">BizFeed</a>
+        <a href="hall-of-fame/" class="hover:text-amber-400 transition-colors py-1">Hall of Fame</a>
       </nav>
 
-      <a href="join-us/" class="shrink-0 whitespace-nowrap inline-flex items-center bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-xs sm:text-sm px-4 sm:px-6 py-2 sm:py-2.5 rounded-full transition-colors">
-        Join Us
-      </a>
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+        <a href="join-us/" class="inline-flex items-center bg-amber-400 hover:bg-amber-300 text-slate-950 font-display font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full transition-all duration-300 shadow-md hover:shadow-amber-400/20 hover:scale-105">
+          Join Us
+        </a>
+
+        <button 
+          id="menu-toggle"
+          type="button" 
+          aria-label="Toggle Navigation Menu"
+          class="md:hidden p-2 text-gray-300 hover:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+        >
+          <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
     </div>
+
+    <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 border-t border-white/10 space-y-2 bg-slate-900/80 backdrop-blur-xl">
+      <a href="#home" class="block px-3 py-2 rounded-lg text-amber-400 font-medium bg-white/5">Home</a>
+      <a href="about-us/" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">About Us</a>
+      <a href="#events" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Events</a>
+      <a href="team/" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
+      <a href="resources/" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Resources</a>
+      <a href="bizfeed/" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
+      <a href="hall-of-fame/" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
+    </div>
+
   </div>
 </header>
 
@@ -124,7 +169,7 @@
       </div>
     </div>
 
-    <div class="relative mt-14 sm:mt-16 h-[320px] sm:h-[400px] lg:h-[460px]">
+    <div class="relative mt-14 sm:mt-16 h-[320px] sm:h-[400px] lg:h-[620px]">
       <video src="assets/home-video.mp4" autoplay muted loop class="absolute inset-0 w-full h-full object-cover"></video>
       <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/30"></div>
 
@@ -388,6 +433,43 @@
       }
     });
   }, { threshold: 0.4 });
+
+  const glassCard = document.getElementById('glass-card');
+  const glassGlow = document.getElementById('glass-glow');
+  const glassBorderGlow = document.getElementById('glass-border-glow');
+
+  if (glassCard) {
+    glassCard.addEventListener('mousemove', (e) => {
+      const rect = glassCard.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      glassCard.style.setProperty('--mouse-x', `${x}px`);
+      glassCard.style.setProperty('--mouse-y', `${y}px`);
+      
+      glassGlow.style.opacity = '1';
+      glassBorderGlow.style.opacity = '1';
+    });
+
+    glassCard.addEventListener('mouseleave', () => {
+      glassGlow.style.opacity = '0';
+      glassBorderGlow.style.opacity = '0';
+    });
+  }
+
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      iconOpen.classList.toggle('hidden', !isHidden);
+      iconClose.classList.toggle('hidden', isHidden);
+    });
+  }
 
   document.querySelectorAll('.stat-number').forEach((el) => statObserver.observe(el));
   document.getElementById('year').textContent = new Date().getFullYear();
