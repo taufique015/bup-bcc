@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>BUP Business &amp; Communication Club | Allow yourself to dream big</title>
 <meta name="description" content="BUP Business &amp; Communication Club — allow yourself to dream big." />
-
+<link rel="icon" href="assets/bcc-icon.png" sizes="32x32"/>
+<link rel="icon" href="assets/bcc-icon.png" sizes="192x192"/>
+<link rel="apple-touch-icon" href="assets/bcc-icon.png"/>
+<meta name="msapplication-TileImage" content="assets/bcc-icon.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -53,19 +56,49 @@
   .marquee-track {
     display: flex;
     width: max-content;
-    animation: marquee 34s linear infinite;
+    animation: marquee 6s linear infinite;
   }
   .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
   @keyframes marquee {
     from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    to { transform: translateX(-20%); }
+  }
+  .marquee-reverse { animation-name: marquee-reverse; animation-duration: 6s; }
+  @keyframes marquee-reverse {
+    from { transform: translateX(-20%); }
+    to { transform: translateX(0); }
   }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
 
+  /* Smooth cross-document navigation — the destination page (e.g. events/)
+     needs this same rule for the transition to fire when you link between them. */
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.45s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes fade-in-page {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  body {
+    animation: fade-in-page 0.5s ease both;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .marquee-track { animation: none; }
+    .marquee-reverse { animation: none; }
+    body { animation: none; }
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.01ms !important;
+    }
   }
 
   :focus-visible {
@@ -78,12 +111,12 @@
 <header id="navbar" class="fixed top-0 inset-x-0 z-50 px-3 sm:px-6 pt-3 sm:pt-5">
   <div 
     id="glass-card" 
-    class="relative max-w-7xl mx-auto rounded-2xl bg-slate-900/40 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden transition-colors duration-500"
+    class="relative max-w-7xl mx-auto rounded-2xl bg-neutral-700/40 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden transition-colors duration-500"
   >
     <div 
       id="glass-glow" 
-      class="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 rounded-2xl z-0"
-      style="background: radial-gradient(400px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.03) 40%, transparent 80%);"
+      class="pointer-events-none absolute inset-0 rounded-2xl border border-gold/20 opacity-0 transition-opacity duration-300 z-0"
+      style="background: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(251, 191, 36, 0.25), rgba(217, 119, 6, 0.08) 40%, transparent 80%);"
     ></div>
 
     <div 
@@ -102,17 +135,17 @@
       </a>
 
       <nav class="hidden md:flex items-center gap-4 lg:gap-8 text-xs sm:text-sm lg:text-[15px] font-medium text-gray-300">
-        <a href="#home" class="hover:text-amber-400 text-white transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-amber-400 after:rounded-full">Home</a>
-        <a href="about-us/" class="hover:text-amber-400 transition-colors py-1">About Us</a>
-        <a href="#events" class="hover:text-amber-400 transition-colors py-1">Events</a>
-        <a href="team/" class="hover:text-amber-400 transition-colors py-1">Team</a>
-        <a href="resources/" class="hover:text-amber-400 transition-colors py-1">Resources</a>
-        <a href="bizfeed/" class="hover:text-amber-400 transition-colors py-1">BizFeed</a>
-        <a href="hall-of-fame/" class="hover:text-amber-400 transition-colors py-1">Hall of Fame</a>
+        <a href="#home" class="hover:text-gold text-white transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gold after:rounded-full">Home</a>
+        <a href="about-us.html" class="hover:text-gold transition-colors py-1">About Us</a>
+        <a href="events.html" class="hover:text-gold transition-colors py-1">Events</a>
+        <a href="team.html" class="hover:text-gold transition-colors py-1">Team</a>
+        <a href="resources.html" class="hover:text-gold transition-colors py-1">Resources</a>
+        <a href="bizfeed.html" class="hover:text-gold transition-colors py-1">BizFeed</a>
+        <a href="hall-of-fame.html" class="hover:text-gold transition-colors py-1">Hall of Fame</a>
       </nav>
 
       <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-        <a href="join-us/" class="inline-flex items-center bg-amber-400 hover:bg-amber-300 text-slate-950 font-display font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full transition-all duration-300 shadow-md hover:shadow-amber-400/20 hover:scale-105">
+        <a href="join-us.html" class="inline-flex items-center bg-gold hover:bg-gold text-slate-950 font-display font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full transition-all duration-300 shadow-md hover:shadow-gold/20 hover:scale-105">
           Join Us
         </a>
 
@@ -120,7 +153,7 @@
           id="menu-toggle"
           type="button" 
           aria-label="Toggle Navigation Menu"
-          class="md:hidden p-2 text-gray-300 hover:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+          class="md:hidden p-2 text-gray-300 hover:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
         >
           <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -133,14 +166,14 @@
 
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 border-t border-white/10 space-y-2 bg-slate-900/80 backdrop-blur-xl">
-      <a href="#home" class="block px-3 py-2 rounded-lg text-amber-400 font-medium bg-white/5">Home</a>
-      <a href="about-us/" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">About Us</a>
-      <a href="#events" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Events</a>
-      <a href="team/" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
-      <a href="resources/" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Resources</a>
-      <a href="bizfeed/" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
-      <a href="hall-of-fame/" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 border-t border-white/10 space-y-2 bg-neutral-900/80 backdrop-blur-xl">
+      <a href="#home" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">Home</a>
+      <a href="about-us.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">About Us</a>
+      <a href="events.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Events</a>
+      <a href="team.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
+      <a href="resources.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Resources</a>
+      <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
+      <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
     </div>
 
   </div>
@@ -163,7 +196,7 @@
           Explore Events
           <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
         </a>
-        <a href="join-us/" class="inline-flex items-center gap-2 border border-white/25 hover:border-gold hover:text-gold text-white font-display font-semibold px-7 py-3.5 rounded-full transition-colors">
+        <a href="join-us.html" class="inline-flex items-center gap-2 border border-white/25 hover:border-gold hover:text-gold text-white font-display font-semibold px-7 py-3.5 rounded-full transition-colors">
           Join BUP BCC
         </a>
       </div>
@@ -237,7 +270,95 @@
       </div>
     </div>
   </section>
-  <section id="events" class="bg-white py-20 sm:py-24">
+  <section id="events" class="bg-ink py-16 sm:py-20">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <p class="text-gold font-display font-semibold text-sm tracking-[0.2em] uppercase mb-3 text-center">Featured Event</p>
+
+      <div class="text-center mb-10">
+        <p class="text-gray-400 text-sm sm:text-base mb-6">CreADive 5.0 begins in</p>
+        <div id="countdown" class="flex items-center justify-center gap-2 sm:gap-4" aria-label="Countdown to CreADive 5.0">
+          <div class="flex flex-col items-center justify-center bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl sm:rounded-2xl w-16 h-16 sm:w-24 sm:h-24 lg:w-28 lg:h-28">
+            <span class="font-display font-extrabold text-gold text-2xl sm:text-4xl lg:text-5xl tabular-nums" data-unit="days">00</span>
+            <span class="text-[9px] sm:text-xs uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-1">Days</span>
+          </div>
+          <span class="font-display font-bold text-gold/50 text-2xl sm:text-4xl lg:text-5xl" aria-hidden="true">:</span>
+          <div class="flex flex-col items-center justify-center bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl sm:rounded-2xl w-16 h-16 sm:w-24 sm:h-24 lg:w-28 lg:h-28">
+            <span class="font-display font-extrabold text-gold text-2xl sm:text-4xl lg:text-5xl tabular-nums" data-unit="hours">00</span>
+            <span class="text-[9px] sm:text-xs uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-1">Hours</span>
+          </div>
+          <span class="font-display font-bold text-gold/50 text-2xl sm:text-4xl lg:text-5xl" aria-hidden="true">:</span>
+          <div class="flex flex-col items-center justify-center bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl sm:rounded-2xl w-16 h-16 sm:w-24 sm:h-24 lg:w-28 lg:h-28">
+            <span class="font-display font-extrabold text-gold text-2xl sm:text-4xl lg:text-5xl tabular-nums" data-unit="minutes">00</span>
+            <span class="text-[9px] sm:text-xs uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-1">Minutes</span>
+          </div>
+          <span class="font-display font-bold text-gold/50 text-2xl sm:text-4xl lg:text-5xl" aria-hidden="true">:</span>
+          <div class="flex flex-col items-center justify-center bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl sm:rounded-2xl w-16 h-16 sm:w-24 sm:h-24 lg:w-28 lg:h-28">
+            <span class="font-display font-extrabold text-gold text-2xl sm:text-4xl lg:text-5xl tabular-nums" data-unit="seconds">00</span>
+            <span class="text-[9px] sm:text-xs uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-1">Seconds</span>
+          </div>
+        </div>
+        <p id="countdown-live-notice" class="hidden mt-5 text-gold font-display font-semibold text-sm sm:text-base">CreADive 5.0 is happening now — see you at BUP Auditorium!</p>
+      </div>
+
+      <div class="glass-card group relative rounded-3xl overflow-hidden bg-ink-secondary border border-white/10 shadow-xl">
+        <!-- Interactive Glow Effects -->
+        <div class="glass-glow pointer-events-none absolute inset-0 rounded-3xl border border-gold/20 opacity-0 transition-opacity duration-300 z-[1]" style="background: radial-gradient(320px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(242, 185, 13, 0.22), rgba(201, 154, 0, 0.08) 40%, transparent 80%);"></div>
+        <div class="glass-border-glow pointer-events-none absolute inset-0 rounded-3xl border border-white/20 opacity-0 transition-opacity duration-300 z-[1]" style="mask-image: radial-gradient(320px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(320px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"></div>
+
+        <!-- Content Grid -->
+        <div class="relative z-[2] grid md:grid-cols-2 items-center">
+          
+          <!-- Left Column: Image Container -->
+          <div class="relative p-4 sm:p-6 flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10">
+            <!-- Image Frame showing 100% of the image without crop/scaling -->
+            <div class="w-full rounded-2xl overflow-hidden border border-white/10 shadow-lg bg-black/30">
+              <img 
+                src="./assets/creadive-front.jpg" 
+                alt="CreADive 2026" 
+                class="w-full h-auto object-contain block" 
+              />
+            </div>
+          </div>
+
+          <!-- Right Column: Event Details -->
+          <div class="p-7 sm:p-10 flex flex-col justify-center">
+            <span class="inline-flex w-fit items-center gap-2 border border-gold/30 bg-gold/10 rounded-full px-4 py-1.5 text-xs font-display font-semibold text-gold mb-5">
+              <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+              Upcoming Event
+            </span>
+            
+            <h2 class="font-display text-2xl sm:text-3xl font-bold text-white leading-snug">CreADive 2026</h2>
+            
+            <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-4 text-sm text-gray-400">
+              <span class="flex items-center gap-1.5">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+                September 11, 2026
+              </span>
+              <span class="flex items-center gap-1.5">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 105 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+                InterContinental Dhaka
+              </span>
+            </div>
+
+            <p class="mt-4 text-sm text-gray-400 leading-relaxed">
+              A nationwide 360° marketing competition challenging student teams to build complete ad campaigns for real brand briefs.
+            </p>
+
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href="#" class="bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">Register Now</a>
+              <a href="creadive/" class="inline-flex items-center gap-2 border border-white/25 hover:border-gold hover:text-gold text-white font-display font-semibold px-6 py-3 rounded-full transition-colors">
+                Learn More
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="bg-white py-20 sm:py-24">
+
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
       <div class="text-center max-w-2xl mx-auto mb-14">
         <h2 class="font-display text-gold text-3xl sm:text-5xl font-bold">FLAGSHIP EVENTS</h2>
@@ -291,6 +412,14 @@
         </div>
 
       </div>
+
+      <div class="text-center mt-12">
+        <a href="events.html" class="inline-flex items-center gap-2 border border-white/25 hover:border-gold hover:text-gold text-white font-display font-semibold px-6 py-3 rounded-full transition-colors">
+          View All Events
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
     </div>
   </section>
   <section id="about" class="bg-paper py-20 sm:py-24">
@@ -311,7 +440,7 @@
         <p class="mt-5 text-gray-600 leading-relaxed">
           Formed in 2016 through the merger of BUP Business Club and BUP Communication Club — both active since 2010 — BUP BCC has grown into one of the most prestigious and active clubs at Bangladesh University of Professionals. We give students hands-on, team-based experience that sharpens their strengths and builds the confidence to lead in the corporate world.
         </p>
-        <a href="about-us/" class="mt-7 inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">
+        <a href="about-us.html" class="mt-7 inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">
           Read Our Story
           <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
         </a>
@@ -333,12 +462,6 @@
           <img src="https://bupbcc.com/wp-content/uploads/2021/09/banglalink-logo-vector-1.png" alt="Banglalink" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
           <img src="https://bupbcc.com/wp-content/uploads/2021/12/Berger-Logo.jpg" alt="Berger" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
           <img src="https://bupbcc.com/wp-content/uploads/2021/09/brac-logo-big-1.png" alt="BRAC" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
-          <img src="https://bupbcc.com/wp-content/uploads/2021/09/1200px-Standard_Chartered.png" alt="Standard Chartered" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
-          <img src="https://bupbcc.com/wp-content/uploads/2021/09/BKash-Logo-1.png" alt="bKash" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
-          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Pathao-logo-1.png" alt="Pathao" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
-          <img src="https://bupbcc.com/wp-content/uploads/2021/12/IDLC-Logo.png" alt="IDLC Finance" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
-          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Lankabangla-Logo-e1638535330628.jpg" alt="LankaBangla" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
-          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Daily-Star-Logo.png" alt="The Daily Star" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
         </div>
         <div class="flex items-center gap-10 sm:gap-14 pr-10 sm:pr-14" aria-hidden="true">
           <img src="https://bupbcc.com/wp-content/uploads/2021/09/unilever-logo-png-transparent-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
@@ -347,6 +470,69 @@
           <img src="https://bupbcc.com/wp-content/uploads/2021/09/banglalink-logo-vector-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
           <img src="https://bupbcc.com/wp-content/uploads/2021/12/Berger-Logo.jpg" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
           <img src="https://bupbcc.com/wp-content/uploads/2021/09/brac-logo-big-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+        </div>
+        <div class="flex items-center gap-10 sm:gap-14 pr-10 sm:pr-14" aria-hidden="true">
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/unilever-logo-png-transparent-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Nestle-Logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/marico-logo-C3D2F9F0E3-seeklogo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/banglalink-logo-vector-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Berger-Logo.jpg" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/brac-logo-big-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+        </div>
+        <div class="flex items-center gap-10 sm:gap-14 pr-10 sm:pr-14" aria-hidden="true">
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/unilever-logo-png-transparent-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Nestle-Logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/marico-logo-C3D2F9F0E3-seeklogo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/banglalink-logo-vector-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Berger-Logo.jpg" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/brac-logo-big-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+        </div>
+        <div class="flex items-center gap-10 sm:gap-14 pr-10 sm:pr-14" aria-hidden="true">
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/unilever-logo-png-transparent-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Nestle-Logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/marico-logo-C3D2F9F0E3-seeklogo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/banglalink-logo-vector-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Berger-Logo.jpg" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/brac-logo-big-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee-wrap mt-6 sm:mt-8">
+      <div class="marquee-track marquee-reverse">
+        <div class="flex items-center gap-10 sm:gap-14 pr-10 sm:pr-14">
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/1200px-Standard_Chartered.png" alt="Standard Chartered" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/BKash-Logo-1.png" alt="bKash" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Pathao-logo-1.png" alt="Pathao" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/IDLC-Logo.png" alt="IDLC Finance" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Lankabangla-Logo-e1638535330628.jpg" alt="LankaBangla" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Daily-Star-Logo.png" alt="The Daily Star" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+        </div>
+        <div class="flex items-center gap-10 sm:gap-14 pr-10 sm:pr-14" aria-hidden="true">
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/1200px-Standard_Chartered.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/BKash-Logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Pathao-logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/IDLC-Logo.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Lankabangla-Logo-e1638535330628.jpg" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Daily-Star-Logo.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+        </div>
+        <div class="flex items-center gap-10 sm:gap-14 pr-10 sm:pr-14" aria-hidden="true">
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/1200px-Standard_Chartered.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/BKash-Logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Pathao-logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/IDLC-Logo.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Lankabangla-Logo-e1638535330628.jpg" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Daily-Star-Logo.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+        </div>
+        <div class="flex items-center gap-10 sm:gap-14 pr-10 sm:pr-14" aria-hidden="true">
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/1200px-Standard_Chartered.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/BKash-Logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/09/Pathao-logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/IDLC-Logo.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Lankabangla-Logo-e1638535330628.jpg" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+          <img src="https://bupbcc.com/wp-content/uploads/2021/12/Daily-Star-Logo.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
+        </div>
+        <div class="flex items-center gap-10 sm:gap-14 pr-10 sm:pr-14" aria-hidden="true">
           <img src="https://bupbcc.com/wp-content/uploads/2021/09/1200px-Standard_Chartered.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
           <img src="https://bupbcc.com/wp-content/uploads/2021/09/BKash-Logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
           <img src="https://bupbcc.com/wp-content/uploads/2021/09/Pathao-logo-1.png" alt="" loading="lazy" class="h-8 sm:h-10 w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition" />
@@ -457,6 +643,69 @@
     });
   }
 
+  // Same glow, made reusable: any element marked .glass-card (e.g. the
+  // featured event card) gets its own independent mousemove listener.
+  document.querySelectorAll('.glass-card').forEach((card) => {
+    const glow = card.querySelector('.glass-glow');
+    const borderGlow = card.querySelector('.glass-border-glow');
+    if (!glow || !borderGlow) return;
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+      glow.style.opacity = '1';
+      borderGlow.style.opacity = '1';
+    });
+    card.addEventListener('mouseleave', () => {
+      glow.style.opacity = '0';
+      borderGlow.style.opacity = '0';
+    });
+  });
+
+  // Countdown to CreADive 5.0 — August 15, 2026, 9:00 AM (Bangladesh Standard Time, UTC+6)
+  (function () {
+    const countdownEl = document.getElementById('countdown');
+    if (!countdownEl) return;
+
+    const targetDate = new Date('2026-08-15T09:00:00+06:00');
+    const daysEl = countdownEl.querySelector('[data-unit="days"]');
+    const hoursEl = countdownEl.querySelector('[data-unit="hours"]');
+    const minutesEl = countdownEl.querySelector('[data-unit="minutes"]');
+    const secondsEl = countdownEl.querySelector('[data-unit="seconds"]');
+    const liveNotice = document.getElementById('countdown-live-notice');
+
+    function pad(n) {
+      return String(n).padStart(2, '0');
+    }
+
+    let timer = null;
+
+    function tick() {
+      const diff = targetDate - new Date();
+
+      if (diff <= 0) {
+        daysEl.textContent = '00';
+        hoursEl.textContent = '00';
+        minutesEl.textContent = '00';
+        secondsEl.textContent = '00';
+        if (liveNotice) liveNotice.classList.remove('hidden');
+        if (timer) clearInterval(timer);
+        return;
+      }
+
+      daysEl.textContent = pad(Math.floor(diff / 86400000));
+      hoursEl.textContent = pad(Math.floor((diff / 3600000) % 24));
+      minutesEl.textContent = pad(Math.floor((diff / 60000) % 60));
+      secondsEl.textContent = pad(Math.floor((diff / 1000) % 60));
+    }
+
+    tick();
+    timer = setInterval(tick, 1000);
+  })();
+
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
   const iconOpen = document.getElementById('menu-icon-open');
@@ -464,10 +713,19 @@
 
   if (menuToggle && mobileMenu) {
     menuToggle.addEventListener('click', () => {
-      const isHidden = mobileMenu.classList.contains('hidden');
       mobileMenu.classList.toggle('hidden');
-      iconOpen.classList.toggle('hidden', !isHidden);
-      iconClose.classList.toggle('hidden', isHidden);
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      iconOpen.classList.toggle('hidden', isOpen);
+      iconClose.classList.toggle('hidden', !isOpen);
+    });
+
+    // Close the mobile menu after tapping any link inside it
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      });
     });
   }
 
