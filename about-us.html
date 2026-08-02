@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>About Us — BUP Business &amp; Communication Club</title>
 <meta name="description" content="Learn about BUP Business &amp; Communication Club — our story, mission, vision, and the people behind the largest business and communication platform at Bangladesh University of Professionals." />
-
+<link rel="icon" href="assets/bcc-icon.png" sizes="32x32"/>
+<link rel="icon" href="assets/bcc-icon.png" sizes="192x192"/>
+<link rel="apple-touch-icon" href="assets/bcc-icon.png"/>
+<meta name="msapplication-TileImage" content="assets/bcc-icon.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -21,8 +24,8 @@
           paper: '#F5F4F1',
         },
         fontFamily: {
-          display: ['Poppins', 'sans-serif'],
-          sans: ['Inter', 'sans-serif'],
+          display: ['Archivo', 'sans-serif'],
+          sans: ['Instrument Sans', 'sans-serif'],
           unique1: ['Roboto', 'sans-serif'],
         },
       },
@@ -32,14 +35,17 @@
 
 <style>
   html { scroll-behavior: smooth; }
-  section[id] { scroll-margin-top: 92px; }
   .dot-grid {
     background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1.5px);
     background-size: 26px 26px;
   }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
-
+  
+  .hero-slide {
+    transition: opacity 1.4s ease-in-out;
+  }
+  
   /* Smooth cross-document navigation — every page needs this same rule
      for the transition to fire when you link between them. */
   @view-transition {
@@ -61,6 +67,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
+    .hero-slide { transition: none; }
     body { animation: none; }
     ::view-transition-old(root),
     ::view-transition-new(root) {
@@ -76,7 +83,7 @@
 </head>
 <body class="bg-ink font-sans text-white antialiased">
 
-<header id="navbar" class="fixed top-0 inset-x-0 z-50 px-3 sm:px-6 pt-3 sm:pt-5">
+<header id="navbar" class="fixed bottom-0 inset-x-0 z-50 px-3 sm:px-6 pb-3 sm:pb-5">
   <div
     id="glass-card"
     class="relative max-w-7xl mx-auto rounded-2xl bg-neutral-700/40 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden transition-colors duration-500"
@@ -93,12 +100,22 @@
       style="mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"
     ></div>
 
+    <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 border-b border-white/10 space-y-2 bg-neutral-900/80 backdrop-blur-xl">
+      <a href="index.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Home</a>
+      <a href="#" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">About Us</a>
+      <a href="events.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Events</a>
+      <a href="team.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
+      <a href="resources.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Resources</a>
+      <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
+      <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
+    </div>
+
     <div class="relative z-10 flex items-center justify-between gap-3 lg:gap-6 h-16 px-4 sm:px-6 lg:px-8">
 
       <a href="index.html" class="flex items-center gap-2.5 shrink-0 group">
         <img src="assets/bcc-logo.png" class="w-8 sm:w-10 h-auto transition-transform duration-300 group-hover:scale-105" alt="BUP BCC logo" />
-        <span class="font-display hidden md:inline font-normal text-white/80 text-sm sm:text-base lg:text-lg tracking-wide text-white whitespace-nowrap">
-          BUP Business & Communication Club
+        <span class="font-display font-light md:font-normal sm:inline md:hidden xl:inline text-[11px] leading-[1.15] sm:text-base lg:text-lg tracking-tight sm:tracking-wide text-white md:whitespace-nowrap">
+          BUP Business &amp; Communication Club
         </span>
       </a>
 
@@ -134,56 +151,71 @@
 
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 border-t border-white/10 space-y-2 bg-neutral-900/80 backdrop-blur-xl">
-      <a href="index.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Home</a>
-      <a href="#" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">About Us</a>
-      <a href="events.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Events</a>
-      <a href="team.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
-      <a href="resources.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Resources</a>
-      <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
-      <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
-    </div>
-
   </div>
 </header>
 
 <main>
   <!-- ============ PAGE HERO / BREADCRUMB ============ -->
-  <section class="relative bg-ink dot-grid overflow-hidden pt-32 sm:pt-40 pb-16 sm:pb-20 px-5 text-center">
+  <section id="home" class="relative overflow-hidden pt-10 sm:pt-14">
+    <div id="hero-slideshow" class="absolute inset-0">
+      <img
+        src="assets/corporiddlerz-2025.jpg"
+        alt="BUP BCC members at the Corporiddlerz 2025 national business strategy competition"
+        fetchpriority="high"
+        class="hero-slide absolute inset-0 w-full h-full object-cover"
+      />
+      <img
+        src="assets/unilever-learn-to-lead-2025.jpg"
+        alt="BUP BCC members with Unilever representatives at the Learn to Lead 2025 program"
+        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
+      />
+      <img
+        src="assets/gateway-ori.jpeg"
+        alt="BCC Gateway 2026"
+        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
+      />
+      <img
+        src="assets/creadive-idlc-2.jpg"
+        alt="CreADive 2023 participants at the IDLC Finance &amp; Marketing Challenge"
+        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
+      />
+      <img
+        src="assets/bizcomps-to-mnc.jpg"
+        alt="BizComps to MNCs 2023"
+        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
+      />
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/30 to-ink/75"></div>
+
+    <div class="max-w-4xl mx-auto px-5 sm:px-8 text-center relative min-h-[440px] sm:min-h-[540px] lg:min-h-[720px] flex flex-col items-center justify-center">
     <h1 class="font-display font-extrabold uppercase text-white leading-tight tracking-tight text-4xl sm:text-6xl md:text-7xl">About Us</h1>
     <div class="mx-auto mt-5 h-0.5 w-40 sm:w-56 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
-    <p class="mt-6 text-gray-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+    <p class="mt-6 text-white text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
       The largest Business &amp; Communication platform at Bangladesh University of Professionals
     </p>
   </section>
 
   <!-- ============ OUR STORY ============ -->
-  <section class="bg-ink py-16 sm:py-20">
-    <div class="max-w-6xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
-      <div class="relative h-[300px] sm:h-[380px] rounded-3xl overflow-hidden border border-white/10">
-        <div class="w-full h-full flex flex-col items-center justify-center gap-3 bg-ink-secondary text-gray-600">
-          <svg viewBox="0 0 24 24" class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="16" rx="2"/>
-            <circle cx="8.5" cy="9.5" r="1.5"/>
-            <path d="M21 16l-5.5-5.5a1 1 0 00-1.4 0L6 18"/>
-          </svg>
-          <span class="text-xs uppercase tracking-wider">Photo placeholder</span>
-        </div>
+  </section>
+  <section id="about" class="bg-ink py-20 sm:py-24">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+ 
+      <div class="w-full aspect-[2400/913] rounded-3xl overflow-hidden shadow-xl bg-ink">
+        <img src="assets/bcc-15y.png" alt="BUP BCC — 15 years in the making. Allow yourself to dream big." loading="lazy" class="w-full h-full object-contain" />
       </div>
-
-      <div>
-        <span class="inline-block bg-gold text-ink font-display font-semibold text-xs uppercase tracking-wider px-4 py-1.5 rounded-full mb-4">Our Story</span>
-        <h2 class="font-display text-3xl sm:text-4xl font-bold text-white leading-tight">Bridging Business &amp; Communication Since 2016</h2>
-        <p class="mt-5 text-gray-400 leading-relaxed">
-          Our club began as two separate organizations - one focused on business, the other on communication. In 2016, they merged into a single platform dedicated to giving BUP students hands-on, practical experience they can't get from lectures alone. Today, we run flagship competitions, workshops, and networking events that prepare our members for the corporate world.
+ 
+      <div class="mt-12 sm:mt-14 max-w-2xl mx-auto text-center">
+        <p class="text-gold font-display font-semibold text-sm tracking-[0.2em] uppercase mb-3">About Us</p>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-paper leading-tight">15 YEARS IN THE MAKING</h2>
+        <p class="mt-5 text-paper leading-relaxed">
+          From vision to legacy, an evolving journey of dreams, drive, and direction, toward a greater destination.
         </p>
-        <a href="#" class="mt-7 inline-flex items-center gap-2 border border-gold text-gold hover:bg-gold hover:text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">
-          Learn More
+        <a href="about-us.html" class="mt-7 inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">
+          Read Our Story
           <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
         </a>
       </div>
-
+ 
     </div>
   </section>
 
@@ -226,7 +258,7 @@
   <!-- ============ WHAT WE DO ============ -->
   <section class="bg-ink py-16 sm:py-20">
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
-      <p class="text-gold font-display font-semibold text-sm tracking-[0.2em] uppercase text-center mb-10">What We Do</p>
+      <p class="text-gold font-display font-semibold text-2xl sm:text-3xl tracking-[0.2em] uppercase text-center mb-10">What We Do</p>
 
       <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
 
@@ -424,7 +456,7 @@
 </main>
 
 <!-- ============ FOOTER (same as homepage) ============ -->
-<footer class="bg-ink pt-16 pb-8">
+<footer class="bg-ink pt-16 pb-28 sm:pb-32">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 grid md:grid-cols-2 gap-12">
 
     <div>
@@ -454,7 +486,7 @@
       </div>
       <div class="flex items-center gap-3 md:flex-row-reverse">
         <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold shrink-0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 005 5L14 13l5 2v3a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg>
-        <a href="tel:+8801854008410" class="hover:text-gold transition-colors">+880 1854-008410</a>
+        <a href="tel:+8801535183460" class="hover:text-gold transition-colors">+880 1535-183460</a>
       </div>
       <div class="flex items-center gap-3 md:flex-row-reverse">
         <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold shrink-0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
@@ -471,6 +503,22 @@
 </footer>
 
 <script>
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Hero background slideshow — crossfades through event photos, one at a time
+  (function () {
+    const slides = document.querySelectorAll('#hero-slideshow .hero-slide');
+    if (slides.length < 2 || prefersReducedMotion) return;
+
+    let current = 0;
+    setInterval(() => {
+      const next = (current + 1) % slides.length;
+      slides[current].classList.add('opacity-0');
+      slides[next].classList.remove('opacity-0');
+      current = next;
+    }, 2000);
+  })();
+  
   const glassCard = document.getElementById('glass-card');
   const glassGlow = document.getElementById('glass-glow');
   const glassBorderGlow = document.getElementById('glass-border-glow');
