@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Executive Dashboard | BUP Business &amp; Communication Club</title>
 <meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="assets/bcc-icon.png" sizes="32x32"/>
+<link rel="apple-touch-icon" href="assets/bcc-icon.png"/>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.tailwindcss.com"></script>
@@ -19,16 +21,35 @@
         colors: {
           ink: { DEFAULT: '#0B0B0D', secondary: '#17171B' },
           gold: { DEFAULT: '#F2B90D', dark: '#C99A00' },
+          paper: '#F5F4F1',
         },
         fontFamily: {
-          display: ['Poppins', 'sans-serif'],
-          sans: ['Inter', 'sans-serif'],
+          display: ['Archivo', 'sans-serif'],
+          sans: ['Instrument Sans', 'sans-serif'],
         },
       },
     },
   };
 </script>
 <style>
+  .dot-grid {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1.5px);
+    background-size: 26px 26px;
+  }
+  .member-card { transition: transform .25s ease, border-color .25s ease; }
+  .member-card:hover { transform: translateY(-3px); border-color: rgba(242,185,13,0.4); }
+
+  @keyframes fade-in-page {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  body { animation: fade-in-page 0.5s ease both; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .member-card { transition: none; }
+    body { animation: none; }
+  }
+
   :focus-visible { outline: 2px solid #F2B90D; outline-offset: 2px; }
   .hidden { display: none !important; }
 </style>
@@ -42,17 +63,24 @@
   </div>
 
   <!-- ============ LOGIN ============ -->
-  <div id="auth-screen" class="hidden min-h-screen flex items-center justify-center px-5">
+  <div id="auth-screen" class="hidden min-h-screen dot-grid flex items-center justify-center px-5">
     <div class="w-full max-w-sm">
-      <div class="text-center mb-6">
-        <a href="index.html" class="inline-flex items-center gap-2.5 mb-4">
-          <img src="assets/bcc-logo.png" class="w-9 h-auto" alt="BUP BCC logo" />
+      <div class="text-center mb-7">
+        <a href="index.html" class="inline-flex items-center gap-2.5 mb-5 group">
+          <img src="assets/bcc-logo.png" class="w-10 h-auto transition-transform duration-300 group-hover:scale-105" alt="BUP BCC logo" />
         </a>
-        <h1 class="font-display font-bold text-lg text-white">Executive Dashboard</h1>
-        <p class="text-xs text-gray-500 mt-1">Sign in with your Executive account</p>
+        <span class="mx-auto flex w-fit items-center gap-2 border border-white/15 bg-white/5 rounded-full px-4 py-1.5 text-xs text-gray-300 mb-5">
+          <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+          Members Only
+        </span>
+        <h1 class="font-display font-extrabold uppercase text-white text-2xl sm:text-3xl leading-tight tracking-tight">
+          Executive<span class="text-gold"> Dashboard</span>
+        </h1>
+        <div class="mx-auto mt-4 h-0.5 w-32 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
+        <p class="text-xs text-gray-500 mt-4">Sign in with your Executive account</p>
       </div>
 
-      <div class="bg-ink-secondary border border-white/10 rounded-2xl p-7">
+      <div class="rounded-2xl bg-ink-secondary border border-white/10 border-t-2 border-t-gold shadow-xl p-7">
         <form id="auth-form" class="space-y-4">
           <div>
             <label class="block text-xs text-gray-400 mb-1">Email</label>
@@ -63,10 +91,10 @@
             <input id="auth-password" type="password" autocomplete="current-password" required class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2.5 text-sm focus:border-gold focus:outline-none" />
           </div>
           <p id="auth-error" class="hidden text-xs text-red-400 leading-relaxed"></p>
-          <button type="submit" class="w-full bg-gold hover:bg-gold-dark text-ink font-display font-semibold py-2.5 rounded-lg transition-colors">Sign In</button>
+          <button type="submit" class="w-full bg-gold hover:bg-gold-dark text-ink font-display font-semibold py-2.5 rounded-full transition-colors">Sign In</button>
         </form>
       </div>
-      <p class="text-center text-xs text-gray-600 mt-5">
+      <p class="text-center text-xs text-gray-600 mt-5 leading-relaxed">
         Don't have an account? Ask an existing Executive Member to add you from the Supabase dashboard.
       </p>
     </div>
@@ -74,40 +102,66 @@
 
   <!-- ============ DASHBOARD ============ -->
   <div id="dashboard-screen" class="hidden">
-    <header class="border-b border-white/10 bg-ink-secondary sticky top-0 z-20">
-      <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
-        <div>
-          <p class="font-display font-bold text-white text-sm sm:text-base leading-tight">BUP BCC — Team Roster</p>
-          <p id="welcome-text" class="text-xs text-gray-400 leading-tight"></p>
-        </div>
-        <div class="flex items-center gap-2 sm:gap-3">
-          <a href="team.html" class="text-xs text-gray-400 hover:text-gold transition-colors px-2 py-1.5">View public page</a>
-          <button id="logout-btn" class="text-xs border border-white/20 hover:border-gold hover:text-gold px-3 py-1.5 rounded-full transition-colors">Log Out</button>
+    <header class="sticky top-0 z-20 px-3 sm:px-6 pt-3 sm:pt-5">
+      <div
+        id="glass-card"
+        class="relative max-w-6xl mx-auto rounded-2xl bg-neutral-700/40 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden transition-colors duration-500"
+      >
+        <div
+          id="glass-glow"
+          class="pointer-events-none absolute inset-0 rounded-2xl border border-gold/20 opacity-0 transition-opacity duration-300 z-0"
+          style="background: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(251, 191, 36, 0.25), rgba(217, 119, 6, 0.08) 40%, transparent 80%);"
+        ></div>
+
+        <div
+          class="pointer-events-none absolute inset-0 rounded-2xl border border-white/20 opacity-0 transition-opacity duration-300 z-0"
+          id="glass-border-glow"
+          style="mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"
+        ></div>
+
+        <div class="relative z-10 flex items-center justify-between gap-3 h-16 px-4 sm:px-6 lg:px-8">
+          <a href="index.html" class="flex items-center gap-2.5 shrink-0 group">
+            <img src="assets/bcc-logo.png" class="w-8 sm:w-9 h-auto transition-transform duration-300 group-hover:scale-105" alt="BUP BCC logo" />
+            <span class="min-w-0">
+              <span class="block font-display font-semibold text-white text-sm sm:text-base leading-tight">Team Roster</span>
+              <span id="welcome-text" class="block text-[11px] text-gray-400 leading-tight truncate"></span>
+            </span>
+          </a>
+          <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+            <a href="team.html" class="hidden sm:inline text-xs text-gray-300 hover:text-gold transition-colors py-1">View public page</a>
+            <button id="logout-btn" class="text-xs border border-white/25 hover:border-gold hover:text-gold text-white font-display font-semibold px-4 py-2 rounded-full transition-colors">Log Out</button>
+          </div>
         </div>
       </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-5 sm:px-8 py-8">
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <main class="max-w-6xl mx-auto px-5 sm:px-8 py-10 sm:py-12">
+      <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
         <div>
-          <h2 class="font-display font-bold text-lg text-white">Team Members</h2>
-          <p id="members-status" class="text-sm text-gray-500 mt-0.5"></p>
+          <p class="text-gold font-display font-semibold text-xs tracking-[0.2em] uppercase mb-2">Roster Management</p>
+          <h2 class="font-display font-extrabold uppercase text-white text-2xl sm:text-3xl leading-tight tracking-tight">Team Members</h2>
+          <p id="members-status" class="text-sm text-gray-400 mt-2"></p>
         </div>
-        <button id="add-member-btn" class="bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-4 py-2.5 rounded-full transition-colors">+ Add Member</button>
+        <button id="add-member-btn" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-3 rounded-full transition-colors">
+          Add Member
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
       </div>
 
-      <div id="members-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-      <p id="members-empty" class="hidden text-center text-gray-500 text-sm py-16">No team members yet. Click "Add Member" to add your first recruit.</p>
+      <div class="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent mb-8"></div>
+
+      <div id="members-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+      <p id="members-empty" class="hidden text-center text-gray-400 text-sm py-16">No team members yet. Click "Add Member" to add your first recruit.</p>
     </main>
   </div>
 </div>
 
 <!-- ============ MEMBER EDITOR MODAL ============ -->
 <div id="member-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-start sm:items-center justify-center px-4 py-8 overflow-y-auto">
-  <div class="w-full max-w-lg bg-ink-secondary border border-white/10 rounded-2xl p-6 sm:p-8 my-auto">
-    <div class="flex items-center justify-between mb-5">
+  <div class="w-full max-w-lg bg-ink-secondary border border-white/10 border-t-2 border-t-gold rounded-2xl shadow-2xl p-6 sm:p-8 my-auto">
+    <div class="flex items-center justify-between mb-6">
       <h3 id="member-modal-title" class="font-display font-bold text-lg text-white">Add Team Member</h3>
-      <button id="member-modal-close" type="button" class="text-gray-400 hover:text-white text-2xl leading-none">&times;</button>
+      <button id="member-modal-close" type="button" aria-label="Close" class="text-gray-400 hover:text-gold text-2xl leading-none transition-colors">&times;</button>
     </div>
     <form id="member-form" class="space-y-4">
       <div class="grid sm:grid-cols-2 gap-4">
@@ -134,6 +188,11 @@
         <label class="block text-xs text-gray-400 mb-1">Panel / department line</label>
         <input id="member-department" maxlength="200" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. Marketing & Brand Strategy" />
       </div>
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">LinkedIn URL (optional)</label>
+        <input id="member-linkedin" type="url" maxlength="300" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="https://www.linkedin.com/in/username" />
+        <p class="text-[11px] text-gray-500 mt-1">Shown as a LinkedIn button on the public team card.</p>
+      </div>
       <div class="grid sm:grid-cols-2 gap-4 items-start">
         <div>
           <label class="block text-xs text-gray-400 mb-1">Photo (optional)</label>
@@ -158,8 +217,8 @@
       <div class="flex items-center justify-between gap-3 pt-2 border-t border-white/10">
         <button type="button" id="member-delete-btn" class="hidden text-xs text-red-400 hover:text-red-300 mt-4">Delete member</button>
         <div class="flex gap-3 ml-auto mt-4">
-          <button type="button" id="member-cancel-btn" class="text-sm text-gray-400 hover:text-white px-4 py-2">Cancel</button>
-          <button type="submit" id="member-save-btn" class="bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-5 py-2 rounded-full transition-colors">Save</button>
+          <button type="button" id="member-cancel-btn" class="text-sm text-gray-400 hover:text-white px-4 py-2 transition-colors">Cancel</button>
+          <button type="submit" id="member-save-btn" class="bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-2.5 rounded-full transition-colors">Save</button>
         </div>
       </div>
     </form>
@@ -170,5 +229,30 @@
 
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/admin.js"></script>
+<script>
+  // Same pointer-tracking glow the homepage navbar uses.
+  const glassCard = document.getElementById('glass-card');
+  const glassGlow = document.getElementById('glass-glow');
+  const glassBorderGlow = document.getElementById('glass-border-glow');
+
+  if (glassCard) {
+    glassCard.addEventListener('mousemove', (e) => {
+      const rect = glassCard.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      glassCard.style.setProperty('--mouse-x', `${x}px`);
+      glassCard.style.setProperty('--mouse-y', `${y}px`);
+
+      glassGlow.style.opacity = '1';
+      glassBorderGlow.style.opacity = '1';
+    });
+
+    glassCard.addEventListener('mouseleave', () => {
+      glassGlow.style.opacity = '0';
+      glassBorderGlow.style.opacity = '0';
+    });
+  }
+</script>
 </body>
 </html>

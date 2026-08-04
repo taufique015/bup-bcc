@@ -4,11 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Our Team | BUP Business &amp; Communication Club</title>
-<meta name="description" content="Meet the Executive Panel and department leads behind BUP Business & Communication Club." />
-
+<meta name="description" content="Meet the Executive Panel and department leads behind BUP Business &amp; Communication Club." />
+<link rel="icon" href="assets/bcc-icon.png" sizes="32x32"/>
+<link rel="icon" href="assets/bcc-icon.png" sizes="192x192"/>
+<link rel="apple-touch-icon" href="assets/bcc-icon.png"/>
+<meta name="msapplication-TileImage" content="assets/bcc-icon.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -21,8 +24,8 @@
           paper: '#F5F4F1',
         },
         fontFamily: {
-          display: ['Poppins', 'sans-serif'],
-          sans: ['Inter', 'sans-serif'],
+          display: ['Archivo', 'sans-serif'],
+          sans: ['Instrument Sans', 'sans-serif'],
           unique1: ['Roboto', 'sans-serif'],
         },
       },
@@ -33,16 +36,31 @@
 <style>
   html { scroll-behavior: smooth; }
   section[id] { scroll-margin-top: 92px; }
-  .dot-grid {
-    background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1.5px);
-    background-size: 26px 26px;
+  .hero-slide {
+    transition: opacity 1.4s ease-in-out;
+  }
+  .ribbon-corner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-top: 34px solid #F2B90D;
+    border-right: 34px solid transparent;
+    z-index: 10;
   }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
-  :focus-visible { outline: 2px solid #F2B90D; outline-offset: 3px; }
 
-  .team-card { transition: transform .25s ease, border-color .25s ease; }
-  .team-card:hover { transform: translateY(-4px); border-color: rgba(242,185,13,0.5); }
+  .team-card { transition: transform .3s ease, border-color .25s ease; }
+  .team-card:hover { transform: translateY(-6px); border-color: rgba(242,185,13,0.5); }
+  /* Three cards per row even on phones, so the gold corner is scaled right down. */
+  @media (max-width: 639px) {
+    .team-card .ribbon-corner {
+      border-top-width: 16px;
+      border-right-width: 16px;
+    }
+  }
 
   .skeleton {
     background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 37%, rgba(255,255,255,0.04) 63%);
@@ -51,16 +69,45 @@
   }
   @keyframes skeleton-loading { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
 
+  /* Smooth cross-document navigation — index.html carries this same rule so the
+     transition fires when you link between the two pages. */
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.45s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes fade-in-page {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  body {
+    animation: fade-in-page 0.5s ease both;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
+    .hero-slide { transition: none; }
     .team-card { transition: none; }
     .skeleton { animation: none; }
+    body { animation: none; }
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.01ms !important;
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid #F2B90D;
+    outline-offset: 3px;
   }
 </style>
 </head>
 <body class="bg-ink font-sans text-white antialiased">
-
-<header id="navbar" class="fixed top-0 inset-x-0 z-50 px-3 sm:px-6 pt-3 sm:pt-5">
+<header id="navbar" class="fixed bottom-0 inset-x-0 z-50 px-3 sm:px-6 pb-3 sm:pb-5">
   <div
     id="glass-card"
     class="relative max-w-7xl mx-auto rounded-2xl bg-neutral-700/40 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden transition-colors duration-500"
@@ -77,12 +124,22 @@
       style="mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"
     ></div>
 
+    <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 border-b border-white/10 space-y-2 bg-neutral-900/80 backdrop-blur-xl">
+      <a href="index.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Home</a>
+      <a href="about-us.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">About Us</a>
+      <a href="events.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Events</a>
+      <a href="team.html" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">Team</a>
+      <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
+      <a href="achievements.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Achievements</a>
+      <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
+    </div>
+
     <div class="relative z-10 flex items-center justify-between gap-3 lg:gap-6 h-16 px-4 sm:px-6 lg:px-8">
 
       <a href="index.html" class="flex items-center gap-2.5 shrink-0 group">
         <img src="assets/bcc-logo.png" class="w-8 sm:w-10 h-auto transition-transform duration-300 group-hover:scale-105" alt="BUP BCC logo" />
-        <span class="font-display hidden md:inline font-normal text-white/80 text-sm sm:text-base lg:text-lg tracking-wide text-white whitespace-nowrap">
-          BUP Business & Communication Club
+        <span class="font-display font-light md:font-normal sm:inline md:hidden xl:inline text-[11px] leading-[1.15] sm:text-base lg:text-lg tracking-tight sm:tracking-wide text-white md:whitespace-nowrap">
+          BUP Business &amp; Communication Club
         </span>
       </a>
 
@@ -91,13 +148,13 @@
         <a href="about-us.html" class="hover:text-gold transition-colors py-1">About Us</a>
         <a href="events.html" class="hover:text-gold transition-colors py-1">Events</a>
         <a href="team.html" class="hover:text-gold text-white transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gold after:rounded-full">Team</a>
-        <a href="resources.html" class="hover:text-gold transition-colors py-1">Resources</a>
-        <a href="bizfeed.html" class="hover:text-gold transition-colors py-1">BizFeed</a>
         <a href="hall-of-fame.html" class="hover:text-gold transition-colors py-1">Hall of Fame</a>
+        <a href="achievements.html" class="hover:text-gold transition-colors py-1">Achievements</a>
+        <a href="bizfeed.html" class="hover:text-gold transition-colors py-1">BizFeed</a>
       </nav>
 
       <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-        <a href="join-us/" class="inline-flex items-center bg-gold hover:bg-gold text-slate-950 font-display font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full transition-all duration-300 shadow-md hover:shadow-gold/20 hover:scale-105">
+        <a href="join-us.html" class="inline-flex items-center bg-gold hover:bg-gold text-slate-950 font-display font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full transition-all duration-300 shadow-md hover:shadow-gold/20 hover:scale-105">
           Join Us
         </a>
 
@@ -118,47 +175,103 @@
 
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 border-t border-white/10 space-y-2 bg-slate-900/80 backdrop-blur-xl">
-      <a href="index.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Home</a>
-      <a href="about-us.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">About Us</a>
-      <a href="events.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Events</a>
-      <a href="team.html" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">Team</a>
-      <a href="resources.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Resources</a>
-      <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
-      <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
-    </div>
-
   </div>
 </header>
 
 <main>
-  <section class="relative bg-ink dot-grid overflow-hidden pt-32 sm:pt-40 pb-16 sm:pb-20 px-5 text-center">
-    <h1 class="font-display font-extrabold uppercase text-white leading-tight tracking-tight text-4xl sm:text-6xl md:text-7xl">Our Team</h1>
-    <div class="mx-auto mt-5 h-0.5 w-40 sm:w-56 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
-    <p class="mt-6 text-gray-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
-      The Executive Panel and department leads driving BUP BCC forward.
-    </p>
-    <div class="mt-6 flex items-center justify-center gap-2 text-xs sm:text-sm text-gray-500">
-      <a href="index.html" class="hover:text-gold transition-colors">Home</a>
-      <span>&rsaquo;</span>
-      <span class="text-gray-300">Team</span>
+  <section id="home" class="relative overflow-hidden pt-10 sm:pt-14">
+    <div id="hero-slideshow" class="absolute inset-0">
+      <img
+        src="assets/corporiddlerz-2025.jpg"
+        alt="BUP BCC members at the Corporiddlerz 2025 national business strategy competition"
+        fetchpriority="high"
+        class="hero-slide absolute inset-0 w-full h-full object-cover"
+      />
+      <img
+        src="assets/unilever-learn-to-lead-2025.jpg"
+        alt="BUP BCC members with Unilever representatives at the Learn to Lead 2025 program"
+        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
+      />
+      <img
+        src="assets/gateway-ori.jpeg"
+        alt="BCC Gateway 2026"
+        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
+      />
+      <img
+        src="assets/creadive-idlc-2.jpg"
+        alt="CreADive 2023 participants at the IDLC Finance &amp; Marketing Challenge"
+        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
+      />
+      <img
+        src="assets/bizcomps-to-mnc.jpg"
+        alt="BizComps to MNCs 2023"
+        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
+      />
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/30 to-ink/75"></div>
+
+    <div class="max-w-4xl mx-auto px-5 sm:px-8 text-center relative min-h-[440px] sm:min-h-[540px] lg:min-h-[720px] flex flex-col items-center justify-center">
+      <h1 class="font-display font-extrabold uppercase text-white leading-[1.05] tracking-tight text-[2.75rem] sm:text-6xl md:text-7xl">
+        Our Team
+      </h1>
+      <div class="w-16 h-1 bg-gold rounded-full mx-auto mt-5"></div>
+      <p class="mt-6 text-white text-base sm:text-lg">Meet the talented individuals who drive our club forward</p>
     </div>
   </section>
 
-  <section class="bg-ink pb-20 sm:pb-24">
+  <section class="bg-ink-secondary py-14 sm:py-16">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 grid grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-6 text-center">
+      <div>
+        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="180">0+</p>
+        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Active Members</p>
+      </div>
+      <div>
+        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="5">0+</p>
+        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Departments</p>
+      </div>
+      <div>
+        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="50">0+</p>
+        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Events Organized</p>
+      </div>
+      <div>
+        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="15">0+</p>
+        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Years of Excellence</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="panel" class="bg-ink py-16 sm:py-20">
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <p class="text-gold font-display font-bold text-3xl sm:text-5xl tracking-[0.2em] uppercase mb-3 text-center">The Panel</p>
+      <p class="text-center text-gray-400 text-sm sm:text-base max-w-xl mx-auto mb-10">
+        Filter by department to see who leads what across the club.
+      </p>
 
       <div id="team-filters" class="flex flex-wrap items-center justify-center gap-3 mb-12"></div>
 
-      <div id="team-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+      <div id="team-grid" class="grid grid-cols-3 gap-2.5 sm:gap-5 lg:gap-7"></div>
 
       <p id="team-empty" class="hidden text-center text-gray-400 text-sm py-16">No team members to show yet — check back soon.</p>
       <p id="team-error" class="hidden text-center text-gray-400 text-sm py-16 max-w-md mx-auto leading-relaxed"></p>
     </div>
   </section>
+
+  <section class="bg-paper py-20 sm:py-24">
+    <div class="max-w-2xl mx-auto px-5 sm:px-8 text-center">
+      <p class="text-gold font-display font-semibold text-sm tracking-[0.2em] uppercase mb-3">Join The Team</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">WANT YOUR NAME HERE?</h2>
+      <p class="mt-5 text-gray-600 leading-relaxed">
+        Recruitment opens every academic year across all five departments. Bring the drive, we will bring the platform.
+      </p>
+      <a href="join-us.html" class="mt-7 inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">
+        Join BUP BCC
+        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </section>
 </main>
 
-<footer class="bg-ink pt-16 pb-8">
+<footer class="bg-ink pt-16 pb-28 sm:pb-32">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 grid md:grid-cols-2 gap-12">
 
     <div>
@@ -188,7 +301,7 @@
       </div>
       <div class="flex items-center gap-3 md:flex-row-reverse">
         <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold shrink-0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 005 5L14 13l5 2v3a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg>
-        <a href="tel:+8801854008410" class="hover:text-gold transition-colors">+880 1854-008410</a>
+        <a href="tel:+8801535183460" class="hover:text-gold transition-colors">+880 1535-183460</a>
       </div>
       <div class="flex items-center gap-3 md:flex-row-reverse">
         <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold shrink-0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
@@ -208,6 +321,49 @@
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/team.js"></script>
 <script>
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function animateCount(el) {
+    const target = parseInt(el.dataset.target, 10);
+    if (prefersReducedMotion || Number.isNaN(target)) {
+      el.textContent = target + '+';
+      return;
+    }
+    const duration = 1400;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(eased * target) + '+';
+      if (progress < 1) requestAnimationFrame(tick);
+      else el.textContent = target + '+';
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        animateCount(entry.target);
+        statObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  // Hero background slideshow — crossfades through event photos, one at a time
+  (function () {
+    const slides = document.querySelectorAll('#hero-slideshow .hero-slide');
+    if (slides.length < 2 || prefersReducedMotion) return;
+
+    let current = 0;
+    setInterval(() => {
+      const next = (current + 1) % slides.length;
+      slides[current].classList.add('opacity-0');
+      slides[next].classList.remove('opacity-0');
+      current = next;
+    }, 2000);
+  })();
+
   const glassCard = document.getElementById('glass-card');
   const glassGlow = document.getElementById('glass-glow');
   const glassBorderGlow = document.getElementById('glass-border-glow');
@@ -217,11 +373,14 @@
       const rect = glassCard.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
+
       glassCard.style.setProperty('--mouse-x', `${x}px`);
       glassCard.style.setProperty('--mouse-y', `${y}px`);
+
       glassGlow.style.opacity = '1';
       glassBorderGlow.style.opacity = '1';
     });
+
     glassCard.addEventListener('mouseleave', () => {
       glassGlow.style.opacity = '0';
       glassBorderGlow.style.opacity = '0';
@@ -235,13 +394,23 @@
 
   if (menuToggle && mobileMenu) {
     menuToggle.addEventListener('click', () => {
-      const isHidden = mobileMenu.classList.contains('hidden');
       mobileMenu.classList.toggle('hidden');
-      iconOpen.classList.toggle('hidden', !isHidden);
-      iconClose.classList.toggle('hidden', isHidden);
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      iconOpen.classList.toggle('hidden', isOpen);
+      iconClose.classList.toggle('hidden', !isOpen);
+    });
+
+    // Close the mobile menu after tapping any link inside it
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      });
     });
   }
 
+  document.querySelectorAll('.stat-number').forEach((el) => statObserver.observe(el));
   document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 </body>

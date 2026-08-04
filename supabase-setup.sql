@@ -15,11 +15,16 @@ create table if not exists public.team_members (
   category text not null check (category in ('board', 'marketing', 'corporate', 'events', 'hr')),
   department text not null default '',
   photo_url text,
+  linkedin_url text,
   display_order integer not null default 99,
   active boolean not null default true,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+-- If your table predates the linkedin_url column, this brings it up to date.
+-- (create table ... if not exists above is a no-op on an existing table.)
+alter table public.team_members add column if not exists linkedin_url text;
+
 -- NOTE: the column is called "title" rather than "position" because POSITION
 -- is a reserved word in Postgres. Adding a new department later? Add it to
 -- the "category in (...)" list above (needs an ALTER TABLE — see README) AND

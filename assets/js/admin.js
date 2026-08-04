@@ -82,14 +82,17 @@ function renderMemberCard(m) {
     : `<div class="w-14 h-14 rounded-full bg-neutral-800 border-2 border-gold/40 flex items-center justify-center text-gold font-display font-bold shrink-0">${escapeHtml(initials(m.name))}</div>`;
 
   return `
-    <div class="bg-ink-secondary border border-white/10 rounded-xl p-5 flex gap-4 items-start ${m.active === false ? 'opacity-50' : ''}">
+    <div class="member-card bg-ink-secondary border border-white/10 border-t-2 border-t-gold/50 rounded-2xl shadow-lg p-5 flex gap-4 items-start ${m.active === false ? 'opacity-50' : ''}">
       ${avatar}
       <div class="flex-1 min-w-0">
-        <p class="text-[11px] uppercase tracking-wide text-gold/80 truncate">${escapeHtml(categoryLabel(m.category))}${m.active === false ? ' · Hidden' : ''}</p>
-        <p class="font-display font-bold text-white truncate">${escapeHtml(m.name)}</p>
+        <p class="text-[11px] font-display font-semibold uppercase tracking-wider text-gold/80 truncate">${escapeHtml(categoryLabel(m.category))}${m.active === false ? ' · Hidden' : ''}</p>
+        <p class="font-display font-bold text-white truncate mt-0.5">${escapeHtml(m.name)}</p>
         <p class="text-xs text-gray-400 truncate">${escapeHtml(m.title)}</p>
         <p class="text-[11px] text-gray-500 mt-1 truncate">${escapeHtml(m.batch || '')}</p>
-        <button data-edit="${m.id}" class="text-xs text-gold hover:text-gold-dark mt-3">Edit</button>
+        <button data-edit="${m.id}" class="inline-flex items-center gap-1.5 text-xs font-display font-semibold text-gold hover:gap-2.5 transition-all mt-3">
+          Edit
+          <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+        </button>
       </div>
     </div>
   `;
@@ -128,6 +131,7 @@ function openMemberModal(id) {
   $('member-position').value = m?.title || '';
   $('member-batch').value = m?.batch || '';
   $('member-department').value = m?.department || '';
+  $('member-linkedin').value = m?.linkedin_url || '';
   $('member-category').value = m?.category || CATEGORIES[0]?.id || '';
   $('member-order').value = m?.display_order ?? 99;
   $('member-active').checked = m ? m.active !== false : true;
@@ -164,6 +168,7 @@ async function handleMemberSubmit(e) {
       title,
       batch: $('member-batch').value.trim(),
       department: $('member-department').value.trim(),
+      linkedin_url: $('member-linkedin').value.trim() || null,
       category: $('member-category').value,
       display_order: Number($('member-order').value) || 99,
       active: $('member-active').checked,
