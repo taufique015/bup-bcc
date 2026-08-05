@@ -4,15 +4,6 @@
 // (see the <script> order in hall-of-fame.html).
 // ============================================================
 
-// Stand-in alumni shown when the table is empty (or unreachable) so the Hall of
-// Fame never renders bare. Replace these from the Hall of Fame tab in admin.html.
-const PLACEHOLDER_ALUMNI = [
-  { name: 'X', title: 'Founding President', class_year: 2023, achievement: '' },
-  { name: 'X', title: 'General Secretary', class_year: 2022, achievement: '' },
-  { name: 'X', title: 'Vice President - Operations', class_year: 2021, achievement: '' },
-  { name: 'X', title: 'Director - Corporate Relations', class_year: 2020, achievement: '' },
-  { name: 'X', title: 'Director - Marketing', class_year: 2019, achievement: '' },
-];
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -32,35 +23,67 @@ function initials(name) {
 let alumni = [];
 let activeYear = 'all';
 
-// Same gold-circle treatment as the footer social buttons on the homepage.
-function renderLinkedIn(person) {
-  if (!person.linkedin_url) return '';
+const SOCIAL_ICONS = {
+  linkedin:
+    '<svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M6.94 8.5H3.56V20.5H6.94V8.5z"/><path d="M5.25 3.5a2 2 0 100 4 2 2 0 000-4z"/><path d="M20.44 20.5h-3.37v-5.9c0-1.4-.03-3.2-1.96-3.2-1.96 0-2.26 1.53-2.26 3.1v6h-3.37V8.5h3.24v1.64h.04c.45-.86 1.55-1.76 3.19-1.76 3.42 0 4.49 2.25 4.49 5.17v6.95z"/></svg>',
+  facebook:
+    '<svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.5 2 12 2S2 6.5 2 12.06c0 5 3.66 9.17 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.89h2.78l-.45 2.91h-2.33v7.03C18.34 21.23 22 17.06 22 12.06z"/></svg>',
+};
+
+// Mirrors the team card: gold discs over the photo on hover, plus an inline row
+// for touch screens where hover never fires.
+function socialLinks(person, variant) {
+  const links = [
+    { key: 'facebook', url: person.facebook_url, label: 'Facebook' },
+    { key: 'linkedin', url: person.linkedin_url, label: 'LinkedIn' },
+  ].filter((l) => l.url);
+  if (!links.length) return '';
+
+  const overlay = variant === 'overlay';
+  const linkClass = overlay
+    ? 'w-9 h-9 rounded-full bg-gold text-ink flex items-center justify-center shadow-lg shadow-black/40 transition-transform duration-200 hover:scale-110 active:scale-95'
+    : 'w-8 h-8 rounded-full border border-white/15 text-gray-300 flex items-center justify-center transition-colors hover:text-ink hover:bg-gold hover:border-gold';
+
+  const items = links
+    .map(
+      (l) => `
+        <a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer"
+          aria-label="${escapeHtml(person.name)} on ${l.label}"
+          class="${linkClass}">${SOCIAL_ICONS[l.key]}</a>`
+    )
+    .join('');
+
+  if (!overlay) return `<div class="flex gap-1.5 pt-1 md:hidden">${items}</div>`;
+
   return `
-    <a href="${escapeHtml(person.linkedin_url)}" target="_blank" rel="noopener noreferrer"
-      aria-label="${escapeHtml(person.name)} on LinkedIn"
-      class="mt-3 inline-flex w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-white/20 items-center justify-center text-gray-300 hover:text-ink hover:bg-gold hover:border-gold transition-colors">
-      <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor"><path d="M6.94 8.5H3.56V20.5H6.94V8.5z"/><path d="M5.25 3.5a2 2 0 100 4 2 2 0 000-4z"/><path d="M20.44 20.5h-3.37v-5.9c0-1.4-.03-3.2-1.96-3.2-1.96 0-2.26 1.53-2.26 3.1v6h-3.37V8.5h3.24v1.64h.04c.45-.86 1.55-1.76 3.19-1.76 3.42 0 4.49 2.25 4.49 5.17v6.95z"/></svg>
-    </a>
+    <div class="absolute inset-0 hidden md:flex items-end justify-center pb-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-transparent"></div>
+      <div class="relative flex gap-2.5 translate-y-3 group-hover:translate-y-0 transition-transform duration-300 ease-out">${items}</div>
+    </div>
   `;
 }
 
 function renderAlumniCard(person) {
-  const avatar = person.photo_url
-    ? `<img src="${escapeHtml(person.photo_url)}" alt="${escapeHtml(person.name)}" loading="lazy" class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-gold mb-4" />`
-    : `<div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/5 border-2 border-gold/50 flex items-center justify-center text-gold font-display font-black text-lg sm:text-xl mb-4">${escapeHtml(initials(person.name))}</div>`;
+  const portrait = person.photo_url
+    ? `<img src="${escapeHtml(person.photo_url)}" alt="${escapeHtml(person.name)}" loading="lazy"
+        class="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.07]" />`
+    : `<div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-neutral-800 to-ink text-gold/70 font-display font-black text-3xl sm:text-4xl tracking-widest">${escapeHtml(initials(person.name))}</div>`;
 
   return `
-    <div class="alumni-card relative rounded-2xl bg-ink-secondary border border-white/10 overflow-hidden flex flex-col items-center text-center" data-year="${escapeHtml(String(person.class_year))}">
+    <div class="alumni-card group relative flex flex-col overflow-hidden rounded-2xl bg-ink-secondary border border-white/10 shadow-lg" data-year="${escapeHtml(String(person.class_year))}">
       <div class="ribbon-corner"></div>
-      <div class="pt-7 sm:pt-8 pb-1 px-3 sm:px-4 flex flex-col items-center">
-        ${avatar}
-        <h3 class="font-display font-bold text-white text-sm sm:text-base leading-tight">${escapeHtml(person.name)}</h3>
-        <p class="text-[11px] sm:text-xs text-gold mt-1">${escapeHtml(person.title)}</p>
-        ${person.achievement ? `<p class="mt-2 text-[11px] sm:text-xs text-gray-400 leading-relaxed">${escapeHtml(person.achievement)}</p>` : ''}
-        ${renderLinkedIn(person)}
+      <div class="relative w-full aspect-[4/5] overflow-hidden bg-neutral-900">
+        ${portrait}
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent"></div>
+        <span class="absolute bottom-2.5 right-2.5 z-10 text-[9px] sm:text-[10px] font-display font-semibold tracking-[0.15em] uppercase text-gold bg-ink/70 backdrop-blur-sm border border-gold/25 px-2.5 py-0.5 rounded-full md:group-hover:opacity-0 transition-opacity duration-300">Class of ${escapeHtml(String(person.class_year))}</span>
+        ${socialLinks(person, 'overlay')}
       </div>
-      <div class="px-3 sm:px-4 pb-5 sm:pb-6 mt-1">
-        <span class="inline-block text-[9px] sm:text-[10px] font-display font-semibold tracking-[0.15em] uppercase text-gray-400 bg-white/5 px-2.5 py-0.5 rounded-full">Class of ${escapeHtml(String(person.class_year))}</span>
+      <div class="relative flex flex-col gap-1.5 flex-1 px-3.5 py-3.5 sm:px-5 sm:py-4">
+        <div class="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent"></div>
+        <h3 class="font-display text-sm sm:text-base font-bold text-white leading-snug">${escapeHtml(person.name)}</h3>
+        <p class="text-gold font-display font-semibold text-[10px] sm:text-[11px] uppercase tracking-[0.08em] leading-snug">${escapeHtml(person.title)}</p>
+        ${person.achievement ? `<p class="text-[11px] sm:text-xs text-gray-400 leading-relaxed">${escapeHtml(person.achievement)}</p>` : ''}
+        ${socialLinks(person, 'inline')}
       </div>
     </div>
   `;
@@ -71,11 +94,13 @@ function renderSkeletons() {
   return Array.from({ length: 8 })
     .map(
       () => `
-    <div class="rounded-2xl bg-ink-secondary border border-white/10 p-4 pt-7 sm:p-6 sm:pt-8 text-center">
-      <div class="skeleton w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full"></div>
-      <div class="skeleton h-3.5 sm:h-4 w-2/3 mx-auto mt-4 rounded"></div>
-      <div class="skeleton h-2.5 sm:h-3 w-1/2 mx-auto mt-2 rounded"></div>
-      <div class="skeleton h-5 sm:h-6 w-24 mx-auto mt-4 rounded-full"></div>
+    <div class="rounded-2xl overflow-hidden bg-ink-secondary border border-white/10">
+      <div class="skeleton w-full aspect-[4/5]"></div>
+      <div class="px-3.5 py-3.5 sm:px-5 sm:py-4">
+        <div class="skeleton h-3.5 sm:h-4 w-3/4 rounded"></div>
+        <div class="skeleton h-2.5 w-1/2 mt-2 rounded"></div>
+        <div class="skeleton h-5 w-24 mt-3 rounded-full"></div>
+      </div>
     </div>
   `
     )
@@ -163,12 +188,12 @@ async function loadAlumni() {
       .order('display_order');
     if (error) throw error;
 
-    alumni = data && data.length ? data : PLACEHOLDER_ALUMNI;
+    alumni = data || [];
     renderFilters();
     renderAlumni();
   } catch (err) {
     console.error('Failed to load alumni:', err);
-    alumni = PLACEHOLDER_ALUMNI;
+    alumni = [];
     renderFilters();
     renderAlumni();
   }

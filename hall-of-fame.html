@@ -52,8 +52,12 @@
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
 
-  .alumni-card { transition: transform .3s ease, border-color .25s ease; }
-  .alumni-card:hover { transform: translateY(-6px); border-color: rgba(242,185,13,0.5); }
+  .alumni-card { transition: transform .45s cubic-bezier(0.4, 0, 0.2, 1), border-color .25s ease, box-shadow .45s ease; }
+  .alumni-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(242,185,13,0.5);
+    box-shadow: 0 18px 40px -18px rgba(242,185,13,0.35);
+  }
   @media (max-width: 639px) {
     .alumni-card .ribbon-corner {
       border-top-width: 22px;
@@ -88,7 +92,8 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .hero-slide { transition: none; }
-    .alumni-card { transition: none; }
+    .alumni-card,
+    .alumni-card * { transition: none !important; transform: none !important; }
     .skeleton { animation: none; }
     body { animation: none; }
     ::view-transition-old(root),
@@ -233,43 +238,6 @@
 
       <p id="alumni-empty-state" class="hidden text-center text-gray-400 text-sm py-16">No alumni recognized in this year yet.</p>
       <p id="alumni-error" class="hidden text-center text-gray-400 text-sm py-16 max-w-md mx-auto leading-relaxed"></p>
-    </div>
-  </section>
-
-  <!-- CHAMPIONS THROUGH THE YEARS — CENTERED -->
-  <section class="bg-ink-secondary py-16 sm:py-20">
-    <div class="max-w-6xl mx-auto px-5 sm:px-8 flex justify-center">
-      <div class="w-full sm:w-1/2 relative rounded-2xl overflow-hidden bg-ink border border-gold/20 p-8 sm:p-10 flex flex-col items-center text-center justify-center">
-        <svg viewBox="0 0 24 24" class="w-9 h-9 text-gold mb-4" style="filter: drop-shadow(0 0 10px rgba(242,185,13,0.6));" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M7 4h10v4a5 5 0 01-10 0V4z"/>
-          <path d="M7 5H4.5A1.5 1.5 0 004 6.5 3 3 0 007 9.5"/>
-          <path d="M17 5h2.5A1.5 1.5 0 0121 6.5 3 3 0 0117 9.5"/>
-          <path d="M12 13v3.5"/>
-          <path d="M8.5 20h7"/>
-          <path d="M9.5 16.5h5v1a2 2 0 01-2 2h-1a2 2 0 01-2-2v-1z"/>
-        </svg>
-        <h3 class="font-display text-xl sm:text-2xl font-bold text-white">Champions Through the Years</h3>
-        <p class="mt-2 text-sm text-gray-400">Competition Champions</p>
-        <a href="#" class="mt-5 inline-flex items-center gap-2 border border-white/25 hover:border-gold hover:text-gold text-white font-display font-semibold text-sm px-5 py-2.5 rounded-full transition-colors">
-          View All Champions
-          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- JOIN CTA -->
-  <section class="bg-paper py-20 sm:py-24">
-    <div class="max-w-2xl mx-auto px-5 sm:px-8 text-center">
-      <p class="text-gold font-display font-semibold text-sm tracking-[0.2em] uppercase mb-3">Nominate</p>
-      <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">KNOW SOMEONE WORTHY?</h2>
-      <p class="mt-5 text-gray-600 leading-relaxed">
-        Nominate a BUP BCC alumni for the Hall of Fame. Recognition opens every academic year.
-      </p>
-      <a href="mailto:bupbcc@gmail.com?subject=Hall%20of%20Fame%20Nomination" class="mt-7 inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">
-        Nominate Now
-        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
-      </a>
     </div>
   </section>
 

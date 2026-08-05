@@ -52,8 +52,12 @@
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
 
-  .team-card { transition: transform .3s ease, border-color .25s ease; }
-  .team-card:hover { transform: translateY(-6px); border-color: rgba(242,185,13,0.5); }
+  .team-card { transition: transform .45s cubic-bezier(0.4, 0, 0.2, 1), border-color .25s ease, box-shadow .45s ease; }
+  .team-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(242,185,13,0.5);
+    box-shadow: 0 18px 40px -18px rgba(242,185,13,0.35);
+  }
   /* Two cards per row on phones, so the gold corner is scaled down to suit. */
   @media (max-width: 639px) {
     .team-card .ribbon-corner {
@@ -91,7 +95,8 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .hero-slide { transition: none; }
-    .team-card { transition: none; }
+    .team-card,
+    .team-card * { transition: none !important; transform: none !important; }
     .skeleton { animation: none; }
     body { animation: none; }
     ::view-transition-old(root),
@@ -219,26 +224,6 @@
     </div>
   </section>
 
-  <section class="bg-ink-secondary py-14 sm:py-16">
-    <div class="max-w-6xl mx-auto px-5 sm:px-8 grid grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-6 text-center">
-      <div>
-        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="180">0+</p>
-        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Active Members</p>
-      </div>
-      <div>
-        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="5">0+</p>
-        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Departments</p>
-      </div>
-      <div>
-        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="50">0+</p>
-        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Events Organized</p>
-      </div>
-      <div>
-        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="15">0+</p>
-        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Years of Excellence</p>
-      </div>
-    </div>
-  </section>
 
   <section id="panel" class="bg-ink py-16 sm:py-20">
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
@@ -256,19 +241,6 @@
     </div>
   </section>
 
-  <section class="bg-paper py-20 sm:py-24">
-    <div class="max-w-2xl mx-auto px-5 sm:px-8 text-center">
-      <p class="text-gold font-display font-semibold text-sm tracking-[0.2em] uppercase mb-3">Join The Team</p>
-      <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">WANT YOUR NAME HERE?</h2>
-      <p class="mt-5 text-gray-600 leading-relaxed">
-        Recruitment opens every academic year across every panel. Bring the drive, we will bring the platform.
-      </p>
-      <a href="join-us.html" class="mt-7 inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">
-        Join BUP BCC
-        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
-      </a>
-    </div>
-  </section>
 </main>
 
 <footer class="bg-ink pt-16 pb-28 sm:pb-32">
@@ -322,33 +294,6 @@
 <script src="assets/js/team.js"></script>
 <script>
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function animateCount(el) {
-    const target = parseInt(el.dataset.target, 10);
-    if (prefersReducedMotion || Number.isNaN(target)) {
-      el.textContent = target + '+';
-      return;
-    }
-    const duration = 1400;
-    const start = performance.now();
-    function tick(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.floor(eased * target) + '+';
-      if (progress < 1) requestAnimationFrame(tick);
-      else el.textContent = target + '+';
-    }
-    requestAnimationFrame(tick);
-  }
-
-  const statObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        animateCount(entry.target);
-        statObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.4 });
 
   // Hero background slideshow — crossfades through event photos, one at a time
   (function () {
@@ -410,7 +355,6 @@
     });
   }
 
-  document.querySelectorAll('.stat-number').forEach((el) => statObserver.observe(el));
   document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 </body>

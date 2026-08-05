@@ -140,6 +140,7 @@
       <nav class="flex items-center gap-2 mb-8">
         <button id="tab-roster-btn" class="text-xs sm:text-sm font-display font-semibold px-4 py-2 rounded-full border border-gold bg-gold text-ink transition-colors">Team Roster</button>
         <button id="tab-hof-btn" class="text-xs sm:text-sm font-display font-semibold px-4 py-2 rounded-full border border-white/20 text-gray-300 hover:border-gold hover:text-gold transition-colors">Hall of Fame</button>
+        <button id="tab-achievements-btn" class="text-xs sm:text-sm font-display font-semibold px-4 py-2 rounded-full border border-white/20 text-gray-300 hover:border-gold hover:text-gold transition-colors">Achievements</button>
       </nav>
 
       <!-- ===== TAB: Team Roster ===== -->
@@ -150,14 +151,25 @@
             <h2 class="font-display font-extrabold uppercase text-white text-2xl sm:text-3xl leading-tight tracking-tight">Team Members</h2>
             <p id="members-status" class="text-sm text-gray-400 mt-2"></p>
           </div>
-          <button id="add-member-btn" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-3 rounded-full transition-colors">
-            Add Member
-            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-          </button>
+          <div class="flex items-center gap-3">
+            <button id="delete-selected-btn" class="inline-flex items-center gap-2 border border-red-500/60 hover:border-red-400 hover:text-red-400 text-red-500 font-display font-semibold text-sm px-5 py-3 rounded-full transition-colors">
+              Delete Selected
+              <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+            <button id="bulk-upload-btn" class="inline-flex items-center gap-2 border border-white/25 hover:border-gold hover:text-gold text-white font-display font-semibold text-sm px-5 py-3 rounded-full transition-colors">
+              Bulk Upload
+              <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg>
+            </button>
+            <button id="add-member-btn" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-3 rounded-full transition-colors">
+              Add Member
+              <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
         </div>
         <div class="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent mb-8"></div>
-        <div id="members-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        <div id="members-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
         <p id="members-empty" class="hidden text-center text-gray-400 text-sm py-16">No team members yet. Click "Add Member" to add your first recruit.</p>
+        <div id="members-pagination" class="hidden mt-8"><div class="flex items-center justify-center gap-2 flex-wrap"></div></div>
       </div>
 
       <!-- ===== TAB: Hall of Fame ===== -->
@@ -174,8 +186,27 @@
           </button>
         </div>
         <div class="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent mb-8"></div>
-        <div id="alumni-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        <div id="alumni-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
         <p id="alumni-empty" class="hidden text-center text-gray-400 text-sm py-16">No alumni yet. Click "Add Alumni" to induct the first name.</p>
+        <div id="alumni-pagination" class="hidden mt-8"><div class="flex items-center justify-center gap-2 flex-wrap"></div></div>
+      </div>
+
+      <!-- ===== TAB: Achievements ===== -->
+      <div id="tab-achievements" class="hidden">
+        <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+          <div>
+            <p class="text-gold font-display font-semibold text-xs tracking-[0.2em] uppercase mb-2">Achievement Management</p>
+            <h2 class="font-display font-extrabold uppercase text-white text-2xl sm:text-3xl leading-tight tracking-tight">Victories &amp; Honours</h2>
+            <p id="achievements-status" class="text-sm text-gray-400 mt-2"></p>
+          </div>
+          <button id="add-achievement-btn" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-3 rounded-full transition-colors">
+            Add Achievement
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+        <div class="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent mb-8"></div>
+        <div id="achievements-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        <p id="achievements-empty" class="hidden text-center text-gray-400 text-sm py-16">No achievements yet. Click "Add Achievement" to record the first win.</p>
       </div>
     </main>
   </div>
@@ -195,28 +226,35 @@
           <input id="member-name" required maxlength="100" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" />
         </div>
         <div>
-          <label class="block text-xs text-gray-400 mb-1">Position / Title *</label>
-          <input id="member-position" required maxlength="120" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. Director - Marketing" />
-        </div>
-      </div>
-      <div class="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs text-gray-400 mb-1">Batch</label>
-          <input id="member-batch" maxlength="60" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. BBA Batch 12" />
-        </div>
-        <div>
           <label class="block text-xs text-gray-400 mb-1">Category *</label>
           <select id="member-category" required class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none"></select>
         </div>
       </div>
-      <div>
-        <label class="block text-xs text-gray-400 mb-1">Panel / department line</label>
-        <input id="member-department" maxlength="200" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. Marketing & Brand Strategy" />
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div id="member-post-field">
+          <label class="block text-xs text-gray-400 mb-1">Post *</label>
+          <select id="member-post" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none"></select>
+        </div>
+        <div id="member-department-field">
+          <label class="block text-xs text-gray-400 mb-1">Department</label>
+          <select id="member-department" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none"></select>
+        </div>
       </div>
+      <p id="member-title-preview" class="text-[11px] text-gray-500 -mt-1"></p>
       <div>
-        <label class="block text-xs text-gray-400 mb-1">LinkedIn URL (optional)</label>
-        <input id="member-linkedin" type="url" maxlength="300" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="https://www.linkedin.com/in/username" />
-        <p class="text-[11px] text-gray-500 mt-1">Shown as a LinkedIn button on the public team card.</p>
+        <label class="block text-xs text-gray-400 mb-1">Batch</label>
+        <input id="member-batch" maxlength="60" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. BBA Batch 12" />
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">LinkedIn URL (optional)</label>
+          <input id="member-linkedin" type="url" maxlength="300" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="https://www.linkedin.com/in/username" />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Facebook URL (optional)</label>
+          <input id="member-facebook" type="url" maxlength="300" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="https://www.facebook.com/username" />
+        </div>
+        <p class="sm:col-span-2 text-[11px] text-gray-500 -mt-2">Shown as social buttons on the public team card.</p>
       </div>
       <div class="grid sm:grid-cols-2 gap-4 items-start">
         <div>
@@ -250,6 +288,56 @@
   </div>
 </div>
 
+<!-- ============ BULK MEMBER UPLOAD MODAL ============ -->
+<div id="bulk-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-start sm:items-center justify-center px-4 py-8 overflow-y-auto">
+  <div class="w-full max-w-3xl bg-ink-secondary border border-white/10 border-t-2 border-t-gold rounded-2xl shadow-2xl p-6 sm:p-8 my-auto">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h3 class="font-display font-bold text-lg text-white">Bulk Upload Members</h3>
+        <p class="text-xs text-gray-400 mt-1">Import a spreadsheet (.xlsx, .xls or .csv) to add many members at once.</p>
+      </div>
+      <button id="bulk-modal-close" type="button" aria-label="Close" class="text-gray-400 hover:text-gold text-2xl leading-none transition-colors">&times;</button>
+    </div>
+
+    <div class="rounded-xl border border-white/10 bg-ink p-4 mb-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-xs text-gray-400 leading-relaxed max-w-md">
+          Required column: <span class="text-gold">name</span>. Optional:
+          <span class="text-gray-300">category, post, department, batch, linkedin_url, facebook_url, display_order, active, photo_url</span>.
+          The first row must be the header row.
+        </p>
+        <button id="bulk-template-btn" type="button" class="text-xs font-display font-semibold text-gold hover:underline shrink-0">Download XLSX template</button>
+      </div>
+    </div>
+
+    <label class="block text-xs text-gray-400 mb-1">Spreadsheet file</label>
+    <input id="bulk-file" type="file" accept=".csv,.xlsx,.xls,text/csv" class="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-gold/15 file:text-gold file:text-xs" />
+
+    <p id="bulk-summary" class="hidden text-sm text-gray-300 mt-5"></p>
+    <div id="bulk-preview-wrap" class="hidden mt-3 max-h-72 overflow-auto rounded-xl border border-white/10">
+      <table class="w-full text-left text-xs">
+        <thead class="bg-white/5 text-gray-400 sticky top-0">
+          <tr>
+            <th class="px-3 py-2 font-display font-semibold">Row</th>
+            <th class="px-3 py-2 font-display font-semibold">Name</th>
+            <th class="px-3 py-2 font-display font-semibold">Title</th>
+            <th class="px-3 py-2 font-display font-semibold">Category</th>
+            <th class="px-3 py-2 font-display font-semibold">Status</th>
+          </tr>
+        </thead>
+        <tbody id="bulk-preview-body" class="divide-y divide-white/5"></tbody>
+      </table>
+    </div>
+
+    <p id="bulk-error" class="hidden text-xs text-red-400 leading-relaxed mt-4"></p>
+
+    <div class="flex justify-end gap-3 pt-5 mt-5 border-t border-white/10">
+      <button type="button" id="bulk-cancel-btn" class="text-sm text-gray-400 hover:text-white px-4 py-2 transition-colors">Cancel</button>
+      <button type="button" id="bulk-import-btn" disabled class="bg-gold hover:bg-gold-dark disabled:opacity-40 disabled:hover:bg-gold text-ink font-display font-semibold text-sm px-6 py-2.5 rounded-full transition-colors">Import</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ ALUMNI EDITOR MODAL ============ -->
 <div id="alumni-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-start sm:items-center justify-center px-4 py-8 overflow-y-auto">
   <div class="w-full max-w-lg bg-ink-secondary border border-white/10 border-t-2 border-t-gold rounded-2xl shadow-2xl p-6 sm:p-8 my-auto">
@@ -264,10 +352,21 @@
           <input id="alumni-name" required maxlength="100" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" />
         </div>
         <div>
-          <label class="block text-xs text-gray-400 mb-1">Former position *</label>
-          <input id="alumni-title" required maxlength="120" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. Former President" />
+          <label class="block text-xs text-gray-400 mb-1">Panel *</label>
+          <select id="alumni-category" required class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none"></select>
         </div>
       </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div id="alumni-post-field">
+          <label class="block text-xs text-gray-400 mb-1">Post *</label>
+          <select id="alumni-post" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none"></select>
+        </div>
+        <div id="alumni-department-field">
+          <label class="block text-xs text-gray-400 mb-1">Department</label>
+          <select id="alumni-department" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none"></select>
+        </div>
+      </div>
+      <p id="alumni-title-preview" class="text-[11px] text-gray-500 -mt-1"></p>
       <div class="grid sm:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs text-gray-400 mb-1">Class year *</label>
@@ -284,9 +383,15 @@
         <label class="block text-xs text-gray-400 mb-1">Achievement / note (optional)</label>
         <input id="alumni-achievement" maxlength="200" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. Led BCC to its first national title" />
       </div>
-      <div>
-        <label class="block text-xs text-gray-400 mb-1">LinkedIn URL (optional)</label>
-        <input id="alumni-linkedin" type="url" maxlength="300" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="https://www.linkedin.com/in/username" />
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">LinkedIn URL (optional)</label>
+          <input id="alumni-linkedin" type="url" maxlength="300" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="https://www.linkedin.com/in/username" />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Facebook URL (optional)</label>
+          <input id="alumni-facebook" type="url" maxlength="300" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="https://www.facebook.com/username" />
+        </div>
       </div>
       <div>
         <label class="block text-xs text-gray-400 mb-1">Photo (optional)</label>
@@ -313,8 +418,83 @@
   </div>
 </div>
 
+<!-- ============ ACHIEVEMENT EDITOR MODAL ============ -->
+<div id="achievement-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-start sm:items-center justify-center px-4 py-8 overflow-y-auto">
+  <div class="w-full max-w-lg bg-ink-secondary border border-white/10 border-t-2 border-t-gold rounded-2xl shadow-2xl p-6 sm:p-8 my-auto">
+    <div class="flex items-center justify-between mb-6">
+      <h3 id="achievement-modal-title" class="font-display font-bold text-lg text-white">Add Achievement</h3>
+      <button id="achievement-modal-close" type="button" aria-label="Close" class="text-gray-400 hover:text-gold text-2xl leading-none transition-colors">&times;</button>
+    </div>
+    <form id="achievement-form" class="space-y-4">
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">Competition / award title *</label>
+        <input id="achievement-title" required maxlength="160" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. Battle of Minds 2025" />
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Organizer</label>
+          <input id="achievement-organizer" maxlength="120" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. BAT Bangladesh" />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Year *</label>
+          <input id="achievement-year" type="number" required min="1990" max="2100" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. 2025" />
+          <p class="text-[11px] text-gray-500 mt-1">Drives the year filter on the public page.</p>
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Placement / rank</label>
+          <input id="achievement-rank" maxlength="80" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. National Champion (1st)" />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Team name</label>
+          <input id="achievement-team" maxlength="120" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. BUP Apex Strategy" />
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">Team members</label>
+        <textarea id="achievement-members" rows="4" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="Samiul Alam - Lead Strategist&#10;Nusrat Chowdhury - Financial Analyst"></textarea>
+        <p class="text-[11px] text-gray-500 mt-1">One member per line, written as <span class="text-gray-400">Name - Role</span>. The role is optional.</p>
+      </div>
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">Description</label>
+        <textarea id="achievement-description" rows="3" maxlength="600" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="What the team did and why it won."></textarea>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4 items-start">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Cover image (optional)</label>
+          <input id="achievement-photo" type="file" accept="image/png,image/jpeg,image/webp" class="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-gold/15 file:text-gold file:text-xs" />
+          <p class="text-[11px] text-gray-500 mt-1">JPEG, PNG or WEBP, under 3MB. A placeholder is used if left blank.</p>
+          <label id="achievement-remove-photo-label" class="hidden items-center gap-2 text-[11px] text-gray-400 mt-2">
+            <input id="achievement-remove-photo" type="checkbox" class="rounded border-white/20 bg-ink" />
+            Remove current image
+          </label>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Display order</label>
+          <input id="achievement-order" type="number" value="99" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" />
+          <p class="text-[11px] text-gray-500 mt-1">Lower numbers appear first within a year.</p>
+        </div>
+      </div>
+      <label class="flex items-center gap-2 text-sm text-gray-300">
+        <input id="achievement-active" type="checkbox" checked class="rounded border-white/20 bg-ink" />
+        Visible on the public site
+      </label>
+      <p id="achievement-form-error" class="hidden text-xs text-red-400 leading-relaxed"></p>
+      <div class="flex items-center justify-between gap-3 pt-2 border-t border-white/10">
+        <button type="button" id="achievement-delete-btn" class="hidden text-xs text-red-400 hover:text-red-300 mt-4">Delete achievement</button>
+        <div class="flex gap-3 ml-auto mt-4">
+          <button type="button" id="achievement-cancel-btn" class="text-sm text-gray-400 hover:text-white px-4 py-2 transition-colors">Cancel</button>
+          <button type="submit" id="achievement-save-btn" class="bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-2.5 rounded-full transition-colors">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div id="toast" class="hidden fixed bottom-5 right-5 left-5 sm:left-auto bg-ink-secondary border border-gold/30 text-sm text-white px-4 py-3 rounded-xl shadow-2xl z-50 max-w-[340px] sm:ml-auto"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/admin.js"></script>
 <script>

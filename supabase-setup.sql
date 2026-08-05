@@ -12,38 +12,86 @@ create table if not exists public.team_members (
   name text not null check (char_length(name) between 1 and 100),
   title text not null check (char_length(title) between 1 and 120),
   batch text not null default '',
-  category text not null check (category in ('executive-panel', 'sub-executive-panel', 'executive-members', 'general-members')),
+  category text not null check (category in ('executive-panel', 'sub-executive-panel', 'executive-members', 'sub-executive-members', 'general-members')),
   department text not null default '',
   photo_url text,
   linkedin_url text,
+  facebook_url text,
   display_order integer not null default 99,
   active boolean not null default true,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
--- If your table predates the linkedin_url column, this brings it up to date.
+-- If your table predates the social columns, this brings it up to date.
 -- (create table ... if not exists above is a no-op on an existing table.)
 alter table public.team_members add column if not exists linkedin_url text;
+alter table public.team_members add column if not exists facebook_url text;
 
--- 1b. Category migration — the roster used to be split by department
--- ('board', 'marketing', 'corporate', 'events', 'hr') and is now split by
--- membership panel. On an existing table the CHECK constraint above is a
--- no-op, so drop it, remap the old rows, then put the new one back.
+-- 1b. Category constraint — the roster is split by membership panel. On an
+-- existing table the CHECK constraint above is a no-op, so drop it and put the
+-- current one back.
 -- ------------------------------------------------------------
 alter table public.team_members drop constraint if exists team_members_category_check;
 
-update public.team_members set category = case category
-  when 'board'     then 'executive-panel'
-  when 'marketing' then 'executive-members'
-  when 'corporate' then 'executive-members'
-  when 'events'    then 'executive-members'
-  when 'hr'        then 'executive-members'
-  else category
-end
-where category in ('board', 'marketing', 'corporate', 'events', 'hr');
-
 alter table public.team_members add constraint team_members_category_check
-  check (category in ('executive-panel', 'sub-executive-panel', 'executive-members', 'general-members'));
+  check (category in ('executive-panel', 'sub-executive-panel', 'executive-members', 'sub-executive-members', 'general-members'));
+
+-- 1c. Post / department migration — titles are now built from a fixed post
+-- list plus a fixed department list ("Post - Department"), so the free-text
+-- values the roster used to hold are remapped onto the closest new option.
+-- ------------------------------------------------------------
+
+-- Old department lines that were really panel labels, not departments.
+update public.team_members set department = ''
+where department in ('Executive Panel', 'Sub-Executive Panel', 'General Body');
+
+update public.team_members set department = case department
+  when 'Marketing & Brand Strategy' then 'Public Relations'
+  when 'Corporate Relations'        then 'External Affairs'
+  when 'Event Operations'           then 'Operations & Activations'
+  when 'Event Management'           then 'Operations & Activations'
+  when 'HR'                         then 'Human Resources'
+  when 'Human Resource'             then 'Human Resources'
+  when 'IT'                         then 'IT & Web Development'
+  when 'Web Development'            then 'IT & Web Development'
+  when 'Creative'                   then 'Creative & Visualization'
+  when 'Content'                    then 'Content & Publication'
+  when 'Logistics'                  then 'Logistics & Procurement'
+  else department
+end;
+
+-- Anything still outside the fourteen departments is cleared rather than left
+-- to render a value the admin dashboard can no longer select.
+update public.team_members set department = ''
+where department <> '' and department not in (
+  'Internal Affairs', 'External Affairs', 'Human Resources', 'Policy Management',
+  'IT & Web Development', 'Operations & Activations', 'Documentation',
+  'Creative & Visualization', 'Content & Publication', 'Logistics & Procurement',
+  'Academics', 'Public Relations', 'Partners', 'Membership'
+);
+
+-- Executive and general members hold no post and no department at all.
+update public.team_members
+set title = case category
+      when 'executive-members' then 'Executive Member'
+      else 'General Member'
+    end,
+    department = ''
+where category in ('executive-members', 'general-members');
+
+-- Panel rows: rebuild "Post - Department" from the remapped department, and
+-- retire old post names that are no longer offered.
+update public.team_members set title = case
+  when split_part(title, ' - ', 1) in (
+    'President', 'Senior Vice President', 'Vice President', 'General Secretary',
+    'Organizing Secretary', 'Treasurer', 'Joint Secretary',
+    'Junior Vice President', 'Head of Department',
+    'Assistant Head of Department', 'Deputy Head of Department'
+  ) then split_part(title, ' - ', 1)
+  when category = 'executive-panel' then 'Vice President'
+  else 'Head of Department'
+end || case when department = '' then '' else ' - ' || department end
+where category in ('executive-panel', 'sub-executive-panel');
 
 -- PostgREST caches the schema, so nudge it after any change above.
 notify pgrst, 'reload schema';
@@ -140,12 +188,12 @@ using (bucket_id = 'team-photos');
 -- ------------------------------------------------------------
 insert into public.team_members (name, title, batch, category, department, display_order)
 select * from (values
-  ('X', 'President', 'BBA Batch 10', 'executive-panel', 'Executive Panel', 1),
-  ('X', 'General Secretary', 'BBA Batch 10', 'executive-panel', 'Executive Panel', 2),
-  ('X', 'Vice President - Operations', 'BBA Batch 10', 'executive-panel', 'Executive Panel', 3),
-  ('X', 'Director - Marketing', 'BBA Batch 11', 'executive-members', 'Marketing & Brand Strategy', 4),
-  ('X', 'Director - Corporate Relations', 'BBA Batch 11', 'executive-members', 'Corporate Relations', 5),
-  ('X', 'Director - Event Management', 'BBA Batch 11', 'executive-members', 'Event Operations', 6)
+  ('X', 'President', 'BBA Batch 10', 'executive-panel', '', 1),
+  ('X', 'General Secretary', 'BBA Batch 10', 'executive-panel', 'Internal Affairs', 2),
+  ('X', 'Treasurer', 'BBA Batch 10', 'executive-panel', 'Operations & Activations', 3),
+  ('X', 'Head of Department - Creative & Visualization', 'BBA Batch 11', 'sub-executive-panel', 'Creative & Visualization', 4),
+  ('X', 'Executive Member', 'BBA Batch 11', 'executive-members', '', 5),
+  ('X', 'General Member', 'BBA Batch 12', 'general-members', '', 6)
 ) as seed(name, title, batch, category, department, display_order)
 where not exists (select 1 from public.team_members);
 -- the "where not exists" guard means this only seeds an EMPTY table, so
@@ -164,11 +212,15 @@ create table if not exists public.alumni (
   achievement text not null default '',
   photo_url text,
   linkedin_url text,
+  facebook_url text,
   display_order integer not null default 99,
   active boolean not null default true,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+-- Brings an alumni table created before the social columns up to date.
+alter table public.alumni add column if not exists linkedin_url text;
+alter table public.alumni add column if not exists facebook_url text;
 
 drop trigger if exists alumni_set_updated_at on public.alumni;
 create trigger alumni_set_updated_at
@@ -247,11 +299,11 @@ using (bucket_id = 'alumni-photos');
 -- ------------------------------------------------------------
 insert into public.alumni (name, title, class_year, achievement, display_order)
 select * from (values
-  ('X', 'Founding President', 2019, '', 1),
+  ('X', 'President', 2019, '', 1),
   ('X', 'General Secretary', 2020, '', 2),
-  ('X', 'Vice President - Operations', 2021, '', 3),
-  ('X', 'Director - Corporate Relations', 2022, '', 4),
-  ('X', 'Director - Marketing', 2023, '', 5)
+  ('X', 'Senior Vice President', 2021, '', 3),
+  ('X', 'Head of Department - Public Relations', 2022, '', 4),
+  ('X', 'Junior Vice President', 2023, '', 5)
 ) as seed(name, title, class_year, achievement, display_order)
 where not exists (select 1 from public.alumni);
 -- same "where not exists" guard as the roster: this only seeds an EMPTY table.
@@ -264,3 +316,118 @@ where not exists (select 1 from public.alumni);
 -- otherwise re-running this file will wipe them again.
 update public.team_members set name = 'X' where name <> 'X';
 update public.alumni set name = 'X', achievement = '' where name <> 'X' or achievement <> '';
+
+-- ============================================================
+-- 9. Achievements — competition victories and honours
+-- Its own table: an achievement belongs to a team rather than to one person,
+-- so the participating clubmates are stored as a JSON array of
+-- {"name": "...", "role": "..."} objects instead of as rows.
+-- ------------------------------------------------------------
+create table if not exists public.achievements (
+  id uuid primary key default gen_random_uuid(),
+  title text not null check (char_length(title) between 1 and 160),
+  organizer text not null default '',
+  year integer not null check (year between 1990 and 2100),
+  rank text not null default '',
+  team_name text not null default '',
+  members jsonb not null default '[]'::jsonb,
+  image_url text,
+  description text not null default '',
+  display_order integer not null default 99,
+  active boolean not null default true,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+drop trigger if exists achievements_set_updated_at on public.achievements;
+create trigger achievements_set_updated_at
+before update on public.achievements
+for each row execute function public.set_updated_at();
+
+notify pgrst, 'reload schema';
+
+-- Same rule as the roster and the Hall of Fame: anyone can read visible
+-- achievements, only a signed-in Executive can read hidden ones or write.
+alter table public.achievements enable row level security;
+
+drop policy if exists "Public can view active achievements" on public.achievements;
+create policy "Public can view active achievements"
+on public.achievements for select
+to anon
+using (active = true);
+
+drop policy if exists "Executives can view all achievements" on public.achievements;
+create policy "Executives can view all achievements"
+on public.achievements for select
+to authenticated
+using (true);
+
+drop policy if exists "Executives can add achievements" on public.achievements;
+create policy "Executives can add achievements"
+on public.achievements for insert
+to authenticated
+with check (true);
+
+drop policy if exists "Executives can edit achievements" on public.achievements;
+create policy "Executives can edit achievements"
+on public.achievements for update
+to authenticated
+using (true)
+with check (true);
+
+drop policy if exists "Executives can remove achievements" on public.achievements;
+create policy "Executives can remove achievements"
+on public.achievements for delete
+to authenticated
+using (true);
+
+-- 10. Storage bucket for achievement cover images
+-- ------------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('achievement-photos', 'achievement-photos', true)
+on conflict (id) do nothing;
+
+drop policy if exists "Anyone can view achievement photos" on storage.objects;
+create policy "Anyone can view achievement photos"
+on storage.objects for select
+to public
+using (bucket_id = 'achievement-photos');
+
+drop policy if exists "Executives can upload achievement photos" on storage.objects;
+create policy "Executives can upload achievement photos"
+on storage.objects for insert
+to authenticated
+with check (bucket_id = 'achievement-photos');
+
+drop policy if exists "Executives can replace achievement photos" on storage.objects;
+create policy "Executives can replace achievement photos"
+on storage.objects for update
+to authenticated
+using (bucket_id = 'achievement-photos')
+with check (bucket_id = 'achievement-photos');
+
+drop policy if exists "Executives can delete achievement photos" on storage.objects;
+create policy "Executives can delete achievement photos"
+on storage.objects for delete
+to authenticated
+using (bucket_id = 'achievement-photos');
+
+-- 11. Seed data — placeholder achievements, so the Achievements page isn't empty
+-- ------------------------------------------------------------
+insert into public.achievements (title, organizer, year, rank, team_name, members, description, display_order)
+select * from (values
+  ('National Business Case Competition', 'XYZ University', 2024, '1st Place', 'Team Alpha', '[{"name":"X","role":"Team Lead"},{"name":"X","role":"Analyst"}]'::jsonb, '', 1),
+  ('Inter-University Debate Championship', 'ABC Institute', 2023, '2nd Place', 'Team Beta', '[{"name":"X","role":"Speaker"},{"name":"X","role":"Speaker"}]'::jsonb, '', 2),
+  ('Marketing Hackathon', 'DEF Business School', 2023, 'Champion', 'Team Gamma', '[{"name":"X","role":"Strategist"},{"name":"X","role":"Creative Lead"}]'::jsonb, '', 3),
+  ('Entrepreneurship Summit Pitch', 'GHI Foundation', 2022, '3rd Place', 'Team Delta', '[{"name":"X","role":"Presenter"},{"name":"X","role":"Researcher"}]'::jsonb, '', 4),
+  ('Finance Olympiad', 'JKL Commerce Club', 2022, 'Runner-up', 'Team Epsilon', '[{"name":"X","role":"Captain"},{"name":"X","role":"Analyst"}]'::jsonb, '', 5)
+) as seed(title, organizer, year, rank, team_name, members, description, display_order)
+where not exists (select 1 from public.achievements);
+-- same "where not exists" guard: only seeds an EMPTY table.
+
+-- DELETE THIS STATEMENT once you start entering real achievements,
+-- otherwise re-running this file will wipe them again.
+update public.achievements
+set title = 'Achievement Title', organizer = 'Organizer', team_name = 'Team Name',
+    members = '[{"name":"X","role":"Role"}]'::jsonb, description = ''
+where true;

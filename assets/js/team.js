@@ -8,24 +8,13 @@ const CATEGORIES = [
   { id: 'executive-panel', label: 'Executive Panel' },
   { id: 'sub-executive-panel', label: 'Sub-Executive Panel' },
   { id: 'executive-members', label: 'Executive Members' },
+  { id: 'sub-executive-members', label: 'Sub-Executive Members' },
   { id: 'general-members', label: 'General Members' },
 ];
 // Kept as a static list here for simplicity — Supabase enforces the same set
 // at the database level (see the CHECK constraint in supabase-setup.sql). If
 // you add a category, update it in both places.
 
-// Stand-in roster shown when the table is empty (or unreachable) so the page
-// never renders bare. Replace these by adding real members in admin.html.
-const PLACEHOLDER_MEMBERS = [
-  { name: 'X', title: 'President', batch: 'BBA Batch 10', category: 'executive-panel', department: 'Executive Panel' },
-  { name: 'X', title: 'General Secretary', batch: 'BBA Batch 10', category: 'executive-panel', department: 'Executive Panel' },
-  { name: 'X', title: 'Vice President - Operations', batch: 'BBA Batch 10', category: 'executive-panel', department: 'Executive Panel' },
-  { name: 'X', title: 'Joint Secretary', batch: 'BBA Batch 11', category: 'sub-executive-panel', department: 'Sub-Executive Panel' },
-  { name: 'X', title: 'Assistant Director', batch: 'BBA Batch 11', category: 'sub-executive-panel', department: 'Sub-Executive Panel' },
-  { name: 'X', title: 'Director - Marketing', batch: 'BBA Batch 11', category: 'executive-members', department: 'Marketing & Brand Strategy' },
-  { name: 'X', title: 'Director - Corporate Relations', batch: 'BBA Batch 11', category: 'executive-members', department: 'Corporate Relations' },
-  { name: 'X', title: 'Member', batch: 'BBA Batch 12', category: 'general-members', department: 'General Body' },
-];
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -72,34 +61,77 @@ function categoryLabel(id) {
   return found ? found.label : id;
 }
 
-// Same gold-circle treatment as the footer social buttons on the homepage.
-function renderLinkedIn(member) {
-  if (!member.linkedin_url) return '';
+const SOCIAL_ICONS = {
+  linkedin:
+    '<svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M6.94 8.5H3.56V20.5H6.94V8.5z"/><path d="M5.25 3.5a2 2 0 100 4 2 2 0 000-4z"/><path d="M20.44 20.5h-3.37v-5.9c0-1.4-.03-3.2-1.96-3.2-1.96 0-2.26 1.53-2.26 3.1v6h-3.37V8.5h3.24v1.64h.04c.45-.86 1.55-1.76 3.19-1.76 3.42 0 4.49 2.25 4.49 5.17v6.95z"/></svg>',
+  facebook:
+    '<svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.5 2 12 2S2 6.5 2 12.06c0 5 3.66 9.17 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.89h2.78l-.45 2.91h-2.33v7.03C18.34 21.23 22 17.06 22 12.06z"/></svg>',
+};
+
+// Two sets of the same links: gold discs revealed over the photo on hover for
+// pointer devices, and a quiet inline row for touch screens where hover never
+// fires.
+function socialLinks(person, variant) {
+  const links = [
+    { key: 'facebook', url: person.facebook_url, label: 'Facebook' },
+    { key: 'linkedin', url: person.linkedin_url, label: 'LinkedIn' },
+  ].filter((l) => l.url);
+  if (!links.length) return '';
+
+  const overlay = variant === 'overlay';
+  const linkClass = overlay
+    ? 'w-9 h-9 rounded-full bg-gold text-ink flex items-center justify-center shadow-lg shadow-black/40 transition-transform duration-200 hover:scale-110 active:scale-95'
+    : 'w-8 h-8 rounded-full border border-white/15 text-gray-300 flex items-center justify-center transition-colors hover:text-ink hover:bg-gold hover:border-gold';
+
+  const items = links
+    .map(
+      (l) => `
+        <a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer"
+          aria-label="${escapeHtml(person.name)} on ${l.label}"
+          class="${linkClass}">${SOCIAL_ICONS[l.key]}</a>`
+    )
+    .join('');
+
+  if (!overlay) return `<div class="flex gap-1.5 pt-1 md:hidden">${items}</div>`;
+
   return `
-    <a href="${escapeHtml(member.linkedin_url)}" target="_blank" rel="noopener noreferrer"
-      aria-label="${escapeHtml(member.name)} on LinkedIn"
-      class="mt-3 sm:mt-4 inline-flex w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-white/20 items-center justify-center text-gray-300 hover:text-ink hover:bg-gold hover:border-gold transition-colors">
-      <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor"><path d="M6.94 8.5H3.56V20.5H6.94V8.5z"/><path d="M5.25 3.5a2 2 0 100 4 2 2 0 000-4z"/><path d="M20.44 20.5h-3.37v-5.9c0-1.4-.03-3.2-1.96-3.2-1.96 0-2.26 1.53-2.26 3.1v6h-3.37V8.5h3.24v1.64h.04c.45-.86 1.55-1.76 3.19-1.76 3.42 0 4.49 2.25 4.49 5.17v6.95z"/></svg>
-    </a>
+    <div class="absolute inset-0 hidden md:flex items-end justify-center pb-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-transparent"></div>
+      <div class="relative flex gap-2.5 translate-y-3 group-hover:translate-y-0 transition-transform duration-300 ease-out">${items}</div>
+    </div>
+  `;
+}
+
+// Portrait-led card: the photo carries the top of the card edge to edge and the
+// details sit on a plate beneath it, separated by a gold hairline.
+function renderPortrait(person) {
+  const inner = person.photo_url
+    ? `<img src="${escapeHtml(person.photo_url)}" alt="${escapeHtml(person.name)}" loading="lazy"
+        class="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.07]" />`
+    : `<div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-neutral-800 to-ink text-gold/70 font-display font-black text-3xl sm:text-4xl tracking-widest">${escapeHtml(initials(person.name))}</div>`;
+
+  return `
+    <div class="relative w-full aspect-[4/5] overflow-hidden bg-neutral-900">
+      ${inner}
+      <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent"></div>
+      ${socialLinks(person, 'overlay')}
+    </div>
   `;
 }
 
 function renderMemberCard(member) {
-  const avatar = member.photo_url
-    ? `<img src="${escapeHtml(member.photo_url)}" alt="${escapeHtml(member.name)}" loading="lazy" class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 mx-auto rounded-full object-cover border-2 border-gold" />`
-    : `<div class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 mx-auto rounded-full bg-neutral-800 border-2 border-gold/60 flex items-center justify-center text-gold font-display font-black text-base sm:text-xl">${escapeHtml(initials(member.name))}</div>`;
-
-  // Two across on a phone leaves roughly 160px per card — enough for the
-  // department line to stay visible, just at a tighter type size.
   return `
-    <div class="team-card group relative rounded-xl sm:rounded-2xl overflow-hidden bg-ink-secondary border border-white/10 shadow-lg p-4 pt-6 sm:p-6 sm:pt-8 text-center">
+    <div class="team-card group relative flex flex-col overflow-hidden rounded-xl sm:rounded-2xl bg-ink-secondary border border-white/10 shadow-lg">
       <div class="ribbon-corner"></div>
-      ${avatar}
-      <h3 class="font-display text-sm sm:text-base lg:text-lg font-bold text-white mt-3 sm:mt-4 leading-snug">${escapeHtml(member.name)}</h3>
-      <p class="text-gold font-display font-semibold text-xs sm:text-sm mt-1 leading-snug">${escapeHtml(member.title)}</p>
-      ${member.department ? `<p class="mt-2 text-[11px] sm:text-sm text-gray-400 leading-relaxed">${escapeHtml(member.department)}</p>` : ''}
-      ${member.batch ? `<span class="inline-block mt-3 sm:mt-4 text-[10px] sm:text-[11px] font-display font-semibold uppercase tracking-wider text-gold bg-gold/10 border border-gold/20 rounded-full px-2.5 sm:px-3 py-0.5 sm:py-1">${escapeHtml(member.batch)}</span>` : ''}
-      ${renderLinkedIn(member)}
+      ${renderPortrait(member)}
+      <div class="relative flex flex-col gap-1.5 flex-1 px-3.5 py-3.5 sm:px-5 sm:py-4">
+        <div class="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent"></div>
+        <h3 class="font-display text-sm sm:text-base font-bold text-white leading-snug">${escapeHtml(member.name)}</h3>
+        <p class="text-gold font-display font-semibold text-[10px] sm:text-[11px] uppercase tracking-[0.08em] leading-snug">${escapeHtml(member.title)}</p>
+        ${member.department ? `<p class="text-[11px] sm:text-xs text-gray-400 leading-relaxed">${escapeHtml(member.department)}</p>` : ''}
+        ${member.batch ? `<span class="self-start mt-1 text-[10px] font-display font-semibold uppercase tracking-wider text-gold bg-gold/10 border border-gold/20 rounded-full px-2.5 py-0.5">${escapeHtml(member.batch)}</span>` : ''}
+        ${socialLinks(member, 'inline')}
+      </div>
     </div>
   `;
 }
@@ -109,19 +141,17 @@ function renderSkeletons() {
   return Array.from({ length: 8 })
     .map(
       () => `
-    <div class="rounded-xl sm:rounded-2xl bg-ink-secondary border border-white/10 p-4 pt-6 sm:p-6 sm:pt-8 text-center">
-      <div class="skeleton w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 mx-auto rounded-full"></div>
-      <div class="skeleton h-3.5 sm:h-4 w-2/3 mx-auto mt-3 sm:mt-4 rounded"></div>
-      <div class="skeleton h-2.5 sm:h-3 w-1/2 mx-auto mt-2 rounded"></div>
-      <div class="skeleton h-5 sm:h-6 w-20 sm:w-24 mx-auto mt-3 sm:mt-4 rounded-full"></div>
+    <div class="rounded-xl sm:rounded-2xl overflow-hidden bg-ink-secondary border border-white/10">
+      <div class="skeleton w-full aspect-[4/5]"></div>
+      <div class="px-3.5 py-3.5 sm:px-5 sm:py-4">
+        <div class="skeleton h-3.5 sm:h-4 w-3/4 rounded"></div>
+        <div class="skeleton h-2.5 w-1/2 mt-2 rounded"></div>
+        <div class="skeleton h-5 w-20 mt-3 rounded-full"></div>
+      </div>
     </div>
   `
     )
     .join('');
-}
-
-function placeholdersFor(category) {
-  return category === 'all' ? PLACEHOLDER_MEMBERS : PLACEHOLDER_MEMBERS.filter((m) => m.category === category);
 }
 
 async function loadTeam() {
@@ -141,25 +171,30 @@ async function loadTeam() {
     const { data, error } = await query;
     if (error) throw error;
 
-    const members = data && data.length ? data : placeholdersFor(activeCategory);
-    if (members.length === 0) {
+    let sorted = data || [];
+    if (activeCategory === 'all' && sorted.length) {
+      const categoryOrder = CATEGORIES.map((c) => c.id);
+      sorted = [...sorted].sort((a, b) => {
+        const ai = categoryOrder.indexOf(a.category);
+        const bi = categoryOrder.indexOf(b.category);
+        if (ai !== bi) return ai - bi;
+        return (a.display_order ?? 0) - (b.display_order ?? 0);
+      });
+    }
+
+    if (!sorted.length) {
       grid.innerHTML = '';
       grid.classList.add('hidden');
       emptyEl.classList.remove('hidden');
       return;
     }
-    grid.innerHTML = members.map(renderMemberCard).join('');
+    grid.innerHTML = sorted.map(renderMemberCard).join('');
   } catch (err) {
     console.error('Failed to load team members:', err);
-    const members = placeholdersFor(activeCategory);
-    if (members.length === 0) {
-      grid.innerHTML = '';
-      grid.classList.add('hidden');
-      errorEl.textContent = 'Unable to load the team right now. Please check back shortly.';
-      errorEl.classList.remove('hidden');
-      return;
-    }
-    grid.innerHTML = members.map(renderMemberCard).join('');
+    grid.innerHTML = '';
+    grid.classList.add('hidden');
+    errorEl.textContent = 'Unable to load the team right now. Please check back shortly.';
+    errorEl.classList.remove('hidden');
   }
 }
 
