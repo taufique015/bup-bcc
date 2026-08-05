@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Our Team | BUP Business &amp; Communication Club</title>
-<meta name="description" content="Meet the Executive Panel and department leads behind BUP Business &amp; Communication Club." />
+<title>Achievements | BUP Business &amp; Communication Club</title>
+<meta name="description" content="Achievements and competition victories of BUP Business &amp; Communication Club members." />
 <link rel="icon" href="assets/bcc-icon.png" sizes="32x32"/>
 <link rel="icon" href="assets/bcc-icon.png" sizes="192x192"/>
 <link rel="apple-touch-icon" href="assets/bcc-icon.png"/>
 <meta name="msapplication-TileImage" content="assets/bcc-icon.png"/>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
@@ -35,10 +36,12 @@
 
 <style>
   html { scroll-behavior: smooth; }
-  section[id] { scroll-margin-top: 92px; }
-  .hero-slide {
-    transition: opacity 1.4s ease-in-out;
+  .dot-grid {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1.5px);
+    background-size: 26px 26px;
   }
+  .clip-diagonal-1 { clip-path: polygon(0 0, 58% 0, 42% 100%, 0 100%); }
+  .clip-diagonal-2 { clip-path: polygon(58% 0, 100% 0, 100% 100%, 42% 100%); }
   .ribbon-corner {
     position: absolute;
     top: 0;
@@ -52,25 +55,6 @@
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
 
-  .team-card { transition: transform .3s ease, border-color .25s ease; }
-  .team-card:hover { transform: translateY(-6px); border-color: rgba(242,185,13,0.5); }
-  /* Two cards per row on phones, so the gold corner is scaled down to suit. */
-  @media (max-width: 639px) {
-    .team-card .ribbon-corner {
-      border-top-width: 22px;
-      border-right-width: 22px;
-    }
-  }
-
-  .skeleton {
-    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 37%, rgba(255,255,255,0.04) 63%);
-    background-size: 400% 100%;
-    animation: skeleton-loading 1.4s ease infinite;
-  }
-  @keyframes skeleton-loading { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
-
-  /* Smooth cross-document navigation — index.html carries this same rule so the
-     transition fires when you link between the two pages. */
   @view-transition {
     navigation: auto;
   }
@@ -88,11 +72,24 @@
     animation: fade-in-page 0.5s ease both;
   }
 
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0B0B0D;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #17171B;
+    border: 1px solid #C99A00;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #F2B90D;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .hero-slide { transition: none; }
-    .team-card { transition: none; }
-    .skeleton { animation: none; }
     body { animation: none; }
     ::view-transition-old(root),
     ::view-transition-new(root) {
@@ -104,21 +101,36 @@
     outline: 2px solid #F2B90D;
     outline-offset: 3px;
   }
+
+  /* Native Dialog Styling & Backdrop Blur */
+  dialog::backdrop {
+    background: rgba(11, 11, 13, 0.85);
+    backdrop-filter: blur(8px);
+  }
+  dialog[open] {
+    animation: dialog-appear 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes dialog-appear {
+    from { opacity: 0; transform: scale(0.96) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
 </style>
 </head>
-<body class="bg-ink font-sans text-white antialiased">
+<body class="bg-ink font-sans text-paper antialiased min-h-screen flex flex-col justify-between selection:bg-gold selection:text-ink">
+
+<!-- Floating Glassmorphism Bottom Navbar (Matching Index Page) -->
 <header id="navbar" class="fixed bottom-0 inset-x-0 z-50 px-3 sm:px-6 pb-3 sm:pb-5">
-  <div
-    id="glass-card"
+  <div 
+    id="glass-card" 
     class="relative max-w-7xl mx-auto rounded-2xl bg-neutral-700/40 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden transition-colors duration-500"
   >
-    <div
-      id="glass-glow"
+    <div 
+      id="glass-glow" 
       class="pointer-events-none absolute inset-0 rounded-2xl border border-gold/20 opacity-0 transition-opacity duration-300 z-0"
       style="background: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(251, 191, 36, 0.25), rgba(217, 119, 6, 0.08) 40%, transparent 80%);"
     ></div>
 
-    <div
+    <div 
       class="pointer-events-none absolute inset-0 rounded-2xl border border-white/20 opacity-0 transition-opacity duration-300 z-0"
       id="glass-border-glow"
       style="mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"
@@ -128,9 +140,9 @@
       <a href="index.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Home</a>
       <a href="about-us.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">About Us</a>
       <a href="events.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Events</a>
-      <a href="team.html" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">Team</a>
+      <a href="team.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
       <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
-      <a href="achievements.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Achievements</a>
+      <a href="achievements.html" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">Achievements</a>
       <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
     </div>
 
@@ -147,20 +159,20 @@
         <a href="index.html" class="hover:text-gold transition-colors py-1">Home</a>
         <a href="about-us.html" class="hover:text-gold transition-colors py-1">About Us</a>
         <a href="events.html" class="hover:text-gold transition-colors py-1">Events</a>
-        <a href="team.html" class="hover:text-gold text-white transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gold after:rounded-full">Team</a>
+        <a href="team.html" class="hover:text-gold transition-colors py-1">Team</a>
         <a href="hall-of-fame.html" class="hover:text-gold transition-colors py-1">Hall of Fame</a>
-        <a href="achievements.html" class="hover:text-gold transition-colors py-1">Achievements</a>
+        <a href="achievements.html" class="hover:text-gold text-white transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gold after:rounded-full">Achievements</a>
         <a href="bizfeed.html" class="hover:text-gold transition-colors py-1">BizFeed</a>
       </nav>
 
       <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-        <a href="join-us.html" class="inline-flex items-center bg-gold hover:bg-gold text-slate-950 font-display font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full transition-all duration-300 shadow-md hover:shadow-gold/20 hover:scale-105">
+        <a href="join-us.html" class="inline-flex items-center bg-gold hover:bg-gold-dark text-slate-950 font-display font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full transition-all duration-300 shadow-md hover:shadow-gold/20 hover:scale-105">
           Join Us
         </a>
 
-        <button
+        <button 
           id="menu-toggle"
-          type="button"
+          type="button" 
           aria-label="Toggle Navigation Menu"
           class="md:hidden p-2 text-gray-300 hover:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
         >
@@ -178,100 +190,96 @@
   </div>
 </header>
 
-<main>
-  <section id="home" class="relative overflow-hidden pt-10 sm:pt-14">
-    <div id="hero-slideshow" class="absolute inset-0">
-      <img
-        src="assets/corporiddlerz-2025.jpg"
-        alt="BUP BCC members at the Corporiddlerz 2025 national business strategy competition"
+<!-- Main Page Container -->
+<main class="pb-24 sm:pb-32 flex-1 w-full">
+  
+  <!-- Hero Section with Background Image (assets/corporiddlerz-2025.jpg) -->
+  <section id="hero" class="relative overflow-hidden pt-12 sm:pt-16 pb-16 sm:pb-24 mb-10">
+    <div class="absolute inset-0 z-0">
+      <img 
+        src="assets/corporiddlerz-2025.jpg" 
+        alt="BUP BCC Achievements Background" 
         fetchpriority="high"
-        class="hero-slide absolute inset-0 w-full h-full object-cover"
+        class="w-full h-full object-cover"
       />
-      <img
-        src="assets/unilever-learn-to-lead-2025.jpg"
-        alt="BUP BCC members with Unilever representatives at the Learn to Lead 2025 program"
-        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
-      />
-      <img
-        src="assets/gateway-ori.jpeg"
-        alt="BCC Gateway 2026"
-        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
-      />
-      <img
-        src="assets/creadive-idlc-2.jpg"
-        alt="CreADive 2023 participants at the IDLC Finance &amp; Marketing Challenge"
-        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
-      />
-      <img
-        src="assets/bizcomps-to-mnc.jpg"
-        alt="BizComps to MNCs 2023"
-        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
-      />
+      <div class="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/65 to-ink"></div>
     </div>
-    <div class="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/30 to-ink/75"></div>
 
-    <div class="max-w-4xl mx-auto px-5 sm:px-8 text-center relative min-h-[440px] sm:min-h-[540px] lg:min-h-[720px] flex flex-col items-center justify-center">
-      <h1 class="font-display font-extrabold uppercase text-white leading-[1.05] tracking-tight text-[2.75rem] sm:text-6xl md:text-7xl">
-        Our Team
+    <div class="max-w-4xl mx-auto px-5 sm:px-8 text-center relative z-10">
+      <span class="inline-flex items-center gap-2 border border-white/15 bg-white/5 backdrop-blur-md rounded-full px-4 py-1.5 text-xs sm:text-sm text-gray-300 mb-5">
+        <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+        Hall of Achievements &amp; Victories
+      </span>
+
+      <h1 class="font-display font-extrabold uppercase text-white leading-[1.08] tracking-tight text-3xl sm:text-5xl md:text-6xl">
+        Allow Yourself<span class="text-gold"><br/>to Celebrate Excellence</span>
       </h1>
-      <div class="mx-auto mt-5 h-0.5 w-40 sm:w-56 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
-      <p class="mt-6 text-white text-base sm:text-lg">Meet the talented individuals who drive our club forward</p>
-    </div>
-  </section>
-
-  <section class="bg-ink-secondary py-14 sm:py-16">
-    <div class="max-w-6xl mx-auto px-5 sm:px-8 grid grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-6 text-center">
-      <div>
-        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="180">0+</p>
-        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Active Members</p>
-      </div>
-      <div>
-        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="5">0+</p>
-        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Departments</p>
-      </div>
-      <div>
-        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="50">0+</p>
-        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Events Organized</p>
-      </div>
-      <div>
-        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="15">0+</p>
-        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Years of Excellence</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="panel" class="bg-ink py-16 sm:py-20">
-    <div class="max-w-6xl mx-auto px-5 sm:px-8">
-      <p class="text-gold font-display font-bold text-3xl sm:text-5xl tracking-[0.2em] uppercase mb-3 text-center">The Panel</p>
-      <p class="text-center text-gray-400 text-sm sm:text-base max-w-xl mx-auto mb-10">
-        Filter by panel to see who leads what across the club.
+      <p class="mt-4 text-gray-300 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+        Highlighting competition victories, national case challenges, and marketing honors achieved by fellow BUP BCC members.
       </p>
-
-      <div id="team-filters" class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10 sm:mb-12"></div>
-
-      <div id="team-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5 lg:gap-6"></div>
-
-      <p id="team-empty" class="hidden text-center text-gray-400 text-sm py-16">No team members to show yet — check back soon.</p>
-      <p id="team-error" class="hidden text-center text-gray-400 text-sm py-16 max-w-md mx-auto leading-relaxed"></p>
     </div>
   </section>
 
-  <section class="bg-paper py-20 sm:py-24">
-    <div class="max-w-2xl mx-auto px-5 sm:px-8 text-center">
-      <p class="text-gold font-display font-semibold text-sm tracking-[0.2em] uppercase mb-3">Join The Team</p>
-      <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">WANT YOUR NAME HERE?</h2>
-      <p class="mt-5 text-gray-600 leading-relaxed">
-        Recruitment opens every academic year across every panel. Bring the drive, we will bring the platform.
-      </p>
-      <a href="join-us.html" class="mt-7 inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">
-        Join BUP BCC
-        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
-      </a>
+  <!-- Filter & Search Controls Bar -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+    <div class="bg-ink-secondary p-4 sm:p-5 rounded-2xl border border-white/10 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+      
+      <!-- Search Input -->
+      <div class="relative w-full sm:w-80">
+        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="Search by competition, team, or member..." 
+          class="w-full pl-10 pr-4 py-2 bg-ink text-white placeholder-gray-500 text-sm rounded-xl border border-white/10 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all"
+        />
+      </div>
+
+      <!-- Year Filter Dropdown -->
+      <div class="flex items-center gap-3 w-full sm:w-auto">
+        <label for="year-filter" class="text-xs font-display font-semibold uppercase tracking-wider text-gold shrink-0">Year:</label>
+        <select 
+          id="year-filter" 
+          class="w-full sm:w-40 py-2 px-3 bg-ink text-white text-sm rounded-xl border border-white/10 focus:outline-none focus:border-gold cursor-pointer transition-all"
+        >
+          <option value="all">All Years</option>
+          <option value="2026">2026</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+        </select>
+      </div>
+
     </div>
   </section>
+
+  <!-- 4-Column Horizontal Achievements Grid -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div id="achievements-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[480px]">
+      <!-- Rendered dynamically via app.js -->
+    </div>
+  </section>
+
+  <!-- Empty State -->
+  <div id="empty-state" class="hidden max-w-7xl mx-auto px-4 text-center py-16 bg-ink-secondary/50 rounded-2xl border border-dashed border-white/20 my-8">
+    <div class="w-16 h-16 rounded-full bg-gold/10 text-gold flex items-center justify-center mx-auto mb-4">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    </div>
+    <h3 class="font-display font-bold text-lg text-white mb-1">No Achievements Found</h3>
+    <p class="text-sm text-gray-400 max-w-sm mx-auto">Try adjusting your search terms or year filter.</p>
+  </div>
+
+  <!-- Pagination Controls (8 Cards Per Page) -->
+  <section id="pagination-container" class="max-w-7xl mx-auto px-4">
+    <!-- Pagination controls rendered dynamically via app.js -->
+  </section>
+
 </main>
 
-<footer class="bg-ink pt-16 pb-28 sm:pb-32">
+<!-- Footer (Exact Match with Index Page) -->
+<footer class="bg-ink pt-16 pb-28 sm:pb-32 border-t border-white/10">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 grid md:grid-cols-2 gap-12">
 
     <div>
@@ -317,53 +325,27 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/team.js"></script>
+<!-- Detail Modal -->
+<dialog id="detail-modal" class="bg-ink-secondary text-paper p-0 rounded-2xl border border-white/10 max-w-2xl w-full shadow-2xl backdrop:bg-ink/80">
+  <div class="p-6 relative">
+    <button 
+      onclick="closeDialog('detail-modal')"
+      class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-ink/80 text-gray-300 hover:text-white hover:bg-ink flex items-center justify-center transition-all border border-white/10"
+    >
+      &times;
+    </button>
+    <div id="detail-modal-body">
+      <!-- Content dynamically injected via app.js -->
+    </div>
+  </div>
+</dialog>
+
+<!-- Scripts loaded from assets/js/ -->
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+
 <script>
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function animateCount(el) {
-    const target = parseInt(el.dataset.target, 10);
-    if (prefersReducedMotion || Number.isNaN(target)) {
-      el.textContent = target + '+';
-      return;
-    }
-    const duration = 1400;
-    const start = performance.now();
-    function tick(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.floor(eased * target) + '+';
-      if (progress < 1) requestAnimationFrame(tick);
-      else el.textContent = target + '+';
-    }
-    requestAnimationFrame(tick);
-  }
-
-  const statObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        animateCount(entry.target);
-        statObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.4 });
-
-  // Hero background slideshow — crossfades through event photos, one at a time
-  (function () {
-    const slides = document.querySelectorAll('#hero-slideshow .hero-slide');
-    if (slides.length < 2 || prefersReducedMotion) return;
-
-    let current = 0;
-    setInterval(() => {
-      const next = (current + 1) % slides.length;
-      slides[current].classList.add('opacity-0');
-      slides[next].classList.remove('opacity-0');
-      current = next;
-    }, 2000);
-  })();
-
+  // Mousemove glow effect for floating navbar (Matching Index Page)
   const glassCard = document.getElementById('glass-card');
   const glassGlow = document.getElementById('glass-glow');
   const glassBorderGlow = document.getElementById('glass-border-glow');
@@ -376,17 +358,18 @@
 
       glassCard.style.setProperty('--mouse-x', `${x}px`);
       glassCard.style.setProperty('--mouse-y', `${y}px`);
-
-      glassGlow.style.opacity = '1';
-      glassBorderGlow.style.opacity = '1';
+      
+      if (glassGlow) glassGlow.style.opacity = '1';
+      if (glassBorderGlow) glassBorderGlow.style.opacity = '1';
     });
 
     glassCard.addEventListener('mouseleave', () => {
-      glassGlow.style.opacity = '0';
-      glassBorderGlow.style.opacity = '0';
+      if (glassGlow) glassGlow.style.opacity = '0';
+      if (glassBorderGlow) glassBorderGlow.style.opacity = '0';
     });
   }
 
+  // Mobile Menu Toggle (Matching Index Page)
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
   const iconOpen = document.getElementById('menu-icon-open');
@@ -396,22 +379,22 @@
     menuToggle.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
       const isOpen = !mobileMenu.classList.contains('hidden');
-      iconOpen.classList.toggle('hidden', isOpen);
-      iconClose.classList.toggle('hidden', !isOpen);
+      if (iconOpen) iconOpen.classList.toggle('hidden', isOpen);
+      if (iconClose) iconClose.classList.toggle('hidden', !isOpen);
     });
 
-    // Close the mobile menu after tapping any link inside it
     mobileMenu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
         mobileMenu.classList.add('hidden');
-        iconOpen.classList.remove('hidden');
-        iconClose.classList.add('hidden');
+        if (iconOpen) iconOpen.classList.remove('hidden');
+        if (iconClose) iconClose.classList.add('hidden');
       });
     });
   }
 
-  document.querySelectorAll('.stat-number').forEach((el) => statObserver.observe(el));
-  document.getElementById('year').textContent = new Date().getFullYear();
+  // Set Copyright Year
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 </script>
 </body>
 </html>

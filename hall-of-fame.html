@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Our Team | BUP Business &amp; Communication Club</title>
-<meta name="description" content="Meet the Executive Panel and department leads behind BUP Business &amp; Communication Club." />
+<title>Hall of Fame | BUP Business &amp; Communication Club</title>
+<meta name="description" content="Celebrating the distinguished alumni and outstanding achievements of BUP Business &amp; Communication Club." />
 <link rel="icon" href="assets/bcc-icon.png" sizes="32x32"/>
 <link rel="icon" href="assets/bcc-icon.png" sizes="192x192"/>
 <link rel="apple-touch-icon" href="assets/bcc-icon.png"/>
@@ -52,11 +52,10 @@
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
 
-  .team-card { transition: transform .3s ease, border-color .25s ease; }
-  .team-card:hover { transform: translateY(-6px); border-color: rgba(242,185,13,0.5); }
-  /* Two cards per row on phones, so the gold corner is scaled down to suit. */
+  .alumni-card { transition: transform .3s ease, border-color .25s ease; }
+  .alumni-card:hover { transform: translateY(-6px); border-color: rgba(242,185,13,0.5); }
   @media (max-width: 639px) {
-    .team-card .ribbon-corner {
+    .alumni-card .ribbon-corner {
       border-top-width: 22px;
       border-right-width: 22px;
     }
@@ -69,8 +68,6 @@
   }
   @keyframes skeleton-loading { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
 
-  /* Smooth cross-document navigation — index.html carries this same rule so the
-     transition fires when you link between the two pages. */
   @view-transition {
     navigation: auto;
   }
@@ -91,7 +88,7 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .hero-slide { transition: none; }
-    .team-card { transition: none; }
+    .alumni-card { transition: none; }
     .skeleton { animation: none; }
     body { animation: none; }
     ::view-transition-old(root),
@@ -107,6 +104,7 @@
 </style>
 </head>
 <body class="bg-ink font-sans text-white antialiased">
+
 <header id="navbar" class="fixed bottom-0 inset-x-0 z-50 px-3 sm:px-6 pb-3 sm:pb-5">
   <div
     id="glass-card"
@@ -128,8 +126,8 @@
       <a href="index.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Home</a>
       <a href="about-us.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">About Us</a>
       <a href="events.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Events</a>
-      <a href="team.html" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">Team</a>
-      <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
+      <a href="team.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
+      <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">Hall of Fame</a>
       <a href="achievements.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Achievements</a>
       <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
     </div>
@@ -147,8 +145,8 @@
         <a href="index.html" class="hover:text-gold transition-colors py-1">Home</a>
         <a href="about-us.html" class="hover:text-gold transition-colors py-1">About Us</a>
         <a href="events.html" class="hover:text-gold transition-colors py-1">Events</a>
-        <a href="team.html" class="hover:text-gold text-white transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gold after:rounded-full">Team</a>
-        <a href="hall-of-fame.html" class="hover:text-gold transition-colors py-1">Hall of Fame</a>
+        <a href="team.html" class="hover:text-gold transition-colors py-1">Team</a>
+        <a href="hall-of-fame.html" class="hover:text-gold text-white transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gold after:rounded-full">Hall of Fame</a>
         <a href="achievements.html" class="hover:text-gold transition-colors py-1">Achievements</a>
         <a href="bizfeed.html" class="hover:text-gold transition-colors py-1">BizFeed</a>
       </nav>
@@ -179,6 +177,8 @@
 </header>
 
 <main>
+
+  <!-- HERO WITH SLIDESHOW -->
   <section id="home" class="relative overflow-hidden pt-10 sm:pt-14">
     <div id="hero-slideshow" class="absolute inset-0">
       <img
@@ -212,63 +212,67 @@
 
     <div class="max-w-4xl mx-auto px-5 sm:px-8 text-center relative min-h-[440px] sm:min-h-[540px] lg:min-h-[720px] flex flex-col items-center justify-center">
       <h1 class="font-display font-extrabold uppercase text-white leading-[1.05] tracking-tight text-[2.75rem] sm:text-6xl md:text-7xl">
-        Our Team
+        Hall of Fame
       </h1>
       <div class="mx-auto mt-5 h-0.5 w-40 sm:w-56 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
-      <p class="mt-6 text-white text-base sm:text-lg">Meet the talented individuals who drive our club forward</p>
+      <p class="mt-6 text-white text-base sm:text-lg">Celebrating Excellence &amp; Outstanding Achievements</p>
     </div>
   </section>
 
-  <section class="bg-ink-secondary py-14 sm:py-16">
-    <div class="max-w-6xl mx-auto px-5 sm:px-8 grid grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-6 text-center">
-      <div>
-        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="180">0+</p>
-        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Active Members</p>
-      </div>
-      <div>
-        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="5">0+</p>
-        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Departments</p>
-      </div>
-      <div>
-        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="50">0+</p>
-        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Events Organized</p>
-      </div>
-      <div>
-        <p class="stat-number font-display text-4xl sm:text-5xl font-extrabold text-gold" data-target="15">0+</p>
-        <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-gray-400">Years of Excellence</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="panel" class="bg-ink py-16 sm:py-20">
+  <!-- DISTINGUISHED ALUMNI -->
+  <section id="alumni" class="bg-ink py-16 sm:py-20">
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
-      <p class="text-gold font-display font-bold text-3xl sm:text-5xl tracking-[0.2em] uppercase mb-3 text-center">The Panel</p>
+      <p class="text-gold font-display font-bold text-3xl sm:text-5xl tracking-[0.2em] uppercase mb-3 text-center">Distinguished Alumni</p>
       <p class="text-center text-gray-400 text-sm sm:text-base max-w-xl mx-auto mb-10">
-        Filter by panel to see who leads what across the club.
+        The alumni who shaped BCC into what it is today.
       </p>
 
-      <div id="team-filters" class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10 sm:mb-12"></div>
+      <div id="year-filters" class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10 sm:mb-12"></div>
 
-      <div id="team-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5 lg:gap-6"></div>
+      <div id="alumni-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5 lg:gap-6"></div>
 
-      <p id="team-empty" class="hidden text-center text-gray-400 text-sm py-16">No team members to show yet — check back soon.</p>
-      <p id="team-error" class="hidden text-center text-gray-400 text-sm py-16 max-w-md mx-auto leading-relaxed"></p>
+      <p id="alumni-empty-state" class="hidden text-center text-gray-400 text-sm py-16">No alumni recognized in this year yet.</p>
+      <p id="alumni-error" class="hidden text-center text-gray-400 text-sm py-16 max-w-md mx-auto leading-relaxed"></p>
     </div>
   </section>
 
+  <!-- CHAMPIONS THROUGH THE YEARS — CENTERED -->
+  <section class="bg-ink-secondary py-16 sm:py-20">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 flex justify-center">
+      <div class="w-full sm:w-1/2 relative rounded-2xl overflow-hidden bg-ink border border-gold/20 p-8 sm:p-10 flex flex-col items-center text-center justify-center">
+        <svg viewBox="0 0 24 24" class="w-9 h-9 text-gold mb-4" style="filter: drop-shadow(0 0 10px rgba(242,185,13,0.6));" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 4h10v4a5 5 0 01-10 0V4z"/>
+          <path d="M7 5H4.5A1.5 1.5 0 004 6.5 3 3 0 007 9.5"/>
+          <path d="M17 5h2.5A1.5 1.5 0 0121 6.5 3 3 0 0117 9.5"/>
+          <path d="M12 13v3.5"/>
+          <path d="M8.5 20h7"/>
+          <path d="M9.5 16.5h5v1a2 2 0 01-2 2h-1a2 2 0 01-2-2v-1z"/>
+        </svg>
+        <h3 class="font-display text-xl sm:text-2xl font-bold text-white">Champions Through the Years</h3>
+        <p class="mt-2 text-sm text-gray-400">Competition Champions</p>
+        <a href="#" class="mt-5 inline-flex items-center gap-2 border border-white/25 hover:border-gold hover:text-gold text-white font-display font-semibold text-sm px-5 py-2.5 rounded-full transition-colors">
+          View All Champions
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOIN CTA -->
   <section class="bg-paper py-20 sm:py-24">
     <div class="max-w-2xl mx-auto px-5 sm:px-8 text-center">
-      <p class="text-gold font-display font-semibold text-sm tracking-[0.2em] uppercase mb-3">Join The Team</p>
-      <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">WANT YOUR NAME HERE?</h2>
+      <p class="text-gold font-display font-semibold text-sm tracking-[0.2em] uppercase mb-3">Nominate</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">KNOW SOMEONE WORTHY?</h2>
       <p class="mt-5 text-gray-600 leading-relaxed">
-        Recruitment opens every academic year across every panel. Bring the drive, we will bring the platform.
+        Nominate a BUP BCC alumni for the Hall of Fame. Recognition opens every academic year.
       </p>
-      <a href="join-us.html" class="mt-7 inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">
-        Join BUP BCC
+      <a href="mailto:bupbcc@gmail.com?subject=Hall%20of%20Fame%20Nomination" class="mt-7 inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">
+        Nominate Now
         <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
       </a>
     </div>
   </section>
+
 </main>
 
 <footer class="bg-ink pt-16 pb-28 sm:pb-32">
@@ -319,38 +323,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/team.js"></script>
+<script src="assets/js/hall-of-fame.js"></script>
 <script>
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function animateCount(el) {
-    const target = parseInt(el.dataset.target, 10);
-    if (prefersReducedMotion || Number.isNaN(target)) {
-      el.textContent = target + '+';
-      return;
-    }
-    const duration = 1400;
-    const start = performance.now();
-    function tick(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.floor(eased * target) + '+';
-      if (progress < 1) requestAnimationFrame(tick);
-      else el.textContent = target + '+';
-    }
-    requestAnimationFrame(tick);
-  }
-
-  const statObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        animateCount(entry.target);
-        statObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.4 });
-
-  // Hero background slideshow — crossfades through event photos, one at a time
+  // Hero background slideshow
   (function () {
     const slides = document.querySelectorAll('#hero-slideshow .hero-slide');
     if (slides.length < 2 || prefersReducedMotion) return;
@@ -364,6 +341,7 @@
     }, 2000);
   })();
 
+  // Navbar glass glow
   const glassCard = document.getElementById('glass-card');
   const glassGlow = document.getElementById('glass-glow');
   const glassBorderGlow = document.getElementById('glass-border-glow');
@@ -387,6 +365,7 @@
     });
   }
 
+  // Mobile menu toggle
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
   const iconOpen = document.getElementById('menu-icon-open');
@@ -400,7 +379,6 @@
       iconClose.classList.toggle('hidden', !isOpen);
     });
 
-    // Close the mobile menu after tapping any link inside it
     mobileMenu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
         mobileMenu.classList.add('hidden');
@@ -410,7 +388,6 @@
     });
   }
 
-  document.querySelectorAll('.stat-number').forEach((el) => statObserver.observe(el));
   document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 </body>

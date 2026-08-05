@@ -123,12 +123,12 @@
           <a href="index.html" class="flex items-center gap-2.5 shrink-0 group">
             <img src="assets/bcc-logo.png" class="w-8 sm:w-9 h-auto transition-transform duration-300 group-hover:scale-105" alt="BUP BCC logo" />
             <span class="min-w-0">
-              <span class="block font-display font-semibold text-white text-sm sm:text-base leading-tight">Team Roster</span>
+              <span class="block font-display font-semibold text-white text-sm sm:text-base leading-tight">Executive Dashboard</span>
               <span id="welcome-text" class="block text-[11px] text-gray-400 leading-tight truncate"></span>
             </span>
           </a>
           <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-            <a href="team.html" class="hidden sm:inline text-xs text-gray-300 hover:text-gold transition-colors py-1">View public page</a>
+            <a id="view-public-link" href="team.html" class="hidden sm:inline text-xs text-gray-300 hover:text-gold transition-colors py-1">View public page</a>
             <button id="logout-btn" class="text-xs border border-white/25 hover:border-gold hover:text-gold text-white font-display font-semibold px-4 py-2 rounded-full transition-colors">Log Out</button>
           </div>
         </div>
@@ -136,22 +136,47 @@
     </header>
 
     <main class="max-w-6xl mx-auto px-5 sm:px-8 py-10 sm:py-12">
-      <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
-        <div>
-          <p class="text-gold font-display font-semibold text-xs tracking-[0.2em] uppercase mb-2">Roster Management</p>
-          <h2 class="font-display font-extrabold uppercase text-white text-2xl sm:text-3xl leading-tight tracking-tight">Team Members</h2>
-          <p id="members-status" class="text-sm text-gray-400 mt-2"></p>
+      <!-- Tab switcher -->
+      <nav class="flex items-center gap-2 mb-8">
+        <button id="tab-roster-btn" class="text-xs sm:text-sm font-display font-semibold px-4 py-2 rounded-full border border-gold bg-gold text-ink transition-colors">Team Roster</button>
+        <button id="tab-hof-btn" class="text-xs sm:text-sm font-display font-semibold px-4 py-2 rounded-full border border-white/20 text-gray-300 hover:border-gold hover:text-gold transition-colors">Hall of Fame</button>
+      </nav>
+
+      <!-- ===== TAB: Team Roster ===== -->
+      <div id="tab-roster">
+        <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+          <div>
+            <p class="text-gold font-display font-semibold text-xs tracking-[0.2em] uppercase mb-2">Roster Management</p>
+            <h2 class="font-display font-extrabold uppercase text-white text-2xl sm:text-3xl leading-tight tracking-tight">Team Members</h2>
+            <p id="members-status" class="text-sm text-gray-400 mt-2"></p>
+          </div>
+          <button id="add-member-btn" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-3 rounded-full transition-colors">
+            Add Member
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
         </div>
-        <button id="add-member-btn" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-3 rounded-full transition-colors">
-          Add Member
-          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
+        <div class="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent mb-8"></div>
+        <div id="members-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        <p id="members-empty" class="hidden text-center text-gray-400 text-sm py-16">No team members yet. Click "Add Member" to add your first recruit.</p>
       </div>
 
-      <div class="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent mb-8"></div>
-
-      <div id="members-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-      <p id="members-empty" class="hidden text-center text-gray-400 text-sm py-16">No team members yet. Click "Add Member" to add your first recruit.</p>
+      <!-- ===== TAB: Hall of Fame ===== -->
+      <div id="tab-hof" class="hidden">
+        <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+          <div>
+            <p class="text-gold font-display font-semibold text-xs tracking-[0.2em] uppercase mb-2">Alumni Management</p>
+            <h2 class="font-display font-extrabold uppercase text-white text-2xl sm:text-3xl leading-tight tracking-tight">Distinguished Alumni</h2>
+            <p id="alumni-status" class="text-sm text-gray-400 mt-2"></p>
+          </div>
+          <button id="add-alumni-btn" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-3 rounded-full transition-colors">
+            Add Alumni
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+        <div class="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent mb-8"></div>
+        <div id="alumni-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        <p id="alumni-empty" class="hidden text-center text-gray-400 text-sm py-16">No alumni yet. Click "Add Alumni" to induct the first name.</p>
+      </div>
     </main>
   </div>
 </div>
@@ -225,12 +250,74 @@
   </div>
 </div>
 
+<!-- ============ ALUMNI EDITOR MODAL ============ -->
+<div id="alumni-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-start sm:items-center justify-center px-4 py-8 overflow-y-auto">
+  <div class="w-full max-w-lg bg-ink-secondary border border-white/10 border-t-2 border-t-gold rounded-2xl shadow-2xl p-6 sm:p-8 my-auto">
+    <div class="flex items-center justify-between mb-6">
+      <h3 id="alumni-modal-title" class="font-display font-bold text-lg text-white">Add Alumni</h3>
+      <button id="alumni-modal-close" type="button" aria-label="Close" class="text-gray-400 hover:text-gold text-2xl leading-none transition-colors">&times;</button>
+    </div>
+    <form id="alumni-form" class="space-y-4">
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Full name *</label>
+          <input id="alumni-name" required maxlength="100" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Former position *</label>
+          <input id="alumni-title" required maxlength="120" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. Former President" />
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Class year *</label>
+          <input id="alumni-year" type="number" required min="1990" max="2100" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. 2024" />
+          <p class="text-[11px] text-gray-500 mt-1">Drives the "Class of" filter pills.</p>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Display order</label>
+          <input id="alumni-order" type="number" value="99" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" />
+          <p class="text-[11px] text-gray-500 mt-1">Lower numbers appear first within a class.</p>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">Achievement / note (optional)</label>
+        <input id="alumni-achievement" maxlength="200" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. Led BCC to its first national title" />
+      </div>
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">LinkedIn URL (optional)</label>
+        <input id="alumni-linkedin" type="url" maxlength="300" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="https://www.linkedin.com/in/username" />
+      </div>
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">Photo (optional)</label>
+        <input id="alumni-photo" type="file" accept="image/png,image/jpeg,image/webp" class="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-gold/15 file:text-gold file:text-xs" />
+        <p class="text-[11px] text-gray-500 mt-1">JPEG, PNG or WEBP, under 3MB. Leave blank to show initials.</p>
+        <label id="alumni-remove-photo-label" class="hidden items-center gap-2 text-[11px] text-gray-400 mt-2">
+          <input id="alumni-remove-photo" type="checkbox" class="rounded border-white/20 bg-ink" />
+          Remove current photo
+        </label>
+      </div>
+      <label class="flex items-center gap-2 text-sm text-gray-300">
+        <input id="alumni-active" type="checkbox" checked class="rounded border-white/20 bg-ink" />
+        Visible on the public site
+      </label>
+      <p id="alumni-form-error" class="hidden text-xs text-red-400 leading-relaxed"></p>
+      <div class="flex items-center justify-between gap-3 pt-2 border-t border-white/10">
+        <button type="button" id="alumni-delete-btn" class="hidden text-xs text-red-400 hover:text-red-300 mt-4">Delete alumni</button>
+        <div class="flex gap-3 ml-auto mt-4">
+          <button type="button" id="alumni-cancel-btn" class="text-sm text-gray-400 hover:text-white px-4 py-2 transition-colors">Cancel</button>
+          <button type="submit" id="alumni-save-btn" class="bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-2.5 rounded-full transition-colors">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div id="toast" class="hidden fixed bottom-5 right-5 left-5 sm:left-auto bg-ink-secondary border border-gold/30 text-sm text-white px-4 py-3 rounded-xl shadow-2xl z-50 max-w-[340px] sm:ml-auto"></div>
 
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/admin.js"></script>
 <script>
-  // Same pointer-tracking glow the homepage navbar uses.
   const glassCard = document.getElementById('glass-card');
   const glassGlow = document.getElementById('glass-glow');
   const glassBorderGlow = document.getElementById('glass-border-glow');
@@ -240,14 +327,11 @@
       const rect = glassCard.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-
       glassCard.style.setProperty('--mouse-x', `${x}px`);
       glassCard.style.setProperty('--mouse-y', `${y}px`);
-
       glassGlow.style.opacity = '1';
       glassBorderGlow.style.opacity = '1';
     });
-
     glassCard.addEventListener('mouseleave', () => {
       glassGlow.style.opacity = '0';
       glassBorderGlow.style.opacity = '0';
