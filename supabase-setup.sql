@@ -431,3 +431,216 @@ update public.achievements
 set title = 'Achievement Title', organizer = 'Organizer', team_name = 'Team Name',
     members = '[{"name":"X","role":"Role"}]'::jsonb, description = ''
 where true;
+
+-- ============================================================
+-- 12. Graduation — move panel members into the Hall of Fame
+-- One batch graduates per cycle, so there's no graduating-year column to keep
+-- in sync: the new class year is simply (highest class year already in the
+-- Hall of Fame) + 1, falling back to the current year on an empty table.
+-- Every graduate's post is prefixed with "Former", the department (if any) is
+-- kept, and display_order is assigned by post seniority so the new class sorts
+-- to the front of the Hall of Fame (which orders by class_year desc,
+-- display_order asc).
+-- ------------------------------------------------------------
+
+-- Seniority rank of a post, used for ordering inside a class.
+create or replace function public.post_rank(p_title text)
+returns integer
+language sql immutable as $$
+  select case split_part(p_title, ' - ', 1)
+    when 'President'                    then 1
+    when 'Senior Vice President'        then 2
+    when 'Vice President'               then 3
+    when 'General Secretary'            then 4
+    when 'Organizing Secretary'         then 5
+    when 'Treasurer'                    then 6
+    when 'Joint Secretary'              then 7
+    when 'Junior Vice President'        then 8
+    when 'Head of Department'           then 9
+    when 'Deputy Head of Department'    then 10
+    when 'Assistant Head of Department' then 11
+    else 50
+  end;
+$$;
+
+-- The class year the next graduating batch belongs to.
+create or replace function public.next_class_year()
+returns integer
+language sql stable as $$
+  select coalesce(
+    (select max(class_year) + 1 from public.alumni),
+    extract(year from now())::integer
+  );
+$$;
+
+-- Moves the given roster rows into public.alumni and deletes them from the
+-- roster, in a single transaction so nobody can land in both tables or neither.
+-- Returns the class year the batch was filed under, or null if nothing moved.
+create or replace function public.graduate_members(p_ids uuid[])
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_year integer := public.next_class_year();
+  v_moved integer;
+begin
+  -- security definer bypasses RLS, so the admin check has to be explicit here.
+  if not public.is_admin() then
+    raise exception 'Not authorised';
+  end if;
+
+  if p_ids is null or array_length(p_ids, 1) is null then
+    return null;
+  end if;
+
+  with grads as (
+    delete from public.team_members m
+    where m.id = any(p_ids)
+    returning m.name, m.title, m.photo_url, m.linkedin_url, m.facebook_url
+  )
+  insert into public.alumni (name, title, class_year, photo_url, linkedin_url, facebook_url, display_order)
+  select g.name,
+         -- "Vice President - Public Relations" -> "Former Vice President - Public Relations"
+         case when g.title like 'Former %' then g.title else 'Former ' || g.title end,
+         v_year,
+         g.photo_url, g.linkedin_url, g.facebook_url,
+         row_number() over (order by public.post_rank(g.title), g.name)
+  from grads g;
+
+  get diagnostics v_moved = row_count;
+  if v_moved = 0 then
+    return null;
+  end if;
+  return v_year;
+end $$;
+
+-- Only signed-in Executives may graduate anyone.
+revoke execute on function public.graduate_members(uuid[]) from anon, public;
+grant execute on function public.graduate_members(uuid[]) to authenticated;
+grant execute on function public.next_class_year() to anon, authenticated;
+
+notify pgrst, 'reload schema';
+
+-- ============================================================
+-- 13. Who counts as an Executive (admin allow-list)
+-- IMPORTANT: everything above granted full read/write to the "authenticated"
+-- role, which means ANY Supabase account could edit the club's data. This
+-- section narrows that to an explicit allow-list. Run it, then add yourself.
+-- Also go to Supabase -> Authentication -> Sign In / Providers and turn OFF
+-- "Allow new users to sign up", so nobody can self-register an account.
+-- ------------------------------------------------------------
+create table if not exists public.admins (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  email text not null default '',
+  added_at timestamptz not null default now()
+);
+
+alter table public.admins enable row level security;
+
+-- Admins may see the allow-list; nobody can change it from the browser at all
+-- (no insert/update/delete policy exists), only from the SQL editor.
+drop policy if exists "Admins can view the allow-list" on public.admins;
+create policy "Admins can view the allow-list"
+on public.admins for select
+to authenticated
+using (user_id = auth.uid());
+
+-- security definer so it can read public.admins regardless of RLS.
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (select 1 from public.admins a where a.user_id = auth.uid());
+$$;
+
+grant execute on function public.is_admin() to authenticated, anon;
+
+-- ADD YOUR EXECUTIVES HERE. Create the account first (Supabase ->
+-- Authentication -> Users -> Add user), then run this with their email:
+--
+--   insert into public.admins (user_id, email)
+--   select id, email from auth.users where email = 'president@bupbcc.org'
+--   on conflict (user_id) do nothing;
+--
+-- To revoke someone:  delete from public.admins where email = '...';
+
+-- 13b. Re-issue every write policy against is_admin() instead of merely
+-- "is signed in". Same names as above, so these replace them.
+-- ------------------------------------------------------------
+do $$
+declare
+  t text;
+begin
+  foreach t in array array['team_members', 'alumni', 'achievements'] loop
+    execute format('drop policy if exists %I on public.%I',
+      'Executives can view ' || case t when 'team_members' then 'everyone' else 'all ' || t end, t);
+    execute format('drop policy if exists %I on public.%I', 'Executives full access', t);
+    execute format($f$
+      create policy "Executives full access" on public.%I
+      for all to authenticated
+      using (public.is_admin()) with check (public.is_admin())
+    $f$, t);
+  end loop;
+end $$;
+
+-- The old per-action policies are now redundant and, because RLS policies are
+-- OR-ed together, they would still let any signed-in user write. Drop them.
+drop policy if exists "Executives can add members" on public.team_members;
+drop policy if exists "Executives can edit members" on public.team_members;
+drop policy if exists "Executives can remove members" on public.team_members;
+drop policy if exists "Executives can add alumni" on public.alumni;
+drop policy if exists "Executives can edit alumni" on public.alumni;
+drop policy if exists "Executives can remove alumni" on public.alumni;
+drop policy if exists "Executives can add achievements" on public.achievements;
+drop policy if exists "Executives can edit achievements" on public.achievements;
+drop policy if exists "Executives can remove achievements" on public.achievements;
+
+-- Hidden (active = false) rows must stay invisible to everyone but admins, so
+-- the public read policies apply to any non-admin, signed in or not.
+drop policy if exists "Public can view active members" on public.team_members;
+create policy "Public can view active members"
+on public.team_members for select
+to anon, authenticated
+using (active = true);
+
+drop policy if exists "Public can view active alumni" on public.alumni;
+create policy "Public can view active alumni"
+on public.alumni for select
+to anon, authenticated
+using (active = true);
+
+drop policy if exists "Public can view active achievements" on public.achievements;
+create policy "Public can view active achievements"
+on public.achievements for select
+to anon, authenticated
+using (active = true);
+
+-- 13c. Storage: same treatment. Reading photos stays public (the buckets are
+-- public and the URLs are on the live site anyway); writing is admins only.
+-- ------------------------------------------------------------
+do $$
+declare
+  b text;
+  act text;
+begin
+  foreach b in array array['team-photos', 'alumni-photos', 'achievement-photos'] loop
+    foreach act in array array['upload', 'replace', 'delete'] loop
+      execute format('drop policy if exists %I on storage.objects',
+        'Executives can ' || act || ' ' || replace(b, '-photos', '') || ' photos');
+    end loop;
+    execute format('drop policy if exists %I on storage.objects', 'Executives manage ' || b);
+    execute format($f$
+      create policy %I on storage.objects
+      for all to authenticated
+      using (bucket_id = %L and public.is_admin())
+      with check (bucket_id = %L and public.is_admin())
+    $f$, 'Executives manage ' || b, b, b);
+  end loop;
+end $$;
+
+notify pgrst, 'reload schema';

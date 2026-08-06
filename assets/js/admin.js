@@ -329,6 +329,24 @@ function setSelectMode(on) {
   document.querySelectorAll('.member-cb-wrap').forEach((el) => el.classList.toggle('hidden', !on));
   if (!on) document.querySelectorAll('.member-select-cb').forEach((cb) => (cb.checked = false));
   syncDeleteSelectedBtn();
+  syncGraduateSelectedBtn();
+}
+
+// Companion to the delete button: same selection, opposite outcome. Idle it
+// reads as a call to action, in select mode it counts what's about to move.
+function syncGraduateSelectedBtn() {
+  const btn = $('graduate-selected-btn');
+  if (!btn) return;
+  const cap = '<svg viewBox="0 0 24 24" class="w-4 h-4 ml-2 inline-block" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4L2 9l10 5 10-5-10-5z"/><path d="M6 11.5V16c0 1.1 2.7 2.5 6 2.5s6-1.4 6-2.5v-4.5"/></svg>';
+  const checked = selectMode ? [...document.querySelectorAll('.member-select-cb:checked')] : [];
+  if (!selectMode) {
+    btn.innerHTML = `Graduate Selected ${cap}`;
+  } else if (checked.length === 0) {
+    btn.innerHTML = `Select members to graduate ${cap}`;
+  } else {
+    btn.innerHTML = `Graduate ${checked.length} to Hall of Fame ${cap}`;
+  }
+  btn.classList.toggle('opacity-50', selectMode && checked.length === 0);
 }
 
 function syncDeleteSelectedBtn() {
@@ -358,9 +376,15 @@ function renderMembers() {
   $('members-empty').classList.toggle('hidden', members.length !== 0);
   $('members-status').textContent = `${members.length} member${members.length === 1 ? '' : 's'} total`;
   grid.querySelectorAll('[data-edit]').forEach((btn) => btn.addEventListener('click', () => openMemberModal(btn.dataset.edit)));
-  grid.querySelectorAll('.member-select-cb').forEach((cb) => cb.addEventListener('change', syncDeleteSelectedBtn));
+  grid.querySelectorAll('.member-select-cb').forEach((cb) =>
+    cb.addEventListener('change', () => {
+      syncDeleteSelectedBtn();
+      syncGraduateSelectedBtn();
+    })
+  );
   if (selectMode) setSelectMode(true);
   syncDeleteSelectedBtn();
+  syncGraduateSelectedBtn();
   renderPagination('members-pagination', membersPage, members.length, (p) => { membersPage = p; renderMembers(); });
 }
 
@@ -1397,8 +1421,23 @@ async function handleAuthSubmit(e) {
     errorEl.classList.remove('hidden');
     return;
   }
+  if (!(await isAdmin())) {
+    await supabaseClient.auth.signOut();
+    errorEl.textContent = 'This account is not an Executive account.';
+    errorEl.classList.remove('hidden');
+    return;
+  }
   currentUser = data.user;
   await enterDashboard();
+}
+
+// A valid Supabase account is not the same thing as an Executive. The database
+// enforces this too (RLS + is_admin()); this only stops the dashboard from
+// rendering an empty, unusable shell for someone who isn't on the allow-list.
+async function isAdmin() {
+  const { data, error } = await supabaseClient.rpc('is_admin');
+  if (error) return false;
+  return data === true;
 }
 
 async function enterDashboard() {
@@ -1421,9 +1460,12 @@ async function logout() {
 async function init() {
   showScreen('loading-screen');
   const { data } = await supabaseClient.auth.getSession();
-  if (data.session) {
+  if (data.session && (await isAdmin())) {
     currentUser = data.session.user;
     await enterDashboard();
+  } else if (data.session) {
+    await supabaseClient.auth.signOut();
+    showScreen('auth-screen');
   } else {
     showScreen('auth-screen');
   }
@@ -1452,6 +1494,31 @@ document.addEventListener('DOMContentLoaded', () => {
     membersPage = 1;
     setSelectMode(false);
     renderMembers();
+  });
+  $('graduate-selected-btn').addEventListener('click', async () => {
+    if (!selectMode) { setSelectMode(true); return; }
+    const checked = [...document.querySelectorAll('.member-select-cb:checked')];
+    if (!checked.length) return;
+    const ids = checked.map((cb) => cb.dataset.id);
+    const picked = members.filter((m) => ids.includes(String(m.id)));
+
+    // The class year is decided server-side (highest year in the Hall of Fame
+    // + 1); ask for it first so the confirmation can name it.
+    const { data: year, error: yearError } = await supabaseClient.rpc('next_class_year');
+    if (yearError) { alert('Could not work out the class year: ' + yearError.message); return; }
+
+    const names = picked.slice(0, 5).map((m) => `• ${m.name} → Former ${m.title}`).join('\n');
+    const more = picked.length > 5 ? `\n…and ${picked.length - 5} more` : '';
+    if (!confirm(`Graduate ${ids.length} member${ids.length === 1 ? '' : 's'} into the Hall of Fame, Class of ${year}?\n\n${names}${more}\n\nThey will be removed from the team roster.`)) return;
+
+    const { data: classYear, error } = await supabaseClient.rpc('graduate_members', { p_ids: ids });
+    if (error) { alert('Graduation failed: ' + error.message); return; }
+
+    setSelectMode(false);
+    membersPage = 1;
+    alumniPage = 1;
+    await Promise.all([loadMembers(), loadAlumni()]);
+    showToast(`Moved ${ids.length} member${ids.length === 1 ? '' : 's'} to the Hall of Fame, Class of ${classYear}`);
   });
   $('member-form').addEventListener('submit', handleMemberSubmit);
   $('member-cancel-btn').addEventListener('click', closeMemberModal);

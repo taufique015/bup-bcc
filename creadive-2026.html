@@ -46,7 +46,7 @@
 </script>
 
 <style>
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
 
   /* Origami flocks. Every plane is a hand-drawn SVG injected by buildField() —
      each <span> carries its own drift vector as inline custom properties. */
@@ -83,7 +83,7 @@
     overflow: hidden;
     transition: max-height 0.25s ease;
   }
-  .faq-item.open .faq-answer { max-height: 160px; }
+  .faq-item.open .faq-answer { max-height: 260px; }
   .faq-item.open .faq-icon { transform: rotate(45deg); }
 
   .scrollbar-hide::-webkit-scrollbar { display: none; }
@@ -111,7 +111,7 @@
 </head>
 <body class="bg-sky-50 font-sans text-ink antialiased">
 
-<header id="navbar" class="fixed bottom-0 inset-x-0 z-50 px-3 sm:px-6 pb-3 sm:pb-5">
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 px-3 sm:px-6 pt-3 sm:pt-5">
   <div
     id="glass-card"
     class="relative max-w-7xl mx-auto rounded-2xl bg-neutral-700/40 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden transition-colors duration-500"
@@ -126,19 +126,7 @@
       class="pointer-events-none absolute inset-0 rounded-2xl border border-white/20 opacity-0 transition-opacity duration-300 z-0"
       id="glass-border-glow"
       style="mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"
-    ></div>
-
-    <div id="mobile-menu" class="hidden lg:hidden px-4 pt-2 pb-6 border-b border-white/10 space-y-2 bg-neutral-900/80 backdrop-blur-xl">
-      <a href="index.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Home</a>
-      <a href="about-us.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">About Us</a>
-      <a href="events.html" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">Events</a>
-      <a href="team.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
-      <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
-      <a href="achievements.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Achievements</a>
-      <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
-    </div>
-
-    <div class="relative z-10 flex items-center justify-between gap-3 lg:gap-6 h-16 px-4 sm:px-6 lg:px-8">
+    ></div>    <div class="relative z-10 flex items-center justify-between gap-3 lg:gap-6 h-16 px-4 sm:px-6 lg:px-8">
 
       <a href="#" class="flex items-center gap-2 sm:gap-2.5 min-w-0 group">
         <img src="assets/bcc-logo.png" class="w-8 sm:w-10 h-auto transition-transform duration-300 group-hover:scale-105" alt="BUP BCC logo" />
@@ -176,7 +164,16 @@
           </svg>
         </button>
       </div>
+    </div>
 
+    <div id="mobile-menu" class="hidden lg:hidden px-4 pt-2 pb-6 border-t border-white/10 space-y-2 bg-neutral-900/80 backdrop-blur-xl max-h-[calc(100dvh-7rem)] overflow-y-auto overscroll-contain">
+      <a href="index.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Home</a>
+      <a href="about-us.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">About Us</a>
+      <a href="events.html" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">Events</a>
+      <a href="team.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
+      <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
+      <a href="achievements.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Achievements</a>
+      <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
     </div>
 
   </div>
@@ -185,19 +182,20 @@
 <main>
 
   <!-- HERO -->
-  <section class="relative overflow-hidden lg:min-h-[52vw] pt-36 pb-16 sm:pt-44 sm:pb-20 lg:pt-40 lg:pb-14 xl:pt-64 xl:pb-20 text-center">
-    <img src="assets/creadive-front.jpg" alt="CREADIVE 2026" class="absolute inset-x-0 top-0 w-full h-[124.5%] min-[900px]:h-full object-cover object-top" />
+  <section class="relative overflow-hidden lg:min-h-[52vw] pt-44 pb-16 sm:pt-52 sm:pb-20 lg:pt-48 lg:pb-14 xl:pt-72 xl:pb-20 text-center">
+    <video
+      class="absolute inset-x-0 top-0 w-full h-[124.5%] min-[900px]:h-full object-cover object-center"
+      autoplay muted loop playsinline preload="auto"
+      aria-hidden="true"
+    >
+      <source src="assets/creadive-outro.mp4" type="video/mp4" />
+    </video>
     <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(10,21,80,0.16) 0%, rgba(10,21,80,0.18) 22%, rgba(10,21,80,0.55) 52%, rgba(10,21,80,0.48) 78%, rgba(10,21,80,0.24) 100%);"></div>
     <div class="plane-field" data-count="6" data-seed="0" data-dark="true" data-spread="full"></div>
 
     <div class="relative z-[2] max-w-3xl mx-auto px-5 sm:px-8">
-      <span class="inline-flex items-center gap-2 border border-white/30 bg-white/10 backdrop-blur-sm rounded-full px-4 py-1.5 text-[11px] sm:text-xs font-display font-semibold uppercase tracking-[0.12em] text-white mb-5 xl:mb-6">
-        <span class="w-1.5 h-1.5 rounded-full bg-sun"></span>
-        Flagship Competition &middot; 8th Edition
-      </span>
-
       <h1 class="font-display font-black uppercase text-white leading-[0.95] tracking-tight text-5xl sm:text-7xl lg:text-6xl xl:text-8xl drop-shadow-[0_4px_24px_rgba(10,21,80,0.55)]">
-        Cre<span class="text-sun">AD</span>ive 2026
+        Cre<span class="text-sky-300">AD</span>ive 2026
       </h1>
       <p class="font-display italic font-semibold text-white/95 text-xl sm:text-3xl lg:text-2xl xl:text-3xl mt-3 xl:mt-4">Let Your Ideas Fly!</p>
 
@@ -308,16 +306,16 @@
         <span class="text-[11px] sm:text-xs uppercase tracking-[0.16em] text-sky-200">Edition</span>
       </div>
       <div>
-        <strong class="count block font-display font-black text-4xl sm:text-5xl text-white tabular-nums" data-target="700000" data-prefix="&#2547;" data-suffix="+">&#2547;0+</strong>
+        <strong class="count block font-display font-black text-4xl sm:text-5xl text-white tabular-nums" data-target="700000" data-prefix="&#2547;" data-suffix="">&#2547;0</strong>
         <span class="text-[11px] sm:text-xs uppercase tracking-[0.16em] text-sky-200">Total Prize Pool</span>
       </div>
       <div>
-        <strong class="count block font-display font-black text-4xl sm:text-5xl text-white tabular-nums" data-target="300">0+</strong>
-        <span class="text-[11px] sm:text-xs uppercase tracking-[0.16em] text-sky-200">Teams Expected</span>
+        <strong class="count block font-display font-black text-4xl sm:text-5xl text-white tabular-nums" data-target="4" data-suffix="">0</strong>
+        <span class="text-[11px] sm:text-xs uppercase tracking-[0.16em] text-sky-200">Rounds</span>
       </div>
       <div>
-        <strong class="count block font-display font-black text-4xl sm:text-5xl text-white tabular-nums" data-target="4" data-suffix=" Rounds">0</strong>
-        <span class="text-[11px] sm:text-xs uppercase tracking-[0.16em] text-sky-200">Rounds</span>
+        <strong class="count block font-display font-black text-4xl sm:text-5xl text-white tabular-nums" data-target="615" data-prefix="&#2547;" data-suffix="">&#2547;0</strong>
+        <span class="text-[11px] sm:text-xs uppercase tracking-[0.16em] text-sky-200">Registration Fee</span>
       </div>
     </div>
   </section>
@@ -331,13 +329,13 @@
         <svg class="trail pale absolute inset-x-0 top-[26%] h-10" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20 C 160 2, 340 38, 520 12 S 860 2, 1000 24"/></svg>
         <svg class="trail pale absolute inset-x-0 bottom-[26%] h-10" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30 C 200 8, 380 38, 560 16 S 880 10, 1000 4"/></svg>
         <div class="plane-field" data-count="8" data-seed="5" data-dark="true" data-spread="full"></div>
+        <img src="assets/creadive-booth.jpg" alt="CreADive 2026 registration booth" class="absolute inset-0 w-full h-full object-cover" onerror="this.remove()" />
       </div>
 
       <div>
-        <p class="text-sky-600 font-display font-bold text-xs tracking-[0.14em] uppercase mb-3">About the Competition</p>
-        <h2 class="font-display text-3xl sm:text-5xl font-extrabold leading-[1.05] mb-5">Where bold ideas become brilliant campaigns</h2>
+        <h2 class="font-display text-3xl sm:text-5xl font-extrabold leading-[1.05] mb-5">Where the campus comes together to create</h2>
         <p class="text-ink/65 text-base sm:text-lg leading-relaxed">
-          CreADive has spent seven editions turning marketing students into working creatives — handing teams a real brief, a tight deadline, and a room full of industry judges. Edition 2026 keeps that same pressure-tested format, with a bigger prize pool, a fresh brief, and a finale judged by some of Dhaka's sharpest creative minds.
+          Have questions about team formation or the competition brief? Visit our interactive booth to get instant guidance and complete your registration on the spot before the clock starts ticking!
         </p>
         <div class="mt-7 pt-6 border-t border-sky-200 flex flex-wrap gap-2.5">
           <span class="border border-sky-200 bg-sky-50 text-sky-700 text-sm px-3.5 py-1 rounded-full">Team of 3 Members</span>
@@ -393,7 +391,21 @@
         <p class="mt-3 text-ink/65 max-w-xl mx-auto">Beyond the trophy, finalists walk away with real industry access.</p>
       </div>
       <div id="prizes-grid" class="grid sm:grid-cols-3 gap-5 items-end"></div>
-      <p class="text-center text-ink/65 text-sm mt-8">+ Blah Blah</p>
+
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section class="relative overflow-hidden py-16 sm:py-20">
+    <div class="plane-field" data-count="4" data-seed="12"></div>
+    <div class="relative z-[1] max-w-4xl mx-auto px-5 sm:px-8">
+      <div class="text-center mb-10">
+        <p class="text-sky-600 font-display font-bold text-xs tracking-[0.14em] uppercase mb-3">Powered By</p>
+        <h2 class="font-display text-3xl sm:text-4xl font-extrabold">Title Sponsor</h2>
+      </div>
+      <div class="rounded-3xl border border-sky-200 bg-white shadow-[0_12px_40px_rgba(10,21,80,0.08)] flex items-center justify-center p-14 sm:p-20">
+        <img src="assets/fresh-logo.png" alt="Fresh" class="h-24 sm:h-32 w-auto object-contain" onerror="this.replaceWith(Object.assign(document.createElement('p'), {className:'font-display font-black text-5xl sm:text-7xl text-navy tracking-tight', textContent:'Fresh'}))" />
+      </div>
     </div>
   </section>
 
@@ -417,16 +429,68 @@
     </div>
   </section>
 
-  <!-- JUDGING PANEL -->
+  <!-- FACEBOOK EVENT -->
   <section class="relative overflow-hidden bg-sky-100 py-20 sm:py-24">
     <div class="plane-field" data-count="5" data-seed="10"></div>
-    <div class="relative z-[1] max-w-6xl mx-auto px-5 sm:px-8">
-      <div class="text-center mb-12">
-        <p class="text-sky-600 font-display font-bold text-xs tracking-[0.14em] uppercase mb-3">Judging Panel</p>
-        <h2 class="font-display text-3xl sm:text-4xl font-extrabold">Who's evaluating your idea</h2>
-        <p class="mt-3 text-ink/65 max-w-xl mx-auto">Working creatives and strategists from across the industry.</p>
+    <div class="relative z-[1] max-w-5xl mx-auto px-5 sm:px-8">
+      <div class="relative overflow-hidden rounded-3xl bg-navy px-7 py-12 sm:px-14 sm:py-14 shadow-[0_24px_60px_rgba(10,21,80,0.28)]">
+        <div class="plane-field" data-count="6" data-seed="15" data-dark="true" data-spread="full"></div>
+        <div class="absolute -top-24 -right-20 w-72 h-72 rounded-full bg-sky-400/25 blur-3xl" aria-hidden="true"></div>
+        <div class="absolute -bottom-28 -left-16 w-72 h-72 rounded-full bg-sun/15 blur-3xl" aria-hidden="true"></div>
+
+        <div class="relative z-[1] grid md:grid-cols-2 gap-9 md:gap-12 items-center text-center md:text-left">
+          <div>
+            <p class="text-sky-300 font-display font-bold text-xs tracking-[0.14em] uppercase mb-3">Stay in the loop</p>
+            <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white leading-[1.08]">
+              Everything drops first on the <span class="text-sky-300">Facebook event</span>
+            </h2>
+            <p class="mt-4 text-sky-100/80 text-base sm:text-lg max-w-lg mx-auto md:mx-0">
+              Brief releases, round deadlines, booth timings and finale announcements — all posted there. Hit <em>Interested</em> so nothing slips past you.
+            </p>
+            <a
+              href="https://www.facebook.com/creadive2026/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group mt-8 inline-flex items-center justify-center gap-3 bg-white text-navy font-display font-bold px-8 py-4 rounded-full shadow-[0_10px_24px_rgba(10,21,80,0.32)] hover:-translate-y-0.5 transition-transform"
+            >
+              <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94Z"/></svg>
+              Visit the Event Page
+              <span class="inline-plane transition-transform group-hover:translate-x-1" data-size="16"></span>
+            </a>
+          </div>
+
+          <!-- Facebook event mock card -->
+          <a
+            href="https://www.facebook.com/events/1566674181608973/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block rounded-2xl overflow-hidden bg-white shadow-[0_16px_48px_rgba(10,21,80,0.4)] hover:-translate-y-1 transition-transform duration-300"
+          >
+            <div class="relative w-full aspect-[1.91/1] bg-navy overflow-hidden">
+              <img src="assets/creadive-front.jpg" alt="CreADive 2026 event cover" class="w-full h-full object-cover" onerror="this.style.display='none'" />
+            </div>
+            <div class="px-5 py-4">
+              <div class="flex items-center gap-2 mb-2">
+                <svg class="w-4 h-4 shrink-0 text-[#1877f2]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94Z"/></svg>
+                <span class="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Facebook Event</span>
+              </div>
+              <p class="font-display font-extrabold text-navy text-[15px] leading-snug">Fresh Presents CreADive 2026</p>
+              <p class="text-xs text-gray-500 mt-1.5 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                August 2026
+              </p>
+              <p class="text-xs text-gray-500 mt-1 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                BUP Business &amp; Communication Club
+              </p>
+              <div class="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
+                <span class="text-xs text-[#1877f2] font-semibold">facebook.com/events/1566674181608973</span>
+                <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
-      <div id="judges-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-7"></div>
     </div>
   </section>
 
@@ -443,17 +507,6 @@
     </div>
   </section>
 
-  <!-- PARTNERS -->
-  <section class="relative overflow-hidden py-16 sm:py-20">
-    <div class="plane-field" data-count="4" data-seed="12"></div>
-    <div class="relative z-[1] max-w-6xl mx-auto px-5 sm:px-8">
-      <div class="text-center mb-12">
-        <p class="text-sky-600 font-display font-bold text-xs tracking-[0.14em] uppercase mb-3">Powered By</p>
-        <h2 class="font-display text-3xl sm:text-4xl font-extrabold">Partners &amp; sponsors</h2>
-      </div>
-      <div id="partners-grid" class="flex flex-wrap items-center justify-center gap-x-14 gap-y-7"></div>
-    </div>
-  </section>
 
   <!-- FAQ -->
   <section class="relative overflow-hidden bg-paper py-16 sm:py-20">
@@ -483,7 +536,7 @@
 
 </main>
 
-<footer class="relative overflow-hidden bg-navy-deep pt-16 pb-28 sm:pb-32">
+<footer class="relative overflow-hidden bg-navy-deep pt-16 pb-16">
   <div class="plane-field" data-count="4" data-seed="15" data-dark="true"></div>
 
   <div class="relative z-[1] max-w-6xl mx-auto px-5 sm:px-8 grid md:grid-cols-2 gap-12 pb-9 border-b border-white/10">
@@ -492,6 +545,12 @@
       <h3 class="font-display font-black uppercase text-white text-2xl sm:text-3xl leading-snug">
         Allow Yourself<br />to <span class="text-sun">Dream Big</span>
       </h3>
+
+      <div class="flex items-center gap-4 sm:gap-5 mt-6">
+        <img src="assets/bcc-logo.png" alt="BUP Business &amp; Communication Club" loading="lazy" class="h-12 sm:h-14 w-auto object-contain" />
+        <span class="w-px h-8 sm:h-10 bg-white/15" aria-hidden="true"></span>
+        <img src="assets/bup-logo.png" alt="Bangladesh University of Professionals" loading="lazy" class="h-12 sm:h-14 w-auto object-contain" />
+      </div>
       <div class="flex items-center gap-3 mt-6">
         <a href="https://www.facebook.com/bupbcc" aria-label="Facebook" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-sky-100 hover:text-navy hover:bg-white hover:border-white transition-colors">
           <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor"><path d="M22 12.06C22 6.5 17.5 2 12 2S2 6.5 2 12.06c0 5 3.66 9.17 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.89h2.78l-.45 2.91h-2.33v7.03C18.34 21.23 22 17.06 22 12.06z"/></svg>
@@ -568,13 +627,6 @@
     ]],
   ];
 
-  const JUDGES = [
-    ['TBA', 'TBA'],
-    ['TBA', 'TBA'],
-    ['TBA', 'TBA'],
-    ['TBA', 'TBA'],
-  ];
-
   const EDITIONS = [
     ['CreADive 1.0', '2014'],
     ['CreADive 2.0', '2015'],
@@ -583,20 +635,13 @@
     ['CreADive 5.0', '2018'],
   ];
 
-  const PARTNERS = [
-    ['Unilever', 'assets/partners/unilever-logo-png-transparent-1.png'],
-    ['Nestle', 'assets/partners/Nestle-Logo-1.png'],
-    ['Marico', 'assets/partners/marico-logo-C3D2F9F0E3-seeklogo-1.png'],
-    ['Banglalink', 'assets/partners/banglalink-logo-vector-1.png'],
-    ['Berger', 'assets/partners/Berger-Logo.jpg'],
-    ['BRAC', 'assets/partners/brac-logo-big-1.png'],
-  ];
 
   const FAQS = [
     ['Who is eligible to participate?', 'Any currently enrolled undergraduate student at a recognized university.'],
     ['Does it have to be a team, or can I register solo?', "3-Member teams only, and they don't need to be from the same university."],
-    ['Is there a registration fee?', 'No — CreADive 2026 is free to enter.'],
-    ["What if my team can't attend the finale in person?", 'The first three rounds are remote, but the grand finale is in-person at TBA.'],
+    ['Is there a registration fee?', 'Yes — the entry fee is &#2547;615 per team, covering all four rounds.'],
+    ['Where do I register?', 'On the spot at our campus booth, where the team can also walk you through the brief and team formation. Booth timings are posted on the CreADive 2026 Facebook event page.'],
+    ['How many rounds are there?', 'Four: Case Solving, a 60-second Reel, an OVC, and the Product Promo &amp; Presentation.'],
     ['Do all participants get certificates, or just winners?', 'Every team that submits a concept receives a participation certificate.'],
   ];
 
@@ -651,6 +696,7 @@
     host.innerHTML = html;
   };
 
+  document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.plane-field').forEach(buildField);
   document.querySelectorAll('.inline-plane').forEach((el) => {
     el.innerHTML = litePlane(parseInt(el.dataset.size, 10) || 14);
@@ -733,17 +779,6 @@
       </ul>
     </div>`).join('');
 
-  // Judging panel — names are announced closer to the finale
-  document.getElementById('judges-grid').innerHTML = JUDGES.map(([role, org]) => `
-    <div class="text-center">
-      <div class="w-[92px] h-[92px] rounded-full mx-auto mb-4 border border-sky-200 bg-paper flex items-center justify-center text-sky-300">
-        <svg viewBox="0 0 24 24" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
-      </div>
-      <h4 class="font-display text-[15px] font-bold mb-1">To be announced</h4>
-      <span class="block text-xs text-sky-600">${role}</span>
-      <span class="block text-xs text-ink/45">${org}</span>
-    </div>`).join('');
-
   // Past editions
   document.getElementById('archive-grid').innerHTML = EDITIONS.map(([name, year], i) => `
     <div class="group relative aspect-[4/3] rounded-xl overflow-hidden border border-sky-200">
@@ -754,10 +789,6 @@
       </div>
     </div>`).join('');
 
-  // Partner logos
-  document.getElementById('partners-grid').innerHTML = PARTNERS
-    .map(([name, src]) => `<img src="${src}" alt="${name}" loading="lazy" class="h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition duration-300" />`)
-    .join('');
 
   // FAQ accordion
   const faqList = document.getElementById('faq-list');
@@ -875,6 +906,7 @@
 
   // Footer year
   document.getElementById('year').textContent = new Date().getFullYear();
+  }); // end DOMContentLoaded
 </script>
 </body>
 </html>
