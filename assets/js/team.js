@@ -129,7 +129,6 @@ function renderMemberCard(member) {
         <h3 class="font-display text-sm sm:text-base font-bold text-white leading-snug">${escapeHtml(member.name)}</h3>
         <p class="text-gold font-display font-semibold text-[10px] sm:text-[11px] uppercase tracking-[0.08em] leading-snug">${escapeHtml(member.title)}</p>
         ${member.department ? `<p class="text-[11px] sm:text-xs text-gray-400 leading-relaxed">${escapeHtml(member.department)}</p>` : ''}
-        ${member.batch ? `<span class="self-start mt-1 text-[10px] font-display font-semibold uppercase tracking-wider text-gold bg-gold/10 border border-gold/20 rounded-full px-2.5 py-0.5">${escapeHtml(member.batch)}</span>` : ''}
         ${socialLinks(member, 'inline')}
       </div>
     </div>

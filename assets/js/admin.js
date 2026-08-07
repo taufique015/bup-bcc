@@ -265,7 +265,6 @@ function renderMemberCard(m) {
         <p class="text-[11px] font-display font-semibold uppercase tracking-wider text-gold/80 truncate">${escapeHtml(categoryLabel(m.category))}${m.active === false ? ' · Hidden' : ''}</p>
         <p class="font-display font-bold text-white truncate mt-0.5">${escapeHtml(m.name)}</p>
         <p class="text-xs text-gray-400 truncate">${escapeHtml(m.title)}</p>
-        <p class="text-[11px] text-gray-500 mt-1 truncate">${escapeHtml(m.batch || '')}</p>
         <button data-edit="${m.id}" class="inline-flex items-center gap-1.5 text-xs font-display font-semibold text-gold hover:gap-2.5 transition-all mt-3">
           Edit
           <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
@@ -413,7 +412,6 @@ function openMemberModal(id) {
 
   $('member-modal-title').textContent = m ? 'Edit Team Member' : 'Add Team Member';
   $('member-name').value = m?.name || '';
-  $('member-batch').value = m?.batch || '';
   $('member-linkedin').value = m?.linkedin_url || '';
   $('member-facebook').value = m?.facebook_url || '';
   $('member-category').value = m?.category || CATEGORIES[0]?.id || '';
@@ -453,7 +451,6 @@ async function handleMemberSubmit(e) {
     const payload = {
       name,
       title,
-      batch: $('member-batch').value.trim(),
       department: POSTS[category] ? $('member-department').value : '',
       linkedin_url: $('member-linkedin').value.trim() || null,
       facebook_url: $('member-facebook').value.trim() || null,
@@ -519,7 +516,7 @@ let bulkRows = [];
 // Canonical columns for the multi-column format (still accepted alongside the
 // simple SL./Name/Designation format used by the official panel spreadsheet).
 const BULK_COLUMNS = [
-  'name', 'category', 'post', 'department', 'batch',
+  'name', 'category', 'post', 'department',
   'linkedin_url', 'facebook_url', 'display_order', 'active', 'photo_url',
 ];
 
@@ -549,15 +546,6 @@ function bulkColumnFor(header) {
   const key = normalizeHeader(header);
   if (key in HEADER_ALIASES) return HEADER_ALIASES[key]; // null means skip
   return BULK_COLUMNS.includes(key) ? key : null;
-}
-
-// Pulls a batch label out of a section row, e.g. "Batch 2023", "BBA Batch 11".
-function batchLabelIn(cells) {
-  for (const cell of cells || []) {
-    const text = String(cell ?? '').replace(/\s+/g, ' ').trim();
-    if (/batch/i.test(text) && /\d/.test(text)) return text;
-  }
-  return '';
 }
 
 function categoryIdFrom(value) {
@@ -812,7 +800,6 @@ function buildBulkRow(row) {
     payload: {
       name,
       title,
-      batch: String(row.batch ?? '').trim(),
       department,
       linkedin_url: String(row.linkedin_url ?? '').trim() || null,
       facebook_url: String(row.facebook_url ?? '').trim() || null,
@@ -955,15 +942,6 @@ async function handleBulkFile(e) {
     const results = [];
     let sl = 0;
 
-    // The official sheet groups members under "Batch 20XX" label rows instead of
-    // giving each row a batch column, so carry the most recent label forward.
-    // Rows above the first header (club name / panel year / first batch) count too.
-    let currentBatch = '';
-    for (let i = 0; i <= headerRowIdx; i++) {
-      const label = batchLabelIn(grid[i]);
-      if (label) currentBatch = label;
-    }
-
     for (let i = headerRowIdx + 1; i < grid.length; i++) {
       const cells = grid[i];
 
@@ -973,17 +951,6 @@ async function handleBulkFile(e) {
       const col1 = String(cells[1] ?? '').trim();
       if (/^sl\.?$/i.test(col0)
         && (/^name$/i.test(col1) || cells.some((c) => /^designation$/i.test(String(c).trim())))) continue;
-
-      // Batch label rows: col A is empty, a later column has text (e.g. "Batch 2023").
-      // Remember the label, restart numbering, and skip the row itself.
-      if (!col0 && !col1 && String(cells[2] ?? '').trim()) {
-        const label = batchLabelIn(cells);
-        if (label) {
-          currentBatch = label;
-          sl = 0;
-        }
-        continue;
-      }
 
       // Skip rows where Name is empty (section titles, spacing rows).
       const nameVal = String(cells[nameColIdx] ?? '').trim();
@@ -1005,8 +972,6 @@ async function handleBulkFile(e) {
       }
 
       sl += 1;
-      // Only fill in batch/order when the sheet didn't supply them explicitly.
-      if (!String(raw.batch ?? '').trim() && currentBatch) raw.batch = currentBatch;
       if (!String(raw.display_order ?? '').trim()) {
         raw.display_order = /^\d+$/.test(col0) ? Number(col0) : sl;
       }
