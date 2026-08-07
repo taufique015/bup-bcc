@@ -89,8 +89,13 @@
     background: #F2B90D;
   }
 
+  .hero-slide {
+    transition: opacity 1.4s ease-in-out;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
+    .hero-slide { transition: none; }
     body { animation: none; }
     ::view-transition-old(root),
     ::view-transition-new(root) {
@@ -140,7 +145,7 @@
       <a href="index.html" class="flex items-center gap-2.5 shrink-0 group">
         <img src="assets/bcc-logo.png" class="w-8 sm:w-10 h-auto transition-transform duration-300 group-hover:scale-105" alt="BUP BCC logo" />
         <span class="font-display font-light md:font-normal sm:inline md:hidden xl:inline text-[11px] leading-[1.15] sm:text-base lg:text-lg tracking-tight sm:tracking-wide text-white md:whitespace-nowrap">
-          BUP Business &amp; Communication Club
+          BUP Business &amp;<br class="sm:hidden"> Communication Club
         </span>
       </a>
 
@@ -191,19 +196,39 @@
 <!-- Main Page Container -->
 <main class="pb-24 sm:pb-32 flex-1 w-full">
   
-  <!-- Hero Section with Background Image (assets/corporiddlerz-2025.jpg) -->
-  <section id="hero" class="relative overflow-hidden pt-24 sm:pt-32 pb-16 sm:pb-24 mb-10">
-    <div class="absolute inset-0 z-0">
-      <img 
-        src="assets/corporiddlerz-2025.jpg" 
-        alt="BUP BCC Achievements Background" 
+  <!-- Hero Section -->
+  <section id="hero" class="relative overflow-hidden pt-24 sm:pt-32">
+    <div id="hero-slideshow" class="absolute inset-0">
+      <img
+        src="assets/corporiddlerz-2025.jpg"
+        alt="BUP BCC members at the Corporiddlerz 2025 national business strategy competition"
         fetchpriority="high"
-        class="w-full h-full object-cover"
+        class="hero-slide absolute inset-0 w-full h-full object-cover"
       />
-      <div class="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/65 to-ink"></div>
+      <img
+        src="assets/unilever-learn-to-lead-2025.jpg"
+        alt="BUP BCC members with Unilever representatives at the Learn to Lead 2025 program"
+        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
+      />
+      <img
+        src="assets/gateway-ori.jpeg"
+        alt="BCC Gateway 2026"
+        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
+      />
+      <img
+        src="assets/creadive-idlc-2.jpg"
+        alt="CreADive 2023 participants at the IDLC Finance &amp; Marketing Challenge"
+        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
+      />
+      <img
+        src="assets/bizcomps-to-mnc.jpg"
+        alt="BizComps to MNCs 2023"
+        class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0"
+      />
     </div>
+    <div class="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/30 to-ink/75"></div>
 
-    <div class="max-w-4xl mx-auto px-5 sm:px-8 text-center relative z-10">
+    <div class="max-w-4xl mx-auto px-5 sm:px-8 text-center relative min-h-[440px] sm:min-h-[540px] lg:min-h-[720px] flex flex-col items-center justify-center">
       <span class="inline-flex items-center gap-2 border border-white/15 bg-white/5 backdrop-blur-md rounded-full px-4 py-1.5 text-xs sm:text-sm text-gray-300 mb-5">
         <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
         Hall of Achievements &amp; Victories
@@ -277,7 +302,7 @@
 </main>
 
 <!-- Footer (Exact Match with Index Page) -->
-<footer class="bg-ink pt-16 pb-16 border-t border-white/10">
+<footer class="bg-ink pt-16 pb-16">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 grid md:grid-cols-2 gap-12">
 
     <div>
@@ -349,6 +374,21 @@
 <script src="assets/js/achievements.js"></script>
 
 <script>
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Hero background slideshow
+  (function () {
+    const slides = document.querySelectorAll('#hero-slideshow .hero-slide');
+    if (slides.length < 2 || prefersReducedMotion) return;
+    let current = 0;
+    setInterval(() => {
+      const next = (current + 1) % slides.length;
+      slides[current].classList.add('opacity-0');
+      slides[next].classList.remove('opacity-0');
+      current = next;
+    }, 2000);
+  })();
+
   // Mousemove glow effect for floating navbar (Matching Index Page)
   const glassCard = document.getElementById('glass-card');
   const glassGlow = document.getElementById('glass-glow');

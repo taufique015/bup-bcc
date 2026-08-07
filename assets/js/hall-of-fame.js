@@ -81,7 +81,7 @@ function renderAlumniCard(person) {
       <div class="relative flex flex-col gap-1.5 flex-1 px-3.5 py-3.5 sm:px-5 sm:py-4">
         <div class="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent"></div>
         <h3 class="font-display text-sm sm:text-base font-bold text-white leading-snug">${escapeHtml(person.name)}</h3>
-        <p class="text-gold font-display font-semibold text-[10px] sm:text-[11px] uppercase tracking-[0.08em] leading-snug">${escapeHtml(person.title)}</p>
+        ${(() => { const t = person.title === 'No Post' && person.category === 'sub-executive-panel' ? 'Senior Executive Member' : person.title; return t && t !== 'No Post' ? `<p class="text-gold font-display font-semibold text-[10px] sm:text-[11px] uppercase tracking-[0.08em] leading-snug">${escapeHtml(t)}</p>` : ''; })()}
         ${person.achievement ? `<p class="text-[11px] sm:text-xs text-gray-400 leading-relaxed">${escapeHtml(person.achievement)}</p>` : ''}
         ${socialLinks(person, 'inline')}
       </div>

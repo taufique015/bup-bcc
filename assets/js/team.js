@@ -7,7 +7,6 @@
 const CATEGORIES = [
   { id: 'executive-panel', label: 'Executive Panel' },
   { id: 'sub-executive-panel', label: 'Sub-Executive Panel' },
-  { id: 'executive-members', label: 'Executive Members' },
   { id: 'sub-executive-members', label: 'Sub-Executive Members' },
   { id: 'general-members', label: 'General Members' },
 ];
@@ -15,6 +14,10 @@ const CATEGORIES = [
 // at the database level (see the CHECK constraint in supabase-setup.sql). If
 // you add a category, update it in both places.
 
+
+// Sub-Executive Panel members can be listed without a post; admin stores the
+// sentinel title below because the database requires one, and the card hides it.
+const NO_POST = 'No Post';
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -127,7 +130,7 @@ function renderMemberCard(member) {
       <div class="relative flex flex-col gap-1.5 flex-1 px-3.5 py-3.5 sm:px-5 sm:py-4">
         <div class="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent"></div>
         <h3 class="font-display text-sm sm:text-base font-bold text-white leading-snug">${escapeHtml(member.name)}</h3>
-        <p class="text-gold font-display font-semibold text-[10px] sm:text-[11px] uppercase tracking-[0.08em] leading-snug">${escapeHtml(member.title)}</p>
+        ${(() => { const t = member.title === NO_POST && member.category === 'sub-executive-panel' ? 'Senior Executive Member' : member.title; return t && t !== NO_POST ? `<p class="text-gold font-display font-semibold text-[10px] sm:text-[11px] uppercase tracking-[0.08em] leading-snug">${escapeHtml(t)}</p>` : ''; })()}
         ${member.department ? `<p class="text-[11px] sm:text-xs text-gray-400 leading-relaxed">${escapeHtml(member.department)}</p>` : ''}
         ${socialLinks(member, 'inline')}
       </div>
@@ -170,16 +173,19 @@ async function loadTeam() {
     const { data, error } = await query;
     if (error) throw error;
 
-    let sorted = data || [];
-    if (activeCategory === 'all' && sorted.length) {
-      const categoryOrder = CATEGORIES.map((c) => c.id);
-      sorted = [...sorted].sort((a, b) => {
-        const ai = categoryOrder.indexOf(a.category);
-        const bi = categoryOrder.indexOf(b.category);
-        if (ai !== bi) return ai - bi;
-        return (a.display_order ?? 0) - (b.display_order ?? 0);
-      });
-    }
+    // Category first, then display_order so ranked panel posts keep their
+    // hierarchy, then name A-Z. Plain member categories all share one
+    // display_order, so they come out purely alphabetical.
+    const categoryOrder = CATEGORIES.map((c) => c.id);
+    const sorted = [...(data || [])].sort((a, b) => {
+      const ai = categoryOrder.indexOf(a.category);
+      const bi = categoryOrder.indexOf(b.category);
+      if (ai !== bi) return (ai === -1 ? categoryOrder.length : ai) - (bi === -1 ? categoryOrder.length : bi);
+      const ao = a.display_order ?? 99;
+      const bo = b.display_order ?? 99;
+      if (ao !== bo) return ao - bo;
+      return String(a.name || '').localeCompare(String(b.name || ''), undefined, { sensitivity: 'base' });
+    });
 
     if (!sorted.length) {
       grid.innerHTML = '';

@@ -12,7 +12,7 @@ create table if not exists public.team_members (
   name text not null check (char_length(name) between 1 and 100),
   title text not null check (char_length(title) between 1 and 120),
   batch text not null default '',
-  category text not null check (category in ('executive-panel', 'sub-executive-panel', 'executive-members', 'sub-executive-members', 'general-members')),
+  category text not null check (category in ('executive-panel', 'sub-executive-panel', 'sub-executive-members', 'general-members')),
   department text not null default '',
   photo_url text,
   linkedin_url text,
@@ -33,8 +33,25 @@ alter table public.team_members add column if not exists facebook_url text;
 -- ------------------------------------------------------------
 alter table public.team_members drop constraint if exists team_members_category_check;
 
+-- The Executive Members category was retired. "Senior Executive Member" rows
+-- belong in the Sub-Executive Panel; plain "Executive Member" rows fall into
+-- sub-executive-members.
+update public.team_members
+set category = 'sub-executive-panel'
+where category = 'executive-members' and title = 'Senior Executive Member';
+
+update public.team_members
+set category = 'sub-executive-members'
+where category = 'executive-members' and title <> 'Senior Executive Member';
+
+-- Also fix any existing sub-executive-members rows that were mistakenly stored
+-- as "Senior Executive Member" — those belong in the Sub-Executive Panel.
+update public.team_members
+set category = 'sub-executive-panel', title = 'Senior Executive Member'
+where category = 'sub-executive-members' and title = 'Senior Executive Member';
+
 alter table public.team_members add constraint team_members_category_check
-  check (category in ('executive-panel', 'sub-executive-panel', 'executive-members', 'sub-executive-members', 'general-members'));
+  check (category in ('executive-panel', 'sub-executive-panel', 'sub-executive-members', 'general-members'));
 
 -- 1c. Post / department migration — titles are now built from a fixed post
 -- list plus a fixed department list ("Post - Department"), so the free-text
@@ -70,14 +87,17 @@ where department <> '' and department not in (
   'Academics', 'Public Relations', 'Partners', 'Membership'
 );
 
--- Executive and general members hold no post and no department at all.
+-- Sub-executive and general members hold no post and no department at all.
+-- (Plain "Executive Member" rows kept from the retired category preserve that
+-- wording; "Senior Executive Member" rows are now in sub-executive-panel.)
 update public.team_members
-set title = case category
-      when 'executive-members' then 'Executive Member'
-      else 'General Member'
+set title = case
+      when category = 'general-members' then 'General Member'
+      when title = 'Executive Member' then title
+      else 'Sub-Executive Member'
     end,
     department = ''
-where category in ('executive-members', 'general-members');
+where category in ('sub-executive-members', 'general-members');
 
 -- Panel rows: rebuild "Post - Department" from the remapped department, and
 -- retire old post names that are no longer offered.
@@ -91,7 +111,10 @@ update public.team_members set title = case
   when category = 'executive-panel' then 'Vice President'
   else 'Head of Department'
 end || case when department = '' then '' else ' - ' || department end
-where category in ('executive-panel', 'sub-executive-panel');
+where category in ('executive-panel', 'sub-executive-panel')
+  -- 'No Post' marks a Sub-Executive Panel member without a post; it is a
+  -- sentinel the team page hides, not a post to rebuild.
+  and title <> 'No Post';
 
 -- PostgREST caches the schema, so nudge it after any change above.
 notify pgrst, 'reload schema';
@@ -192,7 +215,7 @@ select * from (values
   ('X', 'General Secretary', 'BBA Batch 10', 'executive-panel', 'Internal Affairs', 2),
   ('X', 'Treasurer', 'BBA Batch 10', 'executive-panel', 'Operations & Activations', 3),
   ('X', 'Head of Department - Creative & Visualization', 'BBA Batch 11', 'sub-executive-panel', 'Creative & Visualization', 4),
-  ('X', 'Executive Member', 'BBA Batch 11', 'executive-members', '', 5),
+  ('X', 'Sub-Executive Member', 'BBA Batch 11', 'sub-executive-members', '', 5),
   ('X', 'General Member', 'BBA Batch 12', 'general-members', '', 6)
 ) as seed(name, title, batch, category, department, display_order)
 where not exists (select 1 from public.team_members);

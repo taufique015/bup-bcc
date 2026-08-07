@@ -8,7 +8,6 @@
 const CATEGORIES = [
   { id: 'executive-panel', label: 'Executive Panel' },
   { id: 'sub-executive-panel', label: 'Sub-Executive Panel' },
-  { id: 'executive-members', label: 'Executive Members' },
   { id: 'sub-executive-members', label: 'Sub-Executive Members' },
   { id: 'general-members', label: 'General Members' },
 ];
@@ -35,7 +34,11 @@ const DEPARTMENTS = [
   'Membership',
 ];
 
-// Posts available per category. Executive/general members hold no post or
+// Sub-Executive Panel members can sit on the panel without holding a post.
+// Stored as a title (the database requires one) but never shown on team.html.
+const NO_POST = 'No Post';
+
+// Posts available per category. Sub-executive/general members hold no post or
 // department — their title is fixed to the label below.
 const POSTS = {
   'executive-panel': [
@@ -52,11 +55,11 @@ const POSTS = {
     'Head of Department',
     'Deputy Head of Department',
     'Assistant Head of Department',
+    NO_POST,
   ],
 };
 
 const PLAIN_TITLES = {
-  'executive-members': 'Executive Member',
   'sub-executive-members': 'Sub-Executive Member',
   'general-members': 'General Member',
 };
@@ -196,6 +199,7 @@ function composeTitle(prefix) {
   const post = $(`${prefix}-post`).value;
   const department = $(`${prefix}-department`).value;
   if (!post) return '';
+  if (post === NO_POST) return NO_POST;
   return department ? `${post} - ${department}` : post;
 }
 
@@ -209,21 +213,26 @@ function syncPostFields(prefix, keep) {
   const deptSelect = $(`${prefix}-department`);
 
   $(`${prefix}-post-field`).classList.toggle('hidden', !hasPost);
-  $(`${prefix}-department-field`).classList.toggle('hidden', !hasPost);
 
   if (hasPost) {
     postSelect.innerHTML = optionsHtml(posts, 'Select a post…');
     postSelect.value = keep && posts.includes(keep.post) ? keep.post : '';
     deptSelect.innerHTML = optionsHtml(DEPARTMENTS, 'No department');
     deptSelect.value = keep && DEPARTMENTS.includes(keep.department) ? keep.department : '';
+    // A panel member without a post carries no department either.
+    $(`${prefix}-department-field`).classList.toggle('hidden', postSelect.value === NO_POST);
+    if (postSelect.value === NO_POST) deptSelect.value = '';
   } else {
+    $(`${prefix}-department-field`).classList.add('hidden');
     postSelect.innerHTML = '';
     deptSelect.innerHTML = '';
   }
 
   const preview = $(`${prefix}-title-preview`);
   const title = composeTitle(prefix);
-  preview.textContent = title ? `Will be shown as: ${title}` : 'Pick a post to build the title.';
+  preview.textContent = title === NO_POST
+    ? 'No post — the team page will show the name only.'
+    : title ? `Will be shown as: ${title}` : 'Pick a post to build the title.';
 }
 
 function wirePostFields(prefix) {
@@ -329,6 +338,22 @@ function setSelectMode(on) {
   if (!on) document.querySelectorAll('.member-select-cb').forEach((cb) => (cb.checked = false));
   syncDeleteSelectedBtn();
   syncGraduateSelectedBtn();
+  syncSelectAllBtn();
+}
+
+// Only meaningful once select mode is on, so it rides in and out with the
+// checkboxes. Scoped to the cards on screen, which is all the bulk actions read.
+function syncSelectAllBtn() {
+  const btn = $('select-all-btn');
+  if (!btn) return;
+  btn.classList.toggle('hidden', !selectMode);
+  if (!selectMode) return;
+  const boxes = [...document.querySelectorAll('.member-select-cb')];
+  const allChecked = boxes.length > 0 && boxes.every((cb) => cb.checked);
+  const icon = allChecked
+    ? '<svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>'
+    : '<svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+  btn.innerHTML = `${allChecked ? 'Deselect All' : 'Select All'} ${icon}`;
 }
 
 // Companion to the delete button: same selection, opposite outcome. Idle it
@@ -367,6 +392,22 @@ function syncDeleteSelectedBtn() {
   }
 }
 
+// Roster order: category first (panels before members), then display_order so
+// ranked panel posts keep their hierarchy, then name A→Z. Plain member
+// categories share one display_order, so they come out purely alphabetical.
+function sortRoster(rows) {
+  const order = CATEGORIES.map((c) => c.id);
+  return [...rows].sort((a, b) => {
+    const ai = order.indexOf(a.category);
+    const bi = order.indexOf(b.category);
+    if (ai !== bi) return (ai === -1 ? order.length : ai) - (bi === -1 ? order.length : bi);
+    const ao = a.display_order ?? 99;
+    const bo = b.display_order ?? 99;
+    if (ao !== bo) return ao - bo;
+    return String(a.name || '').localeCompare(String(b.name || ''), undefined, { sensitivity: 'base' });
+  });
+}
+
 function renderMembers() {
   const grid = $('members-grid');
   const start = (membersPage - 1) * PAGE_SIZE;
@@ -379,11 +420,13 @@ function renderMembers() {
     cb.addEventListener('change', () => {
       syncDeleteSelectedBtn();
       syncGraduateSelectedBtn();
+      syncSelectAllBtn();
     })
   );
   if (selectMode) setSelectMode(true);
   syncDeleteSelectedBtn();
   syncGraduateSelectedBtn();
+  syncSelectAllBtn();
   renderPagination('members-pagination', membersPage, members.length, (p) => { membersPage = p; renderMembers(); });
 }
 
@@ -400,7 +443,7 @@ function populateCategorySelect() {
 async function loadMembers() {
   const { data, error } = await supabaseClient.from('team_members').select('*').order('display_order');
   if (error) { showToast(error.message, true); return; }
-  members = data || [];
+  members = sortRoster(data || []);
   renderMembers();
 }
 
@@ -451,7 +494,7 @@ async function handleMemberSubmit(e) {
     const payload = {
       name,
       title,
-      department: POSTS[category] ? $('member-department').value : '',
+      department: POSTS[category] && title !== NO_POST ? $('member-department').value : '',
       linkedin_url: $('member-linkedin').value.trim() || null,
       facebook_url: $('member-facebook').value.trim() || null,
       category,
@@ -552,6 +595,8 @@ function categoryIdFrom(value) {
   const raw = String(value ?? '').trim();
   if (!raw) return '';
   const key = raw.toLowerCase();
+  // The retired Executive Members category folds into the sub-executive members.
+  if (key === 'executive-members' || key === 'executive members') return 'sub-executive-members';
   const match = CATEGORIES.find((c) => c.id === key || c.label.toLowerCase() === key);
   return match ? match.id : null;
 }
@@ -706,9 +751,14 @@ function parseDesignation(raw) {
   );
   if (plainId) return { category: plainId, title: PLAIN_TITLES[plainId], department: '' };
 
-  // 2. Senior Executive Member sits with the executive members.
-  if (normalizeKey(str) === 'senior executive member') {
-    return { category: 'executive-members', title: 'Senior Executive Member', department: '' };
+  // 2. "Senior Executive Member" belongs to the Sub-Executive Panel.
+  //    Plain "Executive Member" (retired category) falls into sub-executive-members.
+  const legacy = normalizeKey(str);
+  if (legacy === 'senior executive member') {
+    return { category: 'sub-executive-panel', title: 'Senior Executive Member', department: '' };
+  }
+  if (legacy === 'executive member') {
+    return { category: 'sub-executive-members', title: 'Executive Member', department: '' };
   }
 
   // 3. Head-style posts. "of" is optional and the department may sit after the
@@ -781,7 +831,7 @@ function buildBulkRow(row) {
       const matchedPost = posts.find((p) => p.toLowerCase() === post.toLowerCase());
       if (!matchedPost) return { error: `Unknown post "${post}"` };
 
-      const dept = String(row.department ?? '').trim();
+      const dept = matchedPost === NO_POST ? '' : String(row.department ?? '').trim();
       if (dept) {
         const matchedDept = DEPARTMENTS.find((d) => d.toLowerCase() === dept.toLowerCase());
         if (!matchedDept) return { error: `Unknown department "${dept}"` };
@@ -884,7 +934,7 @@ function downloadBulkTemplate() {
     [3, 'Full Name Here', 'Head of Corporate Affairs'],
     [4, 'Full Name Here', 'Deputy Head of Documentation'],
     [5, 'Full Name Here', 'Assistant Head of Logistics & Procurement'],
-    [6, 'Full Name Here', 'Senior Executive Member'],
+    [6, 'Full Name Here', 'No Post'],
     ['', '', 'Batch 20XX  (Sub-Executive Members)'],
     ['SL.', 'Name', 'Designation'],
     [1, 'Full Name Here', 'Sub-Executive Member'],
@@ -1447,6 +1497,14 @@ document.addEventListener('DOMContentLoaded', () => {
   $('tab-achievements-btn').addEventListener('click', () => switchTab('achievements'));
 
   $('add-member-btn').addEventListener('click', () => openMemberModal(null));
+  $('select-all-btn').addEventListener('click', () => {
+    const boxes = [...document.querySelectorAll('.member-select-cb')];
+    const allChecked = boxes.length > 0 && boxes.every((cb) => cb.checked);
+    boxes.forEach((cb) => (cb.checked = !allChecked));
+    syncDeleteSelectedBtn();
+    syncGraduateSelectedBtn();
+    syncSelectAllBtn();
+  });
   $('delete-selected-btn').addEventListener('click', async () => {
     if (!selectMode) { setSelectMode(true); return; }
     const checked = [...document.querySelectorAll('.member-select-cb:checked')];
