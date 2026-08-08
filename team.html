@@ -110,6 +110,8 @@
     outline-offset: 3px;
   }
 </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-config.js"></script>
 </head>
 <body class="bg-ink font-sans text-white antialiased">
 <header id="navbar" class="fixed top-0 inset-x-0 z-50 px-3 sm:px-6 pt-3 sm:pt-5">
@@ -136,7 +138,7 @@
         </span>
       </a>
 
-      <nav class="hidden md:flex items-center gap-4 lg:gap-8 text-xs sm:text-sm lg:text-[15px] font-medium text-gray-300">
+      <nav class="hidden md:flex items-center gap-4 lg:gap-8 text-xs sm:text-sm lg:text-base font-medium text-gray-300">
         <a href="index.html" class="hover:text-gold transition-colors py-1">Home</a>
         <a href="about-us.html" class="hover:text-gold transition-colors py-1">About Us</a>
         <a href="events.html" class="hover:text-gold transition-colors py-1">Events</a>
@@ -292,8 +294,6 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/team.js"></script>
 <script>
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

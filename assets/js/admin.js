@@ -55,7 +55,7 @@ const POSTS = {
     'Head of Department',
     'Deputy Head of Department',
     'Assistant Head of Department',
-    NO_POST,
+    'Senior Executive Member',
   ],
 };
 
