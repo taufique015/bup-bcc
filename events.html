@@ -33,6 +33,9 @@
   };
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
+
 <style>
   html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
   .dot-grid {
@@ -123,7 +126,7 @@
         <a href="#" class="hover:text-gold text-white transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gold after:rounded-full">Events</a>
         <a href="team.html" class="hover:text-gold transition-colors py-1">Team</a>
         <a href="hall-of-fame.html" class="hover:text-gold transition-colors py-1">Hall of Fame</a>
-        <a href="achievements.html" class="hover:text-gold transition-colors py-1">Achievements</a>
+        <a href="accomplishments.html" class="hover:text-gold transition-colors py-1">Accomplishments</a>
         <a href="bizfeed.html" class="hover:text-gold transition-colors py-1">BizFeed</a>
       </nav>
 
@@ -154,7 +157,7 @@
       <a href="#" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">Events</a>
       <a href="team.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
       <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
-      <a href="achievements.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Achievements</a>
+      <a href="accomplishments.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Accomplishments</a>
       <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
     </div>
 
@@ -284,189 +287,6 @@
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
       <div id="events-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-7 lg:gap-8">
 
-        <!-- Card 1: CreADive 2026 -->
-        <div class="glass-card group relative hidden rounded-2xl overflow-hidden bg-ink-secondary/70 backdrop-blur-md border border-white/10 shadow-lg hover:-translate-y-1.5 transition-transform duration-300" data-category="competition">
-          <div class="ribbon-corner"></div>
-          <div class="glass-glow pointer-events-none absolute inset-0 rounded-2xl border border-gold/20 opacity-0 transition-opacity duration-300 z-[1]" style="background: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(242, 185, 13, 0.22), rgba(201, 154, 0, 0.08) 40%, transparent 80%);"></div>
-          <div class="glass-border-glow pointer-events-none absolute inset-0 rounded-2xl border border-white/20 opacity-0 transition-opacity duration-300 z-[1]" style="mask-image: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"></div>
-          <div class="relative z-[2]">
-            <div class="relative h-40 sm:h-44 bg-ink flex items-center justify-center border-b border-white/10">
-              <img src="assets/creadive-2026.png" alt="CreADive 2026">
-            </div>
-            <div class="p-6 pt-12">
-              <span class="inline-block text-[11px] font-display font-semibold uppercase tracking-wider text-gold bg-gold/10 border border-gold/20 rounded-full px-3 py-1 mb-3">Competition</span>
-              <h3 class="font-display text-lg font-bold text-white">CreADive 2026</h3>
-              <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-xs text-gray-400">
-                <span class="flex items-center gap-1">
-                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
-                  August, 2026
-                </span>
-                <span class="flex items-center gap-1">
-                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 105 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-                  InterContinental Dhaka
-                </span>
-              </div>
-              <p class="mt-3 text-sm text-gray-400 leading-relaxed">A nationwide 360° marketing competition challenging teams to build complete ad campaigns for real brand briefs.</p>
-              <a href="creadive/" class="mt-4 inline-flex items-center gap-1.5 text-gold font-display font-semibold text-sm group-hover:gap-2.5 transition-all">
-                View Details
-                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Card 2: GATEWAY 2026 -->
-        <div class="glass-card group relative rounded-2xl overflow-hidden bg-ink-secondary/70 backdrop-blur-md border border-white/10 shadow-lg hover:-translate-y-1.5 transition-transform duration-300" data-category="networking">
-          <div class="ribbon-corner"></div>
-          <div class="glass-glow pointer-events-none absolute inset-0 rounded-2xl border border-gold/20 opacity-0 transition-opacity duration-300 z-[1]" style="background: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(242, 185, 13, 0.22), rgba(201, 154, 0, 0.08) 40%, transparent 80%);"></div>
-          <div class="glass-border-glow pointer-events-none absolute inset-0 rounded-2xl border border-white/20 opacity-0 transition-opacity duration-300 z-[1]" style="mask-image: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"></div>
-          <div class="relative z-[2]">
-            <div class="relative h-40 sm:h-44 bg-ink flex items-center justify-center border-b border-white/10">
-              <img src="assets/gateway-2026.png" alt="GATEWAY 2026" class="scale-[1.09]"></div>
-            <div class="p-6 pt-12">
-              <span class="inline-block text-[11px] font-display font-semibold uppercase tracking-wider text-gold bg-gold/10 border border-gold/20 rounded-full px-3 py-1 mb-3">Networking</span>
-              <h3 class="font-display text-lg font-bold text-white">GATEWAY 2026</h3>
-              <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-400">
-                <span class="flex items-center gap-1">
-                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
-                  June 18, 2026
-                </span>
-                <span class="flex items-center gap-1">
-                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 105 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-                  BUP Auditorium
-                </span>
-              </div>
-              <p class="mt-3 text-sm text-gray-400 leading-relaxed">Gateway 2026 is the ultimate platform for undergraduates to showcase their talent, creativity, and leadership potential.</p>
-              <a href="#" class="mt-4 inline-flex items-center gap-1.5 text-gold font-display font-semibold text-sm group-hover:gap-2.5 transition-all">
-                View Details
-                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 3: Learn to Lead 2026 -->
-        <div class="glass-card group relative rounded-2xl overflow-hidden bg-ink-secondary/70 backdrop-blur-md border border-white/10 shadow-lg hover:-translate-y-1.5 transition-transform duration-300" data-category="seminar">
-          <div class="ribbon-corner"></div>
-          <div class="glass-glow pointer-events-none absolute inset-0 rounded-2xl border border-gold/20 opacity-0 transition-opacity duration-300 z-[1]" style="background: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(242, 185, 13, 0.22), rgba(201, 154, 0, 0.08) 40%, transparent 80%);"></div>
-          <div class="glass-border-glow pointer-events-none absolute inset-0 rounded-2xl border border-white/20 opacity-0 transition-opacity duration-300 z-[1]" style="mask-image: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"></div>
-          <div class="relative z-[2]">
-            <div class="relative h-48 sm:h-44 bg-ink flex items-center justify-center border-b border-white/10">
-              <img src="assets/learn-to-lead-2026.png" alt="Learn to Lead 2026"></div>
-            <div class="p-6 pt-12">
-              <span class="inline-block text-[11px] font-display font-semibold uppercase tracking-wider text-gold bg-gold/10 border border-gold/20 rounded-full px-3 py-1 mb-3">Seminar</span>
-              <h3 class="font-display text-lg font-bold text-white">Learn to Lead 2026</h3>
-              <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-400">
-                <span class="flex items-center gap-1">
-                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
-                  May 6, 2026
-                </span>
-                <span class="flex items-center gap-1">
-                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 105 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-                  Bijoy Auditorium
-                </span>
-              </div>
-              <p class="mt-3 text-sm text-gray-400 leading-relaxed">BUP BCC, in collaboration with Unilever Bangladesh, successfully hosted Learn to Lead at BUP, creating a space for industry insights and real world learning.</p>
-              <a href="#" class="mt-4 inline-flex items-center gap-1.5 text-gold font-display font-semibold text-sm group-hover:gap-2.5 transition-all">
-                View Details
-                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 4: Corporiddlerz 2025 -->
-        <div class="glass-card group relative rounded-2xl overflow-hidden bg-ink-secondary/70 backdrop-blur-md border border-white/10 shadow-lg hover:-translate-y-1.5 transition-transform duration-300" data-category="competition">
-          <div class="ribbon-corner"></div>
-          <div class="glass-glow pointer-events-none absolute inset-0 rounded-2xl border border-gold/20 opacity-0 transition-opacity duration-300 z-[1]" style="background: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(242, 185, 13, 0.22), rgba(201, 154, 0, 0.08) 40%, transparent 80%);"></div>
-          <div class="glass-border-glow pointer-events-none absolute inset-0 rounded-2xl border border-white/20 opacity-0 transition-opacity duration-300 z-[1]" style="mask-image: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"></div>
-          <div class="relative z-[2]">
-            <div class="relative h-40 sm:h-44 bg-ink flex items-center justify-center border-b border-white/10">
-              <img src="assets/corporiddlerz-2025-1.png" alt="Corporiddlerz 2025">
-            </div>
-            <div class="p-6 pt-12">
-              <span class="inline-block text-[11px] font-display font-semibold uppercase tracking-wider text-gold bg-gold/10 border border-gold/20 rounded-full px-3 py-1 mb-3">Competition</span>
-              <h3 class="font-display text-lg font-bold text-white">Corporiddlerz 2025</h3>
-              <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-400">
-                <span class="flex items-center gap-1">
-                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
-                  September 20, 2025
-                </span>
-                <span class="flex items-center gap-1">
-                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 105 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-                  Shadhinota Auditorium, BUP
-                </span>
-              </div>
-              <p class="mt-3 text-sm text-gray-400 leading-relaxed">A national business strategy competition where inter-university teams solve real case challenges across multiple rounds.</p>
-              <a href="#" class="mt-4 inline-flex items-center gap-1.5 text-gold font-display font-semibold text-sm group-hover:gap-2.5 transition-all">
-                View Details
-                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 5: Biz Quest 2024 -->
-        <div class="glass-card group relative rounded-2xl overflow-hidden bg-ink-secondary/70 backdrop-blur-md border border-white/10 shadow-lg hover:-translate-y-1.5 transition-transform duration-300" data-category="workshop">
-          <div class="ribbon-corner"></div>
-          <div class="glass-glow pointer-events-none absolute inset-0 rounded-2xl border border-gold/20 opacity-0 transition-opacity duration-300 z-[1]" style="background: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(242, 185, 13, 0.22), rgba(201, 154, 0, 0.08) 40%, transparent 80%);"></div>
-          <div class="glass-border-glow pointer-events-none absolute inset-0 rounded-2xl border border-white/20 opacity-0 transition-opacity duration-300 z-[1]" style="mask-image: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"></div>
-          <div class="relative z-[2]">
-            <div class="relative h-40 sm:h-44 bg-ink flex items-center justify-center border-b border-white/10">
-              <img src="assets/bizquest-2024.jpg" alt="Biz Quest 2024">
-            </div>
-            <div class="p-6 pt-12">
-              <span class="inline-block text-[11px] font-display font-semibold uppercase tracking-wider text-gold bg-gold/10 border border-gold/20 rounded-full px-3 py-1 mb-3">Workshop</span>
-              <h3 class="font-display text-lg font-bold text-white">Biz Quest 2024</h3>
-              <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-400">
-                <span class="flex items-center gap-1">
-                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
-                  May 18, 2024
-                </span>
-                <span class="flex items-center gap-1">
-                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 105 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-                  BUP Auditorium
-                </span>
-              </div>
-              <p class="mt-3 text-sm text-gray-400 leading-relaxed">An inter-university business seminar sharing practical strategies from industry leaders to help students get ahead.</p>
-              <a href="#" class="mt-4 inline-flex items-center gap-1.5 text-gold font-display font-semibold text-sm group-hover:gap-2.5 transition-all">
-                View Details
-                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Card 6: CreADive 2023 -->
-        <div class="glass-card group relative rounded-2xl overflow-hidden bg-ink-secondary/70 backdrop-blur-md border border-white/10 shadow-lg hover:-translate-y-1.5 transition-transform duration-300" data-category="competition">
-          <div class="ribbon-corner"></div>
-          <div class="glass-glow pointer-events-none absolute inset-0 rounded-2xl border border-gold/20 opacity-0 transition-opacity duration-300 z-[1]" style="background: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(242, 185, 13, 0.22), rgba(201, 154, 0, 0.08) 40%, transparent 80%);"></div>
-          <div class="glass-border-glow pointer-events-none absolute inset-0 rounded-2xl border border-white/20 opacity-0 transition-opacity duration-300 z-[1]" style="mask-image: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"></div>
-          <div class="relative z-[2]">
-            <div class="relative h-40 sm:h-44 bg-ink flex items-center justify-center border-b border-white/10">
-              <img src="assets/creadive-2023.png" alt="CreADive 2023">
-            </div>
-            <div class="p-6 pt-12">
-              <span class="inline-block text-[11px] font-display font-semibold uppercase tracking-wider text-gold bg-gold/10 border border-gold/20 rounded-full px-3 py-1 mb-3">Competition</span>
-              <h3 class="font-display text-lg font-bold text-white">CreADive 2023</h3>
-              <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-400">
-                <span class="flex items-center gap-1">
-                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
-                  March 20, 2023
-                </span>
-                <span class="flex items-center gap-1">
-                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 105 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-                  Bijoy Auditorium, BUP
-                </span>
-              </div>
-              <p class="mt-3 text-sm text-gray-400 leading-relaxed">CreADive is an annual flagship event of BUP BCC that challenges students to ideate 360 marketing campaigns to overcome challenges faced by businesses.</p>
-              <a href="#" class="mt-4 inline-flex items-center gap-1.5 text-gold font-display font-semibold text-sm group-hover:gap-2.5 transition-all">
-                View Details
-                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
-              </a>
-            </div>
-          </div>
-        </div>
 
         <p id="events-empty-state" class="hidden sm:col-span-2 lg:col-span-3 text-center text-gray-400 text-sm py-12">No events in this category yet — check back soon.</p>
 
@@ -475,82 +295,10 @@
   </section>
 
   <!-- PAST EVENTS GALLERY -->
-  <section class="bg-ink-secondary py-20 sm:py-24">
+  <section id="past-events-section" class="bg-ink-secondary py-20 sm:py-24 hidden">
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
       <h2 class="font-display text-gold text-3xl sm:text-5xl font-bold text-center mb-12">Past Events</h2>
-
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5">
-
-        <div class="group relative rounded-xl overflow-hidden bg-ink border border-white/10 h-[108px]">
-          <div class="absolute inset-0 flex items-center justify-center text-gray-700 transition-transform duration-300 group-hover:scale-110">
-          <img src="assets/gateway-2026.png" alt="GATEWAY 2026">  </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"></div>
-          <div class="absolute inset-x-0 bottom-0 p-3">
-            <p class="text-white text-xs sm:text-sm font-display font-semibold leading-tight">GATEWAY 2026</p>
-            <p class="text-gold text-[11px] mt-0.5">2026</p>
-          </div>
-          <div class="absolute inset-0 border border-transparent group-hover:border-gold/40 rounded-xl transition-colors duration-300"></div>
-        </div>
-
-        <div class="group relative rounded-xl overflow-hidden bg-ink border border-white/10 h-[108px]">
-          <div class="absolute inset-0 flex items-center justify-center text-gray-700 transition-transform duration-300 group-hover:scale-110">
-            <img src="assets/learn-to-lead-2026.png" alt="Learn to Lead 2026">
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"></div>
-          <div class="absolute inset-x-0 bottom-0 p-3">
-            <p class="text-white text-xs sm:text-sm font-display font-semibold leading-tight">Learn to Lead 2026</p>
-            <p class="text-gold text-[11px] mt-0.5">2026</p>
-          </div>
-          <div class="absolute inset-0 border border-transparent group-hover:border-gold/40 rounded-xl transition-colors duration-300"></div>
-        </div>
-
-        <div class="group relative rounded-xl overflow-hidden bg-ink border border-white/10 h-[108px]">
-          <div class="absolute inset-0 flex items-center justify-center text-gray-700 transition-transform duration-300 group-hover:scale-110">
-            <img src="assets/corporiddlerz-2025-1.png" alt="Corporiddlerz 2025">
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"></div>
-          <div class="absolute inset-x-0 bottom-0 p-3">
-            <p class="text-white text-xs sm:text-sm font-display font-semibold leading-tight">Corporiddlerz 2025</p>
-            <p class="text-gold text-[11px] mt-0.5">2025</p>
-          </div>
-          <div class="absolute inset-0 border border-transparent group-hover:border-gold/40 rounded-xl transition-colors duration-300"></div>
-        </div>
-
-        <div class="group relative rounded-xl overflow-hidden bg-ink border border-white/10 h-[108px]">
-          <div class="absolute inset-0 flex items-center justify-center text-gray-700 transition-transform duration-300 group-hover:scale-110">
-            <img src="assets/bizquest-2024.jpg" alt="Biz Quest 2024">
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"></div>
-          <div class="absolute inset-x-0 bottom-0 p-3">
-            <p class="text-white text-xs sm:text-sm font-display font-semibold leading-tight">Biz Quest 2024</p>
-            <p class="text-gold text-[11px] mt-0.5">2024</p>
-          </div>
-          <div class="absolute inset-0 border border-transparent group-hover:border-gold/40 rounded-xl transition-colors duration-300"></div>
-        </div>
-
-        <div class="group relative rounded-xl overflow-hidden bg-ink border border-white/10 h-[108px]">
-          <div class="absolute inset-0 flex items-center justify-center text-gray-700 transition-transform duration-300 group-hover:scale-110">
-            <img src="assets/creadive-idlc.png" alt="CreADive 2023">
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"></div>
-          <div class="absolute inset-x-0 bottom-0 p-3">
-            <p class="text-white text-xs sm:text-sm font-display font-semibold leading-tight">CreADive 2023</p>
-            <p class="text-gold text-[11px] mt-0.5">2023</p>
-          </div>
-          <div class="absolute inset-0 border border-transparent group-hover:border-gold/40 rounded-xl transition-colors duration-300"></div>
-        </div>
-
-        <div class="group relative rounded-xl overflow-hidden bg-ink border border-white/10 h-[108px]">
-          <div class="absolute inset-0 flex items-center justify-center text-gray-700 transition-transform duration-300 group-hover:scale-110">
-          <img src="assets/gateway-2023.jpg" alt="Gateway 2023">  </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"></div>
-          <div class="absolute inset-x-0 bottom-0 p-3">
-            <p class="text-white text-xs sm:text-sm font-display font-semibold leading-tight">Gateway 2023</p>
-            <p class="text-gold text-[11px] mt-0.5">2023</p>
-          </div>
-          <div class="absolute inset-0 border border-transparent group-hover:border-gold/40 rounded-xl transition-colors duration-300"></div>
-        </div>
-      </div>
+      <div id="past-events-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5"></div>
     </div>
   </section>
 
@@ -559,197 +307,17 @@
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
       <div class="text-center mb-14">
         <p class="text-gold font-display font-semibold text-sm tracking-[0.2em] uppercase mb-3">Event Timeline</p>
-        <h2 class="font-display text-gold text-3xl sm:text-4xl font-bold">Event Calendar 2026</h2>
+        <h2 id="calendar-title" class="font-display text-gold text-3xl sm:text-4xl font-bold">Event Calendar 2026</h2>
       </div>
  
-      <!-- Mobile: vertical calendar -->
-      <div class="sm:hidden">
-        <div class="flex flex-col">
- 
-          <div class="flex gap-4">
-            <div class="w-2.5 shrink-0 flex flex-col items-center">
-              <span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink shrink-0" aria-hidden="true"></span>
-              <span class="w-px flex-1 bg-white/15 mt-1" aria-hidden="true"></span>
-            </div>
-            <div class="pb-5">
-              <p class="text-sm text-gray-400">January</p>
-            </div>
-          </div>
- 
-          <div class="flex gap-4">
-            <div class="w-2.5 shrink-0 flex flex-col items-center">
-              <span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink shrink-0" aria-hidden="true"></span>
-              <span class="w-px flex-1 bg-white/15 mt-1" aria-hidden="true"></span>
-            </div>
-            <div class="pb-5">
-              <p class="text-sm text-gray-400">February</p>
-            </div>
-          </div>
- 
-          <div class="flex gap-4">
-            <div class="w-2.5 shrink-0 flex flex-col items-center">
-              <span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink shrink-0" aria-hidden="true"></span>
-              <span class="w-px flex-1 bg-white/15 mt-1" aria-hidden="true"></span>
-            </div>
-            <div class="pb-5">
-              <p class="text-sm text-gray-400">March</p>
-            </div>
-          </div>
- 
-          <div class="flex gap-4">
-            <div class="w-2.5 shrink-0 flex flex-col items-center">
-              <span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink shrink-0" aria-hidden="true"></span>
-              <span class="w-px flex-1 bg-white/15 mt-1" aria-hidden="true"></span>
-            </div>
-            <div class="pb-5">
-              <p class="text-sm text-gray-400">April</p>
-            </div>
-          </div>
- 
-          <div class="flex gap-4">
-            <div class="w-2.5 shrink-0 flex flex-col items-center">
-              <span class="w-2.5 h-2.5 rounded-full border-2 border-gold bg-ink shrink-0" aria-hidden="true"></span>
-              <span class="w-px flex-1 bg-white/15 mt-1" aria-hidden="true"></span>
-            </div>
-            <div class="pb-5">
-              <p class="text-sm text-gray-400">May</p>
-              <div class="mt-2 inline-block bg-ink-secondary border border-gold/30 rounded-lg px-3 py-1.5">
-                <p class="text-xs text-gold font-display font-semibold">Learn to Lead</p>
-              </div>
-            </div>
-          </div>
- 
-          <div class="flex gap-4">
-            <div class="w-2.5 shrink-0 flex flex-col items-center">
-              <span class="w-2.5 h-2.5 rounded-full border-2 border-gold bg-ink shrink-0" aria-hidden="true"></span>
-              <span class="w-px flex-1 bg-white/15 mt-1" aria-hidden="true"></span>
-            </div>
-            <div class="pb-5">
-              <p class="text-sm text-gray-400">June</p>
-              <div class="mt-2 inline-block bg-ink-secondary border border-gold/30 rounded-lg px-3 py-1.5">
-                <p class="text-xs text-gold font-display font-semibold">GATEWAY 2026</p>
-              </div>
-            </div>
-          </div>
- 
-          <div class="flex gap-4">
-            <div class="w-2.5 shrink-0 flex flex-col items-center">
-              <span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink shrink-0" aria-hidden="true"></span>
-              <span class="w-px flex-1 bg-white/15 mt-1" aria-hidden="true"></span>
-            </div>
-            <div class="pb-5">
-              <p class="text-sm text-gray-400">July</p>
-            </div>
-          </div>
- 
-          <div class="flex gap-4">
-            <div class="w-2.5 shrink-0 flex flex-col items-center">
-              <span class="w-3.5 h-3.5 rounded-full shadow-[0_0_14px_3px_rgba(242,185,13,0.55)] bg-gold shrink-0" aria-hidden="true"></span>
-              <span class="w-px flex-1 bg-white/15 mt-1" aria-hidden="true"></span>
-            </div>
-            <div class="pb-5">
-              <p class="text-sm text-white font-semibold">August</p>
-              <div class="mt-2 inline-block bg-gold border border-gold rounded-lg px-3 py-1.5">
-                <p class="text-xs text-ink font-display font-bold">CreADive 2026</p>
-              </div>
-            </div>
-          </div>
- 
-          <div class="flex gap-4">
-            <div class="w-2.5 shrink-0 flex flex-col items-center">
-              <span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink shrink-0" aria-hidden="true"></span>
-              <span class="w-px flex-1 bg-white/15 mt-1" aria-hidden="true"></span>
-            </div>
-            <div class="pb-5">
-              <p class="text-sm text-gray-400">September</p>
-            </div>
-          </div>
- 
-          <div class="flex gap-4">
-            <div class="w-2.5 shrink-0 flex flex-col items-center">
-              <span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink shrink-0" aria-hidden="true"></span>
-              <span class="w-px flex-1 bg-white/15 mt-1" aria-hidden="true"></span>
-            </div>
-            <div class="pb-5">
-              <p class="text-sm text-gray-400">October</p>
-            </div>
-          </div>
- 
-          <div class="flex gap-4">
-            <div class="w-2.5 shrink-0 flex flex-col items-center">
-              <span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink shrink-0" aria-hidden="true"></span>
-              <span class="w-px flex-1 bg-white/15 mt-1" aria-hidden="true"></span>
-            </div>
-            <div class="pb-5">
-              <p class="text-sm text-gray-400">November</p>
-            </div>
-          </div>
- 
-          <div class="flex gap-4">
-            <div class="w-2.5 shrink-0 flex flex-col items-center">
-              <span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink shrink-0" aria-hidden="true"></span>
-            </div>
-            <div>
-              <p class="text-sm text-gray-400">December</p>
-            </div>
-          </div>
- 
-        </div>
-      </div>
- 
-      <!-- Tablet/desktop: original horizontal timeline, unchanged -->
+      <!-- Calendar (mobile + desktop) rendered by events.js -->
+      <div class="sm:hidden" id="calendar-mobile"></div>
+
+      <!-- Tablet/desktop timeline -->
       <div class="hidden sm:block overflow-x-auto scrollbar-hide">
-        <div class="min-w-[900px] px-2 pb-2">
- 
-          <div class="grid grid-cols-12">
-            <div class="text-center text-xs sm:text-sm text-gray-400">Jan</div>
-            <div class="text-center text-xs sm:text-sm text-gray-400">Feb</div>
-            <div class="text-center text-xs sm:text-sm text-gray-400">Mar</div>
-            <div class="text-center text-xs sm:text-sm text-gray-400">Apr</div>
-            <div class="text-center text-xs sm:text-sm text-gray-400">May</div>
-            <div class="text-center text-xs sm:text-sm text-gray-400">Jun</div>
-            <div class="text-center text-xs sm:text-sm text-gray-400">Jul</div>
-            <div class="text-center text-xs sm:text-sm text-white font-semibold">Aug</div>
-            <div class="text-center text-xs sm:text-sm text-gray-400">Sep</div>
-            <div class="text-center text-xs sm:text-sm text-gray-400">Oct</div>
-            <div class="text-center text-xs sm:text-sm text-gray-400">Nov</div>
-            <div class="text-center text-xs sm:text-sm text-gray-400">Dec</div>
-          </div>
- 
-          <div class="relative grid grid-cols-12 mt-4">
-            <div class="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-white/15"></div>
-            <div class="relative z-10 flex justify-center"><span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink"></span></div>
-            <div class="relative z-10 flex justify-center"><span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink"></span></div>
-            <div class="relative z-10 flex justify-center"><span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink"></span></div>
-            <div class="relative z-10 flex justify-center"><span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink"></span></div>
-            <div class="relative z-10 flex justify-center"><span class="w-2.5 h-2.5 rounded-full border-2 border-gold bg-ink"></span></div>
-            <div class="relative z-10 flex justify-center"><span class="w-2.5 h-2.5 rounded-full border-2 border-gold bg-ink"></span></div>
-            <div class="relative z-10 flex justify-center"><span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink"></span></div>
-            <div class="relative z-10 flex justify-center"><span class="w-3.5 h-3.5 rounded-full bg-gold shadow-[0_0_14px_3px_rgba(242,185,13,0.55)]"></span></div>
-            <div class="relative z-10 flex justify-center"><span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink"></span></div>
-            <div class="relative z-10 flex justify-center"><span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink"></span></div>
-            <div class="relative z-10 flex justify-center"><span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink"></span></div>
-            <div class="relative z-10 flex justify-center"><span class="w-2.5 h-2.5 rounded-full border-2 border-gold/40 bg-ink"></span></div>
-          </div>
- 
-          <div class="grid grid-cols-12 gap-1.5 sm:gap-2 mt-4">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div class="bg-ink-secondary border border-gold/30 rounded-lg px-1.5 py-2 text-center"><p class="text-[10px] sm:text-[11px] leading-tight text-gold font-display font-semibold">GATEWAY 2026</p></div>
-            <div class="bg-ink-secondary border border-gold/30 rounded-lg px-1.5 py-2 text-center"><p class="text-[10px] sm:text-[11px] leading-tight text-gold font-display font-semibold">Learn to Lead</p></div>
-            <div></div>
-            <div class="bg-gold border border-gold rounded-lg px-1.5 py-2 text-center"><p class="text-[10px] sm:text-[11px] leading-tight text-ink font-display font-bold">CreADive 2026</p></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
- 
-        </div>
+        <div class="min-w-[900px] px-2 pb-2" id="calendar-desktop"></div>
       </div>
- 
+
     </div>
   </section>
 
@@ -890,35 +458,9 @@
     });
   });
 
-  // Event category filter
-  const filterButtons = document.querySelectorAll('.category-pill');
-  const eventCards = document.querySelectorAll('#events-grid > [data-category]');
-  const emptyState = document.getElementById('events-empty-state');
-  const activeClasses = ['bg-gold', 'text-ink', 'border-gold'];
-  const inactiveClasses = ['border-white/20', 'text-gray-300'];
-
-  filterButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      filterButtons.forEach((b) => {
-        b.classList.remove(...activeClasses);
-        b.classList.add(...inactiveClasses);
-      });
-      btn.classList.remove(...inactiveClasses);
-      btn.classList.add(...activeClasses);
-
-      const category = btn.dataset.category;
-      let visibleCount = 0;
-      eventCards.forEach((card) => {
-        const match = category === 'all' || card.dataset.category === category;
-        card.style.display = match ? '' : 'none';
-        if (match) visibleCount++;
-      });
-      if (emptyState) emptyState.classList.toggle('hidden', visibleCount !== 0);
-    });
-  });
-
   // Footer year
   document.getElementById('year').textContent = new Date().getFullYear();
 </script>
+<script src="assets/js/events.js"></script>
 </body>
 </html>

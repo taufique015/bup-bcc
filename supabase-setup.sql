@@ -33,88 +33,8 @@ alter table public.team_members add column if not exists facebook_url text;
 -- ------------------------------------------------------------
 alter table public.team_members drop constraint if exists team_members_category_check;
 
--- The Executive Members category was retired. "Senior Executive Member" rows
--- belong in the Sub-Executive Panel; plain "Executive Member" rows fall into
--- sub-executive-members.
-update public.team_members
-set category = 'sub-executive-panel'
-where category = 'executive-members' and title = 'Senior Executive Member';
-
-update public.team_members
-set category = 'sub-executive-members'
-where category = 'executive-members' and title <> 'Senior Executive Member';
-
--- Also fix any existing sub-executive-members rows that were mistakenly stored
--- as "Senior Executive Member" — those belong in the Sub-Executive Panel.
-update public.team_members
-set category = 'sub-executive-panel', title = 'Senior Executive Member'
-where category = 'sub-executive-members' and title = 'Senior Executive Member';
-
 alter table public.team_members add constraint team_members_category_check
   check (category in ('executive-panel', 'sub-executive-panel', 'sub-executive-members', 'general-members'));
-
--- 1c. Post / department migration — titles are now built from a fixed post
--- list plus a fixed department list ("Post - Department"), so the free-text
--- values the roster used to hold are remapped onto the closest new option.
--- ------------------------------------------------------------
-
--- Old department lines that were really panel labels, not departments.
-update public.team_members set department = ''
-where department in ('Executive Panel', 'Sub-Executive Panel', 'General Body');
-
-update public.team_members set department = case department
-  when 'Marketing & Brand Strategy' then 'Public Relations'
-  when 'Corporate Relations'        then 'External Affairs'
-  when 'Event Operations'           then 'Operations & Activations'
-  when 'Event Management'           then 'Operations & Activations'
-  when 'HR'                         then 'Human Resources'
-  when 'Human Resource'             then 'Human Resources'
-  when 'IT'                         then 'IT & Web Development'
-  when 'Web Development'            then 'IT & Web Development'
-  when 'Creative'                   then 'Creative & Visualization'
-  when 'Content'                    then 'Content & Publication'
-  when 'Logistics'                  then 'Logistics & Procurement'
-  else department
-end;
-
--- Anything still outside the fourteen departments is cleared rather than left
--- to render a value the admin dashboard can no longer select.
-update public.team_members set department = ''
-where department <> '' and department not in (
-  'Internal Affairs', 'External Affairs', 'Human Resources', 'Policy Management',
-  'IT & Web Development', 'Operations & Activations', 'Documentation',
-  'Creative & Visualization', 'Content & Publication', 'Logistics & Procurement',
-  'Academics', 'Public Relations', 'Partners', 'Membership'
-);
-
--- Sub-executive and general members hold no post and no department at all.
--- (Plain "Executive Member" rows kept from the retired category preserve that
--- wording; "Senior Executive Member" rows are now in sub-executive-panel.)
-update public.team_members
-set title = case
-      when category = 'general-members' then 'General Member'
-      when title = 'Executive Member' then title
-      else 'Sub-Executive Member'
-    end,
-    department = ''
-where category in ('sub-executive-members', 'general-members');
-
--- Panel rows: rebuild "Post - Department" from the remapped department, and
--- retire old post names that are no longer offered.
-update public.team_members set title = case
-  when split_part(title, ' - ', 1) in (
-    'President', 'Senior Vice President', 'Vice President', 'General Secretary',
-    'Organizing Secretary', 'Treasurer', 'Joint Secretary',
-    'Junior Vice President', 'Head of Department',
-    'Assistant Head of Department', 'Deputy Head of Department'
-  ) then split_part(title, ' - ', 1)
-  when category = 'executive-panel' then 'Vice President'
-  else 'Head of Department'
-end || case when department = '' then '' else ' - ' || department end
-where category in ('executive-panel', 'sub-executive-panel')
-  -- 'No Post' marks a Sub-Executive Panel member without a post; it is a
-  -- sentinel the team page hides, not a post to rebuild.
-  and title <> 'No Post';
 
 -- PostgREST caches the schema, so nudge it after any change above.
 notify pgrst, 'reload schema';
@@ -232,7 +152,7 @@ create table if not exists public.alumni (
   name text not null check (char_length(name) between 1 and 100),
   title text not null check (char_length(title) between 1 and 120),
   class_year integer not null check (class_year between 1990 and 2100),
-  achievement text not null default '',
+  accomplishment text not null default '',
   photo_url text,
   linkedin_url text,
   facebook_url text,
@@ -320,33 +240,24 @@ using (bucket_id = 'alumni-photos');
 
 -- 7. Seed data — placeholder alumni, so the Hall of Fame isn't empty
 -- ------------------------------------------------------------
-insert into public.alumni (name, title, class_year, achievement, display_order)
+insert into public.alumni (name, title, class_year, accomplishment, display_order)
 select * from (values
   ('X', 'President', 2019, '', 1),
   ('X', 'General Secretary', 2020, '', 2),
   ('X', 'Senior Vice President', 2021, '', 3),
   ('X', 'Head of Department - Public Relations', 2022, '', 4),
   ('X', 'Junior Vice President', 2023, '', 5)
-) as seed(name, title, class_year, achievement, display_order)
+) as seed(name, title, class_year, accomplishment, display_order)
 where not exists (select 1 from public.alumni);
 -- same "where not exists" guard as the roster: this only seeds an EMPTY table.
 
--- 8. Reset existing names to the "X" placeholder
--- ------------------------------------------------------------
--- The two seed blocks above only fire on an EMPTY table, so rows that are
--- already in the database keep their old names. These two statements blank them
--- out to "X". DELETE THESE TWO STATEMENTS once you start entering real names,
--- otherwise re-running this file will wipe them again.
-update public.team_members set name = 'X' where name <> 'X';
-update public.alumni set name = 'X', achievement = '' where name <> 'X' or achievement <> '';
-
 -- ============================================================
 -- 9. Achievements — competition victories and honours
--- Its own table: an achievement belongs to a team rather than to one person,
+-- Its own table: an accomplishment belongs to a team rather than to one person,
 -- so the participating clubmates are stored as a JSON array of
 -- {"name": "...", "role": "..."} objects instead of as rows.
 -- ------------------------------------------------------------
-create table if not exists public.achievements (
+create table if not exists public.accomplishments (
   id uuid primary key default gen_random_uuid(),
   title text not null check (char_length(title) between 1 and 160),
   organizer text not null default '',
@@ -362,82 +273,82 @@ create table if not exists public.achievements (
   updated_at timestamptz not null default now()
 );
 
-drop trigger if exists achievements_set_updated_at on public.achievements;
-create trigger achievements_set_updated_at
-before update on public.achievements
+drop trigger if exists accomplishments_set_updated_at on public.accomplishments;
+create trigger accomplishments_set_updated_at
+before update on public.accomplishments
 for each row execute function public.set_updated_at();
 
 notify pgrst, 'reload schema';
 
 -- Same rule as the roster and the Hall of Fame: anyone can read visible
--- achievements, only a signed-in Executive can read hidden ones or write.
-alter table public.achievements enable row level security;
+-- accomplishments, only a signed-in Executive can read hidden ones or write.
+alter table public.accomplishments enable row level security;
 
-drop policy if exists "Public can view active achievements" on public.achievements;
-create policy "Public can view active achievements"
-on public.achievements for select
+drop policy if exists "Public can view active accomplishments" on public.accomplishments;
+create policy "Public can view active accomplishments"
+on public.accomplishments for select
 to anon
 using (active = true);
 
-drop policy if exists "Executives can view all achievements" on public.achievements;
-create policy "Executives can view all achievements"
-on public.achievements for select
+drop policy if exists "Executives can view all accomplishments" on public.accomplishments;
+create policy "Executives can view all accomplishments"
+on public.accomplishments for select
 to authenticated
 using (true);
 
-drop policy if exists "Executives can add achievements" on public.achievements;
-create policy "Executives can add achievements"
-on public.achievements for insert
+drop policy if exists "Executives can add accomplishments" on public.accomplishments;
+create policy "Executives can add accomplishments"
+on public.accomplishments for insert
 to authenticated
 with check (true);
 
-drop policy if exists "Executives can edit achievements" on public.achievements;
-create policy "Executives can edit achievements"
-on public.achievements for update
+drop policy if exists "Executives can edit accomplishments" on public.accomplishments;
+create policy "Executives can edit accomplishments"
+on public.accomplishments for update
 to authenticated
 using (true)
 with check (true);
 
-drop policy if exists "Executives can remove achievements" on public.achievements;
-create policy "Executives can remove achievements"
-on public.achievements for delete
+drop policy if exists "Executives can remove accomplishments" on public.accomplishments;
+create policy "Executives can remove accomplishments"
+on public.accomplishments for delete
 to authenticated
 using (true);
 
--- 10. Storage bucket for achievement cover images
+-- 10. Storage bucket for accomplishment cover images
 -- ------------------------------------------------------------
 insert into storage.buckets (id, name, public)
-values ('achievement-photos', 'achievement-photos', true)
+values ('accomplishment-photos', 'accomplishment-photos', true)
 on conflict (id) do nothing;
 
-drop policy if exists "Anyone can view achievement photos" on storage.objects;
-create policy "Anyone can view achievement photos"
+drop policy if exists "Anyone can view accomplishment photos" on storage.objects;
+create policy "Anyone can view accomplishment photos"
 on storage.objects for select
 to public
-using (bucket_id = 'achievement-photos');
+using (bucket_id = 'accomplishment-photos');
 
-drop policy if exists "Executives can upload achievement photos" on storage.objects;
-create policy "Executives can upload achievement photos"
+drop policy if exists "Executives can upload accomplishment photos" on storage.objects;
+create policy "Executives can upload accomplishment photos"
 on storage.objects for insert
 to authenticated
-with check (bucket_id = 'achievement-photos');
+with check (bucket_id = 'accomplishment-photos');
 
-drop policy if exists "Executives can replace achievement photos" on storage.objects;
-create policy "Executives can replace achievement photos"
+drop policy if exists "Executives can replace accomplishment photos" on storage.objects;
+create policy "Executives can replace accomplishment photos"
 on storage.objects for update
 to authenticated
-using (bucket_id = 'achievement-photos')
-with check (bucket_id = 'achievement-photos');
+using (bucket_id = 'accomplishment-photos')
+with check (bucket_id = 'accomplishment-photos');
 
-drop policy if exists "Executives can delete achievement photos" on storage.objects;
-create policy "Executives can delete achievement photos"
+drop policy if exists "Executives can delete accomplishment photos" on storage.objects;
+create policy "Executives can delete accomplishment photos"
 on storage.objects for delete
 to authenticated
-using (bucket_id = 'achievement-photos');
+using (bucket_id = 'accomplishment-photos');
 
--- 11. Seed data — placeholder achievements, so the Achievements page isn't empty
+-- 11. Seed data — placeholder accomplishments, so the Accomplishments page isn't empty
 -- ------------------------------------------------------------
-insert into public.achievements (title, organizer, year, rank, team_name, members, description, display_order)
+insert into public.accomplishments (title, organizer, year, rank, team_name, members, description, display_order)
 select * from (values
   ('National Business Case Competition', 'XYZ University', 2024, '1st Place', 'Team Alpha', '[{"name":"X","role":"Team Lead"},{"name":"X","role":"Analyst"}]'::jsonb, '', 1),
   ('Inter-University Debate Championship', 'ABC Institute', 2023, '2nd Place', 'Team Beta', '[{"name":"X","role":"Speaker"},{"name":"X","role":"Speaker"}]'::jsonb, '', 2),
@@ -445,15 +356,8 @@ select * from (values
   ('Entrepreneurship Summit Pitch', 'GHI Foundation', 2022, '3rd Place', 'Team Delta', '[{"name":"X","role":"Presenter"},{"name":"X","role":"Researcher"}]'::jsonb, '', 4),
   ('Finance Olympiad', 'JKL Commerce Club', 2022, 'Runner-up', 'Team Epsilon', '[{"name":"X","role":"Captain"},{"name":"X","role":"Analyst"}]'::jsonb, '', 5)
 ) as seed(title, organizer, year, rank, team_name, members, description, display_order)
-where not exists (select 1 from public.achievements);
+where not exists (select 1 from public.accomplishments);
 -- same "where not exists" guard: only seeds an EMPTY table.
-
--- DELETE THIS STATEMENT once you start entering real achievements,
--- otherwise re-running this file will wipe them again.
-update public.achievements
-set title = 'Achievement Title', organizer = 'Organizer', team_name = 'Team Name',
-    members = '[{"name":"X","role":"Role"}]'::jsonb, description = ''
-where true;
 
 -- ============================================================
 -- 12. Graduation — move panel members into the Hall of Fame
@@ -599,7 +503,7 @@ do $$
 declare
   t text;
 begin
-  foreach t in array array['team_members', 'alumni', 'achievements'] loop
+  foreach t in array array['team_members', 'alumni', 'accomplishments'] loop
     execute format('drop policy if exists %I on public.%I',
       'Executives can view ' || case t when 'team_members' then 'everyone' else 'all ' || t end, t);
     execute format('drop policy if exists %I on public.%I', 'Executives full access', t);
@@ -619,9 +523,9 @@ drop policy if exists "Executives can remove members" on public.team_members;
 drop policy if exists "Executives can add alumni" on public.alumni;
 drop policy if exists "Executives can edit alumni" on public.alumni;
 drop policy if exists "Executives can remove alumni" on public.alumni;
-drop policy if exists "Executives can add achievements" on public.achievements;
-drop policy if exists "Executives can edit achievements" on public.achievements;
-drop policy if exists "Executives can remove achievements" on public.achievements;
+drop policy if exists "Executives can add accomplishments" on public.accomplishments;
+drop policy if exists "Executives can edit accomplishments" on public.accomplishments;
+drop policy if exists "Executives can remove accomplishments" on public.accomplishments;
 
 -- Hidden (active = false) rows must stay invisible to everyone but admins, so
 -- the public read policies apply to any non-admin, signed in or not.
@@ -637,9 +541,9 @@ on public.alumni for select
 to anon, authenticated
 using (active = true);
 
-drop policy if exists "Public can view active achievements" on public.achievements;
-create policy "Public can view active achievements"
-on public.achievements for select
+drop policy if exists "Public can view active accomplishments" on public.accomplishments;
+create policy "Public can view active accomplishments"
+on public.accomplishments for select
 to anon, authenticated
 using (active = true);
 
@@ -651,7 +555,7 @@ declare
   b text;
   act text;
 begin
-  foreach b in array array['team-photos', 'alumni-photos', 'achievement-photos'] loop
+  foreach b in array array['team-photos', 'alumni-photos', 'accomplishment-photos'] loop
     foreach act in array array['upload', 'replace', 'delete'] loop
       execute format('drop policy if exists %I on storage.objects',
         'Executives can ' || act || ' ' || replace(b, '-photos', '') || ' photos');
@@ -665,5 +569,86 @@ begin
     $f$, 'Executives manage ' || b, b, b);
   end loop;
 end $$;
+
+notify pgrst, 'reload schema';
+
+-- ============================================================
+-- 14. Events — the competitions, workshops, seminars and networking events
+-- shown on events.html. Self-contained and written in its final form (public
+-- read of visible rows, admins-only writes via is_admin()), so it needs no
+-- edits to the arrays in sections 13b/13c above. Safe to re-run.
+-- ------------------------------------------------------------
+create table if not exists public.events (
+  id uuid primary key default gen_random_uuid(),
+  title text not null check (char_length(title) between 1 and 160),
+  category text not null check (category in ('competition', 'workshop', 'seminar', 'networking')),
+  event_date date not null,
+  location text not null default '',
+  description text not null default '',
+  detail_url text,
+  image_url text,
+  featured boolean not null default false, -- flagship: solid-gold highlight on the calendar
+  display_order integer not null default 99,
+  active boolean not null default true,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+drop trigger if exists events_set_updated_at on public.events;
+create trigger events_set_updated_at
+before update on public.events
+for each row execute function public.set_updated_at();
+
+notify pgrst, 'reload schema';
+
+-- Same access rule as every other table: anyone reads visible rows, only a
+-- signed-in Executive (is_admin()) reads hidden rows or writes anything.
+alter table public.events enable row level security;
+
+drop policy if exists "Public can view active events" on public.events;
+create policy "Public can view active events"
+on public.events for select
+to anon, authenticated
+using (active = true);
+
+drop policy if exists "Executives full access" on public.events;
+create policy "Executives full access"
+on public.events for all
+to authenticated
+using (public.is_admin()) with check (public.is_admin());
+
+-- 14b. Storage bucket for event cover images
+-- ------------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('event-photos', 'event-photos', true)
+on conflict (id) do nothing;
+
+drop policy if exists "Anyone can view event photos" on storage.objects;
+create policy "Anyone can view event photos"
+on storage.objects for select
+to public
+using (bucket_id = 'event-photos');
+
+drop policy if exists "Executives manage event-photos" on storage.objects;
+create policy "Executives manage event-photos"
+on storage.objects for all
+to authenticated
+using (bucket_id = 'event-photos' and public.is_admin())
+with check (bucket_id = 'event-photos' and public.is_admin());
+
+-- 14c. Seed data — the events already on the page, so the grid and calendar
+-- aren't empty on first load. "where not exists" guard = only seeds an EMPTY
+-- table, so re-running the whole file never duplicates them.
+-- ------------------------------------------------------------
+insert into public.events (title, category, event_date, location, description, detail_url, image_url, featured, display_order)
+select * from (values
+  ('CreADive 2026', 'competition', date '2026-08-01', 'InterContinental Dhaka', 'A nationwide 360° marketing competition challenging teams to build complete ad campaigns for real brand briefs.', 'creadive-2026.html', 'assets/creadive-2026.png', true, 1),
+  ('GATEWAY 2026', 'networking', date '2026-06-18', 'BUP Auditorium', 'Gateway 2026 is the ultimate platform for undergraduates to showcase their talent, creativity, and leadership potential.', 'gateway-2026.html', 'assets/gateway-2026.png', false, 2),
+  ('Learn to Lead 2026', 'seminar', date '2026-05-06', 'Bijoy Auditorium', 'BUP BCC, in collaboration with Unilever Bangladesh, successfully hosted Learn to Lead at BUP, creating a space for industry insights and real world learning.', null, 'assets/learn-to-lead-2026.png', false, 3),
+  ('Corporiddlerz 2025', 'competition', date '2025-09-20', 'Shadhinota Auditorium, BUP', 'A national business strategy competition where inter-university teams solve real case challenges across multiple rounds.', null, 'assets/corporiddlerz-2025-1.png', false, 4),
+  ('Biz Quest 2024', 'workshop', date '2024-05-18', 'BUP Auditorium', 'An inter-university business seminar sharing practical strategies from industry leaders to help students get ahead.', null, 'assets/bizquest-2024.jpg', false, 5),
+  ('CreADive 2023', 'competition', date '2023-03-20', 'Bijoy Auditorium, BUP', 'CreADive is an annual flagship event of BUP BCC that challenges students to ideate 360 marketing campaigns to overcome challenges faced by businesses.', null, 'assets/creadive-2023.png', false, 6)
+) as seed(title, category, event_date, location, description, detail_url, image_url, featured, display_order)
+where not exists (select 1 from public.events);
 
 notify pgrst, 'reload schema';

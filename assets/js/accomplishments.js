@@ -1,11 +1,11 @@
 // BUP Business & Communication Club (BUP BCC) Achievements Logic - Horizontal Cards Grid View
-// Records come from the Supabase `achievements` table.
+// Records come from the Supabase `accomplishments` table.
 const CARDS_PER_PAGE = 8;
 const FALLBACK_IMAGE = 'assets/corporiddlerz-2025.jpg';
 
 let currentPage = 1;
-let filteredAchievements = [];
-let allAchievements = [];
+let filteredAccomplishments = [];
+let allAccomplishments = [];
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Delegated "View Details" handling — ids are UUIDs, so they stay out of
   // inline handlers.
-  const grid = document.getElementById('achievements-grid');
+  const grid = document.getElementById('accomplishments-grid');
   if (grid) {
     grid.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-detail-id]');
@@ -59,16 +59,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  loadAchievements();
+  loadAccomplishments();
 });
 
-async function loadAchievements() {
+async function loadAccomplishments() {
   let rows = null;
 
   if (typeof supabaseClient !== 'undefined') {
     try {
       const { data, error } = await supabaseClient
-        .from('achievements')
+        .from('accomplishments')
         .select('*')
         .eq('active', true)
         .order('year', { ascending: false })
@@ -76,11 +76,11 @@ async function loadAchievements() {
       if (error) throw error;
       rows = data;
     } catch (err) {
-      console.error('Failed to load achievements:', err);
+      console.error('Failed to load accomplishments:', err);
     }
   }
 
-  allAchievements = rows ? rows.map(fromRow) : [];
+  allAccomplishments = rows ? rows.map(fromRow) : [];
   populateYearFilter();
   applyFilters();
 }
@@ -91,7 +91,7 @@ function populateYearFilter() {
   if (!select) return;
 
   const previous = select.value;
-  const years = [...new Set(allAchievements.map((a) => a.year).filter(Boolean))].sort((a, b) => b.localeCompare(a));
+  const years = [...new Set(allAccomplishments.map((a) => a.year).filter(Boolean))].sort((a, b) => b.localeCompare(a));
 
   select.innerHTML =
     '<option value="all">All Years</option>' +
@@ -105,7 +105,7 @@ function applyFilters() {
   const searchQuery = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
   const selectedYear = document.getElementById('year-filter')?.value || 'all';
 
-  filteredAchievements = allAchievements.filter(item => {
+  filteredAccomplishments = allAccomplishments.filter(item => {
     // Year filter
     const matchesYear = selectedYear === 'all' || item.year === selectedYear;
 
@@ -126,20 +126,20 @@ function applyFilters() {
 
 // Render Horizontal Cards Grid (4 Columns x 2 Rows)
 function renderGrid() {
-  const gridContainer = document.getElementById('achievements-grid');
+  const gridContainer = document.getElementById('accomplishments-grid');
   const emptyState = document.getElementById('empty-state');
   const paginationContainer = document.getElementById('pagination-container');
 
   if (!gridContainer) return;
 
-  const totalItems = filteredAchievements.length;
+  const totalItems = filteredAccomplishments.length;
   const totalPages = Math.ceil(totalItems / CARDS_PER_PAGE) || 1;
 
   if (currentPage > totalPages) currentPage = totalPages;
 
   const startIndex = (currentPage - 1) * CARDS_PER_PAGE;
   const endIndex = startIndex + CARDS_PER_PAGE;
-  const pageItems = filteredAchievements.slice(startIndex, endIndex);
+  const pageItems = filteredAccomplishments.slice(startIndex, endIndex);
 
   // Empty state check
   if (pageItems.length === 0) {
@@ -279,7 +279,7 @@ function renderPagination(totalPages) {
 
 // Change active page
 function changePage(page) {
-  const totalPages = Math.ceil(filteredAchievements.length / CARDS_PER_PAGE);
+  const totalPages = Math.ceil(filteredAccomplishments.length / CARDS_PER_PAGE);
   if (page >= 1 && page <= totalPages) {
     currentPage = page;
     renderGrid();
@@ -289,7 +289,7 @@ function changePage(page) {
 
 // Open Detail Modal
 function openDetailModal(id) {
-  const item = allAchievements.find(a => a.id === String(id));
+  const item = allAccomplishments.find(a => a.id === String(id));
   if (!item) return;
 
   const modal = document.getElementById('detail-modal');

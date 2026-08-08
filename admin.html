@@ -140,7 +140,8 @@
       <nav class="flex items-center gap-2 mb-8">
         <button id="tab-roster-btn" class="text-xs sm:text-sm font-display font-semibold px-4 py-2 rounded-full border border-gold bg-gold text-ink transition-colors">Team Roster</button>
         <button id="tab-hof-btn" class="text-xs sm:text-sm font-display font-semibold px-4 py-2 rounded-full border border-white/20 text-gray-300 hover:border-gold hover:text-gold transition-colors">Hall of Fame</button>
-        <button id="tab-achievements-btn" class="text-xs sm:text-sm font-display font-semibold px-4 py-2 rounded-full border border-white/20 text-gray-300 hover:border-gold hover:text-gold transition-colors">Achievements</button>
+        <button id="tab-accomplishments-btn" class="text-xs sm:text-sm font-display font-semibold px-4 py-2 rounded-full border border-white/20 text-gray-300 hover:border-gold hover:text-gold transition-colors">Accomplishments</button>
+        <button id="tab-events-btn" class="text-xs sm:text-sm font-display font-semibold px-4 py-2 rounded-full border border-white/20 text-gray-300 hover:border-gold hover:text-gold transition-colors">Events</button>
       </nav>
 
       <!-- ===== TAB: Team Roster ===== -->
@@ -200,21 +201,39 @@
       </div>
 
       <!-- ===== TAB: Achievements ===== -->
-      <div id="tab-achievements" class="hidden">
+      <div id="tab-accomplishments" class="hidden">
         <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
           <div>
-            <p class="text-gold font-display font-semibold text-xs tracking-[0.2em] uppercase mb-2">Achievement Management</p>
+            <p class="text-gold font-display font-semibold text-xs tracking-[0.2em] uppercase mb-2">Accomplishment Management</p>
             <h2 class="font-display font-extrabold uppercase text-white text-2xl sm:text-3xl leading-tight tracking-tight">Victories &amp; Honours</h2>
-            <p id="achievements-status" class="text-sm text-gray-400 mt-2"></p>
+            <p id="accomplishments-status" class="text-sm text-gray-400 mt-2"></p>
           </div>
-          <button id="add-achievement-btn" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-3 rounded-full transition-colors">
-            Add Achievement
+          <button id="add-accomplishment-btn" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-3 rounded-full transition-colors">
+            Add Accomplishment
             <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
           </button>
         </div>
         <div class="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent mb-8"></div>
-        <div id="achievements-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-        <p id="achievements-empty" class="hidden text-center text-gray-400 text-sm py-16">No achievements yet. Click "Add Achievement" to record the first win.</p>
+        <div id="accomplishments-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        <p id="accomplishments-empty" class="hidden text-center text-gray-400 text-sm py-16">No accomplishments yet. Click "Add Accomplishment" to record the first win.</p>
+      </div>
+
+      <!-- ===== TAB: Events ===== -->
+      <div id="tab-events" class="hidden">
+        <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+          <div>
+            <p class="text-gold font-display font-semibold text-xs tracking-[0.2em] uppercase mb-2">Event Management</p>
+            <h2 class="font-display font-extrabold uppercase text-white text-2xl sm:text-3xl leading-tight tracking-tight">Events &amp; Calendar</h2>
+            <p id="events-status" class="text-sm text-gray-400 mt-2"></p>
+          </div>
+          <button id="add-event-btn" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-3 rounded-full transition-colors">
+            Add Event
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+        <div class="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent mb-8"></div>
+        <div id="events-grid-admin" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        <p id="events-empty" class="hidden text-center text-gray-400 text-sm py-16">No events yet. Click "Add Event" to publish the first one.</p>
       </div>
     </main>
   </div>
@@ -385,7 +404,7 @@
       </div>
       <div>
         <label class="block text-xs text-gray-400 mb-1">Achievement / note (optional)</label>
-        <input id="alumni-achievement" maxlength="200" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. Led BCC to its first national title" />
+        <input id="alumni-accomplishment" maxlength="200" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. Led BCC to its first national title" />
       </div>
       <div class="grid sm:grid-cols-2 gap-4">
         <div>
@@ -423,73 +442,150 @@
 </div>
 
 <!-- ============ ACHIEVEMENT EDITOR MODAL ============ -->
-<div id="achievement-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-start sm:items-center justify-center px-4 py-8 overflow-y-auto">
+<div id="accomplishment-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-start sm:items-center justify-center px-4 py-8 overflow-y-auto">
   <div class="w-full max-w-lg bg-ink-secondary border border-white/10 border-t-2 border-t-gold rounded-2xl shadow-2xl p-6 sm:p-8 my-auto">
     <div class="flex items-center justify-between mb-6">
-      <h3 id="achievement-modal-title" class="font-display font-bold text-lg text-white">Add Achievement</h3>
-      <button id="achievement-modal-close" type="button" aria-label="Close" class="text-gray-400 hover:text-gold text-2xl leading-none transition-colors">&times;</button>
+      <h3 id="accomplishment-modal-title" class="font-display font-bold text-lg text-white">Add Accomplishment</h3>
+      <button id="accomplishment-modal-close" type="button" aria-label="Close" class="text-gray-400 hover:text-gold text-2xl leading-none transition-colors">&times;</button>
     </div>
-    <form id="achievement-form" class="space-y-4">
+    <form id="accomplishment-form" class="space-y-4">
       <div>
         <label class="block text-xs text-gray-400 mb-1">Competition / award title *</label>
-        <input id="achievement-title" required maxlength="160" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. Battle of Minds 2025" />
+        <input id="accomplishment-title" required maxlength="160" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. Battle of Minds 2025" />
       </div>
       <div class="grid sm:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs text-gray-400 mb-1">Organizer</label>
-          <input id="achievement-organizer" maxlength="120" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. BAT Bangladesh" />
+          <input id="accomplishment-organizer" maxlength="120" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. BAT Bangladesh" />
         </div>
         <div>
           <label class="block text-xs text-gray-400 mb-1">Year *</label>
-          <input id="achievement-year" type="number" required min="1990" max="2100" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. 2025" />
+          <input id="accomplishment-year" type="number" required min="1990" max="2100" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. 2025" />
           <p class="text-[11px] text-gray-500 mt-1">Drives the year filter on the public page.</p>
         </div>
       </div>
       <div class="grid sm:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs text-gray-400 mb-1">Placement / rank</label>
-          <input id="achievement-rank" maxlength="80" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. National Champion (1st)" />
+          <input id="accomplishment-rank" maxlength="80" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. National Champion (1st)" />
         </div>
         <div>
           <label class="block text-xs text-gray-400 mb-1">Team name</label>
-          <input id="achievement-team" maxlength="120" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. BUP Apex Strategy" />
+          <input id="accomplishment-team" maxlength="120" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. BUP Apex Strategy" />
         </div>
       </div>
       <div>
         <label class="block text-xs text-gray-400 mb-1">Team members</label>
-        <textarea id="achievement-members" rows="4" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="Samiul Alam - Lead Strategist&#10;Nusrat Chowdhury - Financial Analyst"></textarea>
+        <textarea id="accomplishment-members" rows="4" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="Samiul Alam - Lead Strategist&#10;Nusrat Chowdhury - Financial Analyst"></textarea>
         <p class="text-[11px] text-gray-500 mt-1">One member per line, written as <span class="text-gray-400">Name - Role</span>. The role is optional.</p>
       </div>
       <div>
         <label class="block text-xs text-gray-400 mb-1">Description</label>
-        <textarea id="achievement-description" rows="3" maxlength="600" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="What the team did and why it won."></textarea>
+        <textarea id="accomplishment-description" rows="3" maxlength="600" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="What the team did and why it won."></textarea>
       </div>
       <div class="grid sm:grid-cols-2 gap-4 items-start">
         <div>
           <label class="block text-xs text-gray-400 mb-1">Cover image (optional)</label>
-          <input id="achievement-photo" type="file" accept="image/png,image/jpeg,image/webp" class="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-gold/15 file:text-gold file:text-xs" />
+          <input id="accomplishment-photo" type="file" accept="image/png,image/jpeg,image/webp" class="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-gold/15 file:text-gold file:text-xs" />
           <p class="text-[11px] text-gray-500 mt-1">JPEG, PNG or WEBP, under 3MB. A placeholder is used if left blank.</p>
-          <label id="achievement-remove-photo-label" class="hidden items-center gap-2 text-[11px] text-gray-400 mt-2">
-            <input id="achievement-remove-photo" type="checkbox" class="rounded border-white/20 bg-ink" />
+          <label id="accomplishment-remove-photo-label" class="hidden items-center gap-2 text-[11px] text-gray-400 mt-2">
+            <input id="accomplishment-remove-photo" type="checkbox" class="rounded border-white/20 bg-ink" />
             Remove current image
           </label>
         </div>
         <div>
           <label class="block text-xs text-gray-400 mb-1">Display order</label>
-          <input id="achievement-order" type="number" value="99" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" />
+          <input id="accomplishment-order" type="number" value="99" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" />
           <p class="text-[11px] text-gray-500 mt-1">Lower numbers appear first within a year.</p>
         </div>
       </div>
       <label class="flex items-center gap-2 text-sm text-gray-300">
-        <input id="achievement-active" type="checkbox" checked class="rounded border-white/20 bg-ink" />
+        <input id="accomplishment-active" type="checkbox" checked class="rounded border-white/20 bg-ink" />
         Visible on the public site
       </label>
-      <p id="achievement-form-error" class="hidden text-xs text-red-400 leading-relaxed"></p>
+      <p id="accomplishment-form-error" class="hidden text-xs text-red-400 leading-relaxed"></p>
       <div class="flex items-center justify-between gap-3 pt-2 border-t border-white/10">
-        <button type="button" id="achievement-delete-btn" class="hidden text-xs text-red-400 hover:text-red-300 mt-4">Delete achievement</button>
+        <button type="button" id="accomplishment-delete-btn" class="hidden text-xs text-red-400 hover:text-red-300 mt-4">Delete accomplishment</button>
         <div class="flex gap-3 ml-auto mt-4">
-          <button type="button" id="achievement-cancel-btn" class="text-sm text-gray-400 hover:text-white px-4 py-2 transition-colors">Cancel</button>
-          <button type="submit" id="achievement-save-btn" class="bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-2.5 rounded-full transition-colors">Save</button>
+          <button type="button" id="accomplishment-cancel-btn" class="text-sm text-gray-400 hover:text-white px-4 py-2 transition-colors">Cancel</button>
+          <button type="submit" id="accomplishment-save-btn" class="bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-2.5 rounded-full transition-colors">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ EVENT EDITOR MODAL ============ -->
+<div id="event-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-start sm:items-center justify-center px-4 py-8 overflow-y-auto">
+  <div class="w-full max-w-lg bg-ink-secondary border border-white/10 border-t-2 border-t-gold rounded-2xl shadow-2xl p-6 sm:p-8 my-auto">
+    <div class="flex items-center justify-between mb-6">
+      <h3 id="event-modal-title" class="font-display font-bold text-lg text-white">Add Event</h3>
+      <button id="event-modal-close" type="button" aria-label="Close" class="text-gray-400 hover:text-gold text-2xl leading-none transition-colors">&times;</button>
+    </div>
+    <form id="event-form" class="space-y-4">
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">Event title *</label>
+        <input id="event-title" required maxlength="160" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. CreADive 2026" />
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Category *</label>
+          <select id="event-category" required class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none">
+            <option value="competition">Competition</option>
+            <option value="workshop">Workshop</option>
+            <option value="seminar">Seminar</option>
+            <option value="networking">Networking</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Date *</label>
+          <input id="event-date" type="date" required class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" />
+          <p class="text-[11px] text-gray-500 mt-1">Places the event in the Event Calendar.</p>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">Location</label>
+        <input id="event-location" maxlength="160" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. BUP Auditorium" />
+      </div>
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">Description</label>
+        <textarea id="event-description" rows="3" maxlength="600" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="A short summary shown on the event card."></textarea>
+      </div>
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">Details link (optional)</label>
+        <input id="event-detail-url" maxlength="300" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" placeholder="e.g. creadive-2026.html" />
+        <p class="text-[11px] text-gray-500 mt-1">Where the card's "View Details" link points. Leave blank for none.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4 items-start">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Cover image (optional)</label>
+          <input id="event-photo" type="file" accept="image/png,image/jpeg,image/webp" class="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-gold/15 file:text-gold file:text-xs" />
+          <p class="text-[11px] text-gray-500 mt-1">JPEG, PNG or WEBP, under 3MB.</p>
+          <label id="event-remove-photo-label" class="hidden items-center gap-2 text-[11px] text-gray-400 mt-2">
+            <input id="event-remove-photo" type="checkbox" class="rounded border-white/20 bg-ink" />
+            Remove current image
+          </label>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Display order</label>
+          <input id="event-order" type="number" value="99" class="w-full bg-ink border border-white/15 rounded-lg px-3 py-2 text-sm focus:border-gold focus:outline-none" />
+          <p class="text-[11px] text-gray-500 mt-1">Lower numbers appear first within a date.</p>
+        </div>
+      </div>
+      <label class="flex items-center gap-2 text-sm text-gray-300">
+        <input id="event-featured" type="checkbox" class="rounded border-white/20 bg-ink" />
+        Flagship event (highlighted gold on the calendar)
+      </label>
+      <label class="flex items-center gap-2 text-sm text-gray-300">
+        <input id="event-active" type="checkbox" checked class="rounded border-white/20 bg-ink" />
+        Visible on the public site
+      </label>
+      <p id="event-form-error" class="hidden text-xs text-red-400 leading-relaxed"></p>
+      <div class="flex items-center justify-between gap-3 pt-2 border-t border-white/10">
+        <button type="button" id="event-delete-btn" class="hidden text-xs text-red-400 hover:text-red-300 mt-4">Delete event</button>
+        <div class="flex gap-3 ml-auto mt-4">
+          <button type="button" id="event-cancel-btn" class="text-sm text-gray-400 hover:text-white px-4 py-2 transition-colors">Cancel</button>
+          <button type="submit" id="event-save-btn" class="bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-6 py-2.5 rounded-full transition-colors">Save</button>
         </div>
       </div>
     </form>

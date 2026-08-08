@@ -66,10 +66,12 @@ const PLAIN_TITLES = {
 
 let members = [];
 let alumni = [];
-let achievements = [];
+let accomplishments = [];
+let events = [];
 let editingMemberId = null;
 let editingAlumniId = null;
-let editingAchievementId = null;
+let editingAccomplishmentId = null;
+let editingEventId = null;
 let currentUser = null;
 let activeTab = 'roster';
 
@@ -108,8 +110,16 @@ function initials(name) {
 const TABS = [
   { id: 'roster', panel: 'tab-roster', button: 'tab-roster-btn', publicPage: 'team.html' },
   { id: 'hof', panel: 'tab-hof', button: 'tab-hof-btn', publicPage: 'hall-of-fame.html' },
-  { id: 'achievements', panel: 'tab-achievements', button: 'tab-achievements-btn', publicPage: 'achievements.html' },
+  { id: 'accomplishments', panel: 'tab-accomplishments', button: 'tab-accomplishments-btn', publicPage: 'accomplishments.html' },
+  { id: 'events', panel: 'tab-events', button: 'tab-events-btn', publicPage: 'events.html' },
 ];
+
+const EVENT_CATEGORY_LABELS = {
+  competition: 'Competition',
+  workshop: 'Workshop',
+  seminar: 'Seminar',
+  networking: 'Networking',
+};
 
 function switchTab(tab) {
   activeTab = tab;
@@ -1078,7 +1088,7 @@ function renderAlumniCard(a) {
         <p class="text-[11px] font-display font-semibold uppercase tracking-wider text-gold/80 truncate">Class of ${escapeHtml(String(a.class_year))}${a.active === false ? ' · Hidden' : ''}</p>
         <p class="font-display font-bold text-white truncate mt-0.5">${escapeHtml(a.name)}</p>
         <p class="text-xs text-gray-400 truncate">${escapeHtml(a.title)}</p>
-        <p class="text-[11px] text-gray-500 mt-1 truncate">${escapeHtml(a.achievement || '')}</p>
+        <p class="text-[11px] text-gray-500 mt-1 truncate">${escapeHtml(a.accomplishment || '')}</p>
         <button data-edit="${a.id}" class="inline-flex items-center gap-1.5 text-xs font-display font-semibold text-gold hover:gap-2.5 transition-all mt-3">
           Edit
           <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
@@ -1123,7 +1133,7 @@ function openAlumniModal(id) {
   $('alumni-category').value = panelForTitle(a?.title) || CATEGORIES[0]?.id;
   syncPostFields('alumni', aSplit);
   $('alumni-year').value = a?.class_year ?? new Date().getFullYear();
-  $('alumni-achievement').value = a?.achievement || '';
+  $('alumni-accomplishment').value = a?.achievement || '';
   $('alumni-linkedin').value = a?.linkedin_url || '';
   $('alumni-facebook').value = a?.facebook_url || '';
   $('alumni-order').value = a?.display_order ?? 99;
@@ -1164,7 +1174,7 @@ async function handleAlumniSubmit(e) {
       name,
       title,
       class_year: classYear,
-      achievement: $('alumni-achievement').value.trim(),
+      accomplishment: $('alumni-accomplishment').value.trim(),
       linkedin_url: $('alumni-linkedin').value.trim() || null,
       facebook_url: $('alumni-facebook').value.trim() || null,
       display_order: Number($('alumni-order').value) || 99,
@@ -1220,30 +1230,30 @@ async function handleAlumniDelete() {
   }
 }
 
-// ---------------------------------------------------------------- achievement images
+// ---------------------------------------------------------------- accomplishment images
 
-function achievementStoragePath(url) {
-  const marker = '/achievement-photos/';
+function accomplishmentStoragePath(url) {
+  const marker = '/accomplishment-photos/';
   const idx = (url || '').indexOf(marker);
   return idx === -1 ? null : url.slice(idx + marker.length);
 }
 
-async function deleteAchievementPhoto(photoUrl) {
-  const path = achievementStoragePath(photoUrl);
+async function deleteAccomplishmentPhoto(photoUrl) {
+  const path = accomplishmentStoragePath(photoUrl);
   if (!path) return;
-  await supabaseClient.storage.from('achievement-photos').remove([path]);
+  await supabaseClient.storage.from('accomplishment-photos').remove([path]);
 }
 
-async function uploadAchievementPhoto(file) {
+async function uploadAccomplishmentPhoto(file) {
   const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
   const path = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
-  const { error } = await supabaseClient.storage.from('achievement-photos').upload(path, file);
+  const { error } = await supabaseClient.storage.from('accomplishment-photos').upload(path, file);
   if (error) throw error;
-  const { data } = supabaseClient.storage.from('achievement-photos').getPublicUrl(path);
+  const { data } = supabaseClient.storage.from('accomplishment-photos').getPublicUrl(path);
   return data.publicUrl;
 }
 
-// ---------------------------------------------------------------- achievement members
+// ---------------------------------------------------------------- accomplishment members
 
 // The textarea holds one member per line as "Name - Role"; the role is
 // optional, and everything after the first separator counts as the role so a
@@ -1268,9 +1278,9 @@ function membersToText(list) {
     .join('\n');
 }
 
-// ---------------------------------------------------------------- achievement rendering
+// ---------------------------------------------------------------- accomplishment rendering
 
-function renderAchievementCard(a) {
+function renderAccomplishmentCard(a) {
   const memberNames = (Array.isArray(a.members) ? a.members : []).map((m) => m?.name).filter(Boolean).join(', ');
   const cover = a.image_url
     ? `<img src="${escapeHtml(a.image_url)}" alt="" class="w-14 h-14 rounded-xl object-cover border-2 border-gold/40 shrink-0" />`
@@ -1295,66 +1305,66 @@ function renderAchievementCard(a) {
   `;
 }
 
-function renderAchievements() {
-  const grid = $('achievements-grid');
-  grid.innerHTML = achievements.map(renderAchievementCard).join('');
-  $('achievements-empty').classList.toggle('hidden', achievements.length !== 0);
-  $('achievements-status').textContent = `${achievements.length} achievement${achievements.length === 1 ? '' : 's'} recorded`;
-  grid.querySelectorAll('[data-edit]').forEach((btn) => btn.addEventListener('click', () => openAchievementModal(btn.dataset.edit)));
+function renderAccomplishments() {
+  const grid = $('accomplishments-grid');
+  grid.innerHTML = accomplishments.map(renderAccomplishmentCard).join('');
+  $('accomplishments-empty').classList.toggle('hidden', accomplishments.length !== 0);
+  $('accomplishments-status').textContent = `${accomplishments.length} achievement${accomplishments.length === 1 ? '' : 's'} recorded`;
+  grid.querySelectorAll('[data-edit]').forEach((btn) => btn.addEventListener('click', () => openAccomplishmentModal(btn.dataset.edit)));
 }
 
-async function loadAchievements() {
+async function loadAccomplishments() {
   const { data, error } = await supabaseClient
-    .from('achievements')
+    .from('accomplishments')
     .select('*')
     .order('year', { ascending: false })
     .order('display_order');
   if (error) { showToast(error.message, true); return; }
-  achievements = data || [];
-  renderAchievements();
+  accomplishments = data || [];
+  renderAccomplishments();
 }
 
-// ---------------------------------------------------------------- achievement modal
+// ---------------------------------------------------------------- accomplishment modal
 
-function openAchievementModal(id) {
-  editingAchievementId = id || null;
-  const a = id ? achievements.find((x) => x.id === id) : null;
+function openAccomplishmentModal(id) {
+  editingAccomplishmentId = id || null;
+  const a = id ? accomplishments.find((x) => x.id === id) : null;
 
-  $('achievement-modal-title').textContent = a ? 'Edit Achievement' : 'Add Achievement';
-  $('achievement-title').value = a?.title || '';
-  $('achievement-organizer').value = a?.organizer || '';
-  $('achievement-year').value = a?.year ?? new Date().getFullYear();
-  $('achievement-rank').value = a?.rank || '';
-  $('achievement-team').value = a?.team_name || '';
-  $('achievement-members').value = membersToText(a?.members);
-  $('achievement-description').value = a?.description || '';
-  $('achievement-order').value = a?.display_order ?? 99;
-  $('achievement-active').checked = a ? a.active !== false : true;
-  $('achievement-photo').value = '';
-  $('achievement-remove-photo').checked = false;
-  $('achievement-remove-photo-label').classList.toggle('hidden', !a?.image_url);
-  $('achievement-delete-btn').classList.toggle('hidden', !a);
-  $('achievement-form-error').classList.add('hidden');
-  $('achievement-modal').classList.remove('hidden');
-  $('achievement-title').focus();
+  $('accomplishment-modal-title').textContent = a ? 'Edit Accomplishment' : 'Add Accomplishment';
+  $('accomplishment-title').value = a?.title || '';
+  $('accomplishment-organizer').value = a?.organizer || '';
+  $('accomplishment-year').value = a?.year ?? new Date().getFullYear();
+  $('accomplishment-rank').value = a?.rank || '';
+  $('accomplishment-team').value = a?.team_name || '';
+  $('accomplishment-members').value = membersToText(a?.members);
+  $('accomplishment-description').value = a?.description || '';
+  $('accomplishment-order').value = a?.display_order ?? 99;
+  $('accomplishment-active').checked = a ? a.active !== false : true;
+  $('accomplishment-photo').value = '';
+  $('accomplishment-remove-photo').checked = false;
+  $('accomplishment-remove-photo-label').classList.toggle('hidden', !a?.image_url);
+  $('accomplishment-delete-btn').classList.toggle('hidden', !a);
+  $('accomplishment-form-error').classList.add('hidden');
+  $('accomplishment-modal').classList.remove('hidden');
+  $('accomplishment-title').focus();
 }
 
-function closeAchievementModal() {
-  $('achievement-modal').classList.add('hidden');
-  editingAchievementId = null;
+function closeAccomplishmentModal() {
+  $('accomplishment-modal').classList.add('hidden');
+  editingAccomplishmentId = null;
 }
 
-async function handleAchievementSubmit(e) {
+async function handleAccomplishmentSubmit(e) {
   e.preventDefault();
-  const errorEl = $('achievement-form-error');
+  const errorEl = $('accomplishment-form-error');
   errorEl.classList.add('hidden');
-  const saveBtn = $('achievement-save-btn');
+  const saveBtn = $('accomplishment-save-btn');
   saveBtn.disabled = true;
   saveBtn.textContent = 'Saving…';
 
   try {
-    const title = $('achievement-title').value.trim();
-    const year = Number($('achievement-year').value);
+    const title = $('accomplishment-title').value.trim();
+    const year = Number($('accomplishment-year').value);
     if (!title) throw new Error('Title is required');
     if (!Number.isInteger(year) || year < 1990 || year > 2100) {
       throw new Error('Year must be between 1990 and 2100');
@@ -1362,40 +1372,40 @@ async function handleAchievementSubmit(e) {
 
     const payload = {
       title,
-      organizer: $('achievement-organizer').value.trim(),
+      organizer: $('accomplishment-organizer').value.trim(),
       year,
-      rank: $('achievement-rank').value.trim(),
-      team_name: $('achievement-team').value.trim(),
-      members: parseMembers($('achievement-members').value),
-      description: $('achievement-description').value.trim(),
-      display_order: Number($('achievement-order').value) || 99,
-      active: $('achievement-active').checked,
+      rank: $('accomplishment-rank').value.trim(),
+      team_name: $('accomplishment-team').value.trim(),
+      members: parseMembers($('accomplishment-members').value),
+      description: $('accomplishment-description').value.trim(),
+      display_order: Number($('accomplishment-order').value) || 99,
+      active: $('accomplishment-active').checked,
     };
 
-    const existing = editingAchievementId ? achievements.find((a) => a.id === editingAchievementId) : null;
-    const file = $('achievement-photo').files[0];
+    const existing = editingAccomplishmentId ? accomplishments.find((a) => a.id === editingAccomplishmentId) : null;
+    const file = $('accomplishment-photo').files[0];
 
-    if ($('achievement-remove-photo').checked) {
-      if (existing?.image_url) await deleteAchievementPhoto(existing.image_url);
+    if ($('accomplishment-remove-photo').checked) {
+      if (existing?.image_url) await deleteAccomplishmentPhoto(existing.image_url);
       payload.image_url = null;
     } else if (file) {
       if (file.size > 3 * 1024 * 1024) throw new Error('Image must be under 3MB');
-      const newUrl = await uploadAchievementPhoto(file);
-      if (existing?.image_url) await deleteAchievementPhoto(existing.image_url);
+      const newUrl = await uploadAccomplishmentPhoto(file);
+      if (existing?.image_url) await deleteAccomplishmentPhoto(existing.image_url);
       payload.image_url = newUrl;
     }
 
-    if (editingAchievementId) {
-      const { error } = await supabaseClient.from('achievements').update(payload).eq('id', editingAchievementId);
+    if (editingAccomplishmentId) {
+      const { error } = await supabaseClient.from('accomplishments').update(payload).eq('id', editingAccomplishmentId);
       if (error) throw error;
-      showToast('Achievement updated');
+      showToast('Accomplishment updated');
     } else {
-      const { error } = await supabaseClient.from('achievements').insert(payload);
+      const { error } = await supabaseClient.from('accomplishments').insert(payload);
       if (error) throw error;
-      showToast('Achievement added');
+      showToast('Accomplishment added');
     }
-    closeAchievementModal();
-    await loadAchievements();
+    closeAccomplishmentModal();
+    await loadAccomplishments();
   } catch (err) {
     errorEl.textContent = err.message;
     errorEl.classList.remove('hidden');
@@ -1405,17 +1415,198 @@ async function handleAchievementSubmit(e) {
   }
 }
 
-async function handleAchievementDelete() {
-  if (!editingAchievementId) return;
-  if (!confirm('Remove this achievement? This cannot be undone.')) return;
+async function handleAccomplishmentDelete() {
+  if (!editingAccomplishmentId) return;
+  if (!confirm('Remove this accomplishment? This cannot be undone.')) return;
   try {
-    const existing = achievements.find((a) => a.id === editingAchievementId);
-    const { error } = await supabaseClient.from('achievements').delete().eq('id', editingAchievementId);
+    const existing = accomplishments.find((a) => a.id === editingAccomplishmentId);
+    const { error } = await supabaseClient.from('accomplishments').delete().eq('id', editingAccomplishmentId);
     if (error) throw error;
-    if (existing?.image_url) await deleteAchievementPhoto(existing.image_url);
-    showToast('Achievement removed');
-    closeAchievementModal();
-    await loadAchievements();
+    if (existing?.image_url) await deleteAccomplishmentPhoto(existing.image_url);
+    showToast('Accomplishment removed');
+    closeAccomplishmentModal();
+    await loadAccomplishments();
+  } catch (err) {
+    showToast(err.message, true);
+  }
+}
+
+// ---------------------------------------------------------------- event images
+
+function eventStoragePath(url) {
+  const marker = '/event-photos/';
+  const idx = (url || '').indexOf(marker);
+  return idx === -1 ? null : url.slice(idx + marker.length);
+}
+
+async function deleteEventPhoto(photoUrl) {
+  const path = eventStoragePath(photoUrl);
+  if (!path) return;
+  await supabaseClient.storage.from('event-photos').remove([path]);
+}
+
+async function uploadEventPhoto(file) {
+  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+  const path = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
+  const { error } = await supabaseClient.storage.from('event-photos').upload(path, file);
+  if (error) throw error;
+  const { data } = supabaseClient.storage.from('event-photos').getPublicUrl(path);
+  return data.publicUrl;
+}
+
+// ---------------------------------------------------------------- event rendering
+
+function formatEventDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function renderEventCard(ev) {
+  const cover = ev.image_url
+    ? `<img src="${escapeHtml(ev.image_url)}" alt="" class="w-14 h-14 rounded-xl object-cover border-2 border-gold/40 shrink-0" />`
+    : `<div class="w-14 h-14 rounded-xl bg-neutral-800 border-2 border-gold/40 flex items-center justify-center text-gold shrink-0">
+         <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+       </div>`;
+  const meta = [formatEventDate(ev.event_date), EVENT_CATEGORY_LABELS[ev.category] || ev.category]
+    .filter(Boolean)
+    .join(' · ');
+
+  return `
+    <div class="member-card bg-ink-secondary border border-white/10 border-t-2 border-t-gold/50 rounded-2xl shadow-lg p-5 flex gap-4 items-start ${ev.active === false ? 'opacity-50' : ''}">
+      ${cover}
+      <div class="flex-1 min-w-0">
+        <p class="text-[11px] font-display font-semibold uppercase tracking-wider text-gold/80 truncate">${escapeHtml(meta)}${ev.featured ? ' · Flagship' : ''}${ev.active === false ? ' · Hidden' : ''}</p>
+        <p class="font-display font-bold text-white truncate mt-0.5">${escapeHtml(ev.title)}</p>
+        <p class="text-xs text-gray-400 truncate">${escapeHtml(ev.location || '')}</p>
+        <button data-edit="${ev.id}" class="inline-flex items-center gap-1.5 text-xs font-display font-semibold text-gold hover:gap-2.5 transition-all mt-3">
+          Edit
+          <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderEvents() {
+  const grid = $('events-grid-admin');
+  grid.innerHTML = events.map(renderEventCard).join('');
+  $('events-empty').classList.toggle('hidden', events.length !== 0);
+  $('events-status').textContent = `${events.length} event${events.length === 1 ? '' : 's'} published`;
+  grid.querySelectorAll('[data-edit]').forEach((btn) => btn.addEventListener('click', () => openEventModal(btn.dataset.edit)));
+}
+
+async function loadEventsAdmin() {
+  const { data, error } = await supabaseClient
+    .from('events')
+    .select('*')
+    .order('event_date', { ascending: false })
+    .order('display_order');
+  if (error) { showToast(error.message, true); return; }
+  events = data || [];
+  renderEvents();
+}
+
+// ---------------------------------------------------------------- event modal
+
+function openEventModal(id) {
+  editingEventId = id || null;
+  const ev = id ? events.find((x) => x.id === id) : null;
+
+  $('event-modal-title').textContent = ev ? 'Edit Event' : 'Add Event';
+  $('event-title').value = ev?.title || '';
+  $('event-category').value = ev?.category || 'competition';
+  $('event-date').value = ev?.event_date || '';
+  $('event-location').value = ev?.location || '';
+  $('event-description').value = ev?.description || '';
+  $('event-detail-url').value = ev?.detail_url || '';
+  $('event-order').value = ev?.display_order ?? 99;
+  $('event-featured').checked = !!ev?.featured;
+  $('event-active').checked = ev ? ev.active !== false : true;
+  $('event-photo').value = '';
+  $('event-remove-photo').checked = false;
+  $('event-remove-photo-label').classList.toggle('hidden', !ev?.image_url);
+  $('event-delete-btn').classList.toggle('hidden', !ev);
+  $('event-form-error').classList.add('hidden');
+  $('event-modal').classList.remove('hidden');
+  $('event-title').focus();
+}
+
+function closeEventModal() {
+  $('event-modal').classList.add('hidden');
+  editingEventId = null;
+}
+
+async function handleEventSubmit(e) {
+  e.preventDefault();
+  const errorEl = $('event-form-error');
+  errorEl.classList.add('hidden');
+  const saveBtn = $('event-save-btn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving…';
+
+  try {
+    const title = $('event-title').value.trim();
+    const eventDate = $('event-date').value;
+    if (!title) throw new Error('Title is required');
+    if (!eventDate) throw new Error('Date is required');
+
+    const payload = {
+      title,
+      category: $('event-category').value,
+      event_date: eventDate,
+      location: $('event-location').value.trim(),
+      description: $('event-description').value.trim(),
+      detail_url: $('event-detail-url').value.trim() || null,
+      display_order: Number($('event-order').value) || 99,
+      featured: $('event-featured').checked,
+      active: $('event-active').checked,
+    };
+
+    const existing = editingEventId ? events.find((x) => x.id === editingEventId) : null;
+    const file = $('event-photo').files[0];
+
+    if ($('event-remove-photo').checked) {
+      if (existing?.image_url) await deleteEventPhoto(existing.image_url);
+      payload.image_url = null;
+    } else if (file) {
+      if (file.size > 3 * 1024 * 1024) throw new Error('Image must be under 3MB');
+      const newUrl = await uploadEventPhoto(file);
+      if (existing?.image_url) await deleteEventPhoto(existing.image_url);
+      payload.image_url = newUrl;
+    }
+
+    if (editingEventId) {
+      const { error } = await supabaseClient.from('events').update(payload).eq('id', editingEventId);
+      if (error) throw error;
+      showToast('Event updated');
+    } else {
+      const { error } = await supabaseClient.from('events').insert(payload);
+      if (error) throw error;
+      showToast('Event added');
+    }
+    closeEventModal();
+    await loadEventsAdmin();
+  } catch (err) {
+    errorEl.textContent = err.message;
+    errorEl.classList.remove('hidden');
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Save';
+  }
+}
+
+async function handleEventDelete() {
+  if (!editingEventId) return;
+  if (!confirm('Remove this event? This cannot be undone.')) return;
+  try {
+    const existing = events.find((x) => x.id === editingEventId);
+    const { error } = await supabaseClient.from('events').delete().eq('id', editingEventId);
+    if (error) throw error;
+    if (existing?.image_url) await deleteEventPhoto(existing.image_url);
+    showToast('Event removed');
+    closeEventModal();
+    await loadEventsAdmin();
   } catch (err) {
     showToast(err.message, true);
   }
@@ -1460,7 +1651,7 @@ async function enterDashboard() {
   showScreen('dashboard-screen');
   populateCategorySelect();
   switchTab('roster');
-  await Promise.all([loadMembers(), loadAlumni(), loadAchievements()]);
+  await Promise.all([loadMembers(), loadAlumni(), loadAccomplishments(), loadEventsAdmin()]);
 }
 
 async function logout() {
@@ -1494,7 +1685,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $('tab-roster-btn').addEventListener('click', () => switchTab('roster'));
   $('tab-hof-btn').addEventListener('click', () => switchTab('hof'));
-  $('tab-achievements-btn').addEventListener('click', () => switchTab('achievements'));
+  $('tab-accomplishments-btn').addEventListener('click', () => switchTab('accomplishments'));
+  $('tab-events-btn').addEventListener('click', () => switchTab('events'));
 
   $('add-member-btn').addEventListener('click', () => openMemberModal(null));
   $('select-all-btn').addEventListener('click', () => {
@@ -1561,9 +1753,15 @@ document.addEventListener('DOMContentLoaded', () => {
   $('alumni-modal-close').addEventListener('click', closeAlumniModal);
   $('alumni-delete-btn').addEventListener('click', handleAlumniDelete);
 
-  $('add-achievement-btn').addEventListener('click', () => openAchievementModal(null));
-  $('achievement-form').addEventListener('submit', handleAchievementSubmit);
-  $('achievement-cancel-btn').addEventListener('click', closeAchievementModal);
-  $('achievement-modal-close').addEventListener('click', closeAchievementModal);
-  $('achievement-delete-btn').addEventListener('click', handleAchievementDelete);
+  $('add-accomplishment-btn').addEventListener('click', () => openAccomplishmentModal(null));
+  $('accomplishment-form').addEventListener('submit', handleAccomplishmentSubmit);
+  $('accomplishment-cancel-btn').addEventListener('click', closeAccomplishmentModal);
+  $('accomplishment-modal-close').addEventListener('click', closeAccomplishmentModal);
+  $('accomplishment-delete-btn').addEventListener('click', handleAccomplishmentDelete);
+
+  $('add-event-btn').addEventListener('click', () => openEventModal(null));
+  $('event-form').addEventListener('submit', handleEventSubmit);
+  $('event-cancel-btn').addEventListener('click', closeEventModal);
+  $('event-modal-close').addEventListener('click', closeEventModal);
+  $('event-delete-btn').addEventListener('click', handleEventDelete);
 });

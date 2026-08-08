@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gateway 2026 | BUP Business &amp; Communication Club</title>
+<meta name="description" content="Gateway 2026 — the recruitment program of BUP Business & Communication Club. The ultimate platform for undergraduates to showcase their talent, creativity, and leadership potential." />
+<link rel="icon" href="assets/" sizes="32x32"/>
+<link rel="icon" href="assets/" sizes="192x192"/>
+<link rel="apple-touch-icon" href="assets/"/>
+<meta name="msapplication-TileImage" content="assets/"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: { DEFAULT: '#0B0B0D', secondary: '#17171B' },
+          gold: { DEFAULT: '#F2B90D', dark: '#C99A00' },
+        },
+        fontFamily: {
+          display: ['Archivo', 'sans-serif'],
+          sans: ['Instrument Sans', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+  }
+
+  .marquee-wrap { overflow: hidden; }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+  }
+  .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .faq-item.open .faq-answer { max-height: 260px; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+  :focus-visible {
+    outline: 2px solid #F2B90D;
+    outline-offset: 3px;
+  }
+
+  @keyframes fade-in-page {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  body {
+    animation: fade-in-page 0.5s ease both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    body { animation: none; }
+    .marquee-track { animation: none; }
+  }
+</style>
+</head>
+<body class="bg-white font-sans text-ink antialiased">
+
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 px-3 sm:px-6 pt-3 sm:pt-5">
+  <div
+    id="glass-card"
+    class="relative max-w-7xl mx-auto rounded-2xl bg-neutral-700/40 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden transition-colors duration-500"
+  >
+    <div
+      id="glass-glow"
+      class="pointer-events-none absolute inset-0 rounded-2xl border border-gold/20 opacity-0 transition-opacity duration-300 z-0"
+      style="background: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(242,185,13,0.35), rgba(201,154,0,0.15) 40%, transparent 80%);"
+    ></div>
+
+    <div
+      class="pointer-events-none absolute inset-0 rounded-2xl border border-white/20 opacity-0 transition-opacity duration-300 z-0"
+      id="glass-border-glow"
+      style="mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%); -webkit-mask-image: radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"
+    ></div>
+    <div class="relative z-10 flex items-center justify-between gap-3 lg:gap-6 h-16 px-4 sm:px-6 lg:px-8">
+
+      <a href="index.html" class="flex items-center gap-2 sm:gap-2.5 min-w-0 group">
+        <img src="assets/bcc-logo.png" class="w-8 sm:w-10 h-auto transition-transform duration-300 group-hover:scale-105" alt="BUP BCC logo" />
+        <span class="font-display font-light md:font-normal sm:inline md:hidden xl:inline text-[11px] leading-[1.65] sm:text-base lg:text-lg tracking-tight sm:tracking-wide text-white md:whitespace-nowrap">
+          BUP Business &amp;<br class="sm:hidden"> Communication Club
+        </span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-4 lg:gap-8 text-xs sm:text-sm lg:text-base font-medium text-gray-300">
+        <a href="index.html" class="hover:text-gold transition-colors py-1">Home</a>
+        <a href="about-us.html" class="hover:text-gold transition-colors py-1">About Us</a>
+        <a href="events.html" class="hover:text-gold text-white transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gold after:rounded-full">Events</a>
+        <a href="team.html" class="hover:text-gold transition-colors py-1">Team</a>
+        <a href="hall-of-fame.html" class="hover:text-gold transition-colors py-1">Hall of Fame</a>
+        <a href="accomplishments.html" class="hover:text-gold transition-colors py-1">Accomplishments</a>
+        <a href="bizfeed.html" class="hover:text-gold transition-colors py-1">BizFeed</a>
+      </nav>
+
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+        <a href="https://tiny.cc/gw26" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full transition-all duration-300 shadow-md hover:shadow-gold/20 hover:scale-105">
+          Apply Now
+        </a>
+
+        <button
+          id="menu-toggle"
+          type="button"
+          aria-label="Toggle Navigation Menu"
+          class="lg:hidden p-2 text-gray-300 hover:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
+        >
+          <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden lg:hidden px-4 pt-2 pb-6 border-t border-white/10 space-y-2 bg-neutral-900/80 backdrop-blur-xl max-h-[calc(100dvh-7rem)] overflow-y-auto overscroll-contain">
+      <a href="index.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Home</a>
+      <a href="about-us.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">About Us</a>
+      <a href="events.html" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">Events</a>
+      <a href="team.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
+      <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
+      <a href="accomplishments.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Accomplishments</a>
+      <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
+    </div>
+
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <!-- Mobile hero: video at natural aspect ratio, content stacked below -->
+  <div class="sm:hidden relative bg-ink-secondary">
+    <div class="relative w-full aspect-video">
+      <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-40" aria-hidden="true">
+        <source src="assets/gateway-intro-2026.mp4" type="video/mp4">
+      </video>
+      <div class="absolute inset-0 bg-gradient-to-b from-ink/40 via-transparent to-ink"></div>
+    </div>
+    <div class="text-center px-5 pt-8 pb-14 bg-ink">
+      <h1 class="font-display font-black uppercase text-white leading-[0.95] tracking-tight text-5xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
+        Gate<span class="text-gold">way</span> 2026
+      </h1>
+      <p class="font-display italic font-semibold text-white/90 text-xl mt-3">Be The <span class="text-gold">Anomaly</span></p>
+
+      <p class="mx-auto text-white/65 text-[11px] leading-relaxed overflow-hidden">
+        <span class="whitespace-nowrap block">There comes a time when you have to choose between comfort and growth.</span>
+        This is your calling. Don’t be ordinary, Join the new wave.
+      </p>
+      <div class="mt-7">
+        <a href="https://tiny.cc/gw26" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-bold px-7 py-3.5 rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.35)] transition-all">
+          Apply Now
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desktop hero: full-bleed background video -->
+  <section class="hidden sm:block relative overflow-hidden bg-gradient-to-b from-ink-secondary via-ink to-ink pt-52 pb-44 lg:pt-60 lg:pb-52 text-center">
+    <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-40" aria-hidden="true">
+      <source src="assets/gateway-intro-2026.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-b from-ink/60 via-ink/30 to-ink z-[1]" aria-hidden="true"></div>
+    <div class="absolute -top-24 right-[8%] w-80 h-80 rounded-full bg-gold/10 blur-3xl z-[1]" aria-hidden="true"></div>
+    <div class="absolute -bottom-28 left-[6%] w-80 h-80 rounded-full bg-gold/8 blur-3xl z-[1]" aria-hidden="true"></div>
+
+    <div class="relative z-[2] max-w-3xl mx-auto px-8 pointer-events-auto">
+      <h1 class="font-display font-black uppercase text-white leading-[0.95] tracking-tight text-7xl lg:text-8xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
+        Gate<span class="text-gold">way</span> 2026
+      </h1>
+      <p class="font-display italic font-semibold text-white/90 text-3xl mt-3 xl:mt-4">Be The <span class="text-gold">Anomaly</span></p>
+
+      <div class="w-64 h-px mx-auto my-5 xl:my-7 bg-gradient-to-r from-transparent via-white/70 to-transparent"></div>
+
+      <p class="max-w-2xl mx-auto text-white/65 text-base lg:text-lg xl:text-xl leading-relaxed">
+        <span class="whitespace-nowrap block">There comes a time when you have to choose between comfort and growth.</span>
+        This is your calling. Don’t be ordinary, Join the new wave.
+      </p>
+
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="https://tiny.cc/gw26" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-bold px-7 py-3.5 rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 transition-all">
+          Apply Now
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN + INTRO -->
+  <section class="relative overflow-hidden bg-ink-secondary py-20 sm:py-24">
+    <div class="absolute top-1/2 -translate-y-1/2 right-[6%] w-80 h-80 rounded-full bg-gold/15 blur-3xl" aria-hidden="true"></div>
+    <div class="absolute top-1/2 -translate-y-1/2 left-[6%] w-80 h-80 rounded-full bg-gold/10 blur-3xl" aria-hidden="true"></div>
+    <div class="relative z-[1] max-w-6xl mx-auto px-5 sm:px-8">
+
+      <div class="text-center mb-8">
+        <p class="text-gold font-display font-extrabold text-3xl sm:text-5xl tracking-[0.14em] uppercase mb-2">Applications Ended</p>
+        <p class="text-white/50 text-xl">Applications are now closed</p>
+      </div>
+
+      <div class="flex items-center justify-center gap-1.5 sm:gap-4">
+        <div class="flex flex-col items-center justify-center bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl sm:rounded-2xl w-14 h-14 sm:w-28 sm:h-28">
+          <strong data-unit="days" class="font-display font-extrabold text-gold text-2xl sm:text-5xl leading-none tabular-nums">00</strong>
+          <small class="text-[9px] sm:text-xs uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-1">Days</small>
+        </div>
+        <span class="font-display font-bold text-gold/50 text-2xl sm:text-4xl lg:text-5xl">:</span>
+        <div class="flex flex-col items-center justify-center bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl sm:rounded-2xl w-14 h-14 sm:w-28 sm:h-28">
+          <strong data-unit="hours" class="font-display font-extrabold text-gold text-2xl sm:text-5xl leading-none tabular-nums">00</strong>
+          <small class="text-[9px] sm:text-xs uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-1">Hours</small>
+        </div>
+        <span class="font-display font-bold text-gold/50 text-2xl sm:text-4xl lg:text-5xl">:</span>
+        <div class="flex flex-col items-center justify-center bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl sm:rounded-2xl w-14 h-14 sm:w-28 sm:h-28">
+          <strong data-unit="minutes" class="font-display font-extrabold text-gold text-2xl sm:text-5xl leading-none tabular-nums">00</strong>
+          <small class="text-[9px] sm:text-xs uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-1">Minutes</small>
+        </div>
+        <span class="font-display font-bold text-gold/50 text-2xl sm:text-4xl lg:text-5xl">:</span>
+        <div class="flex flex-col items-center justify-center bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl sm:rounded-2xl w-14 h-14 sm:w-28 sm:h-28">
+          <strong data-unit="seconds" class="font-display font-extrabold text-gold text-2xl sm:text-5xl leading-none tabular-nums">00</strong>
+          <small class="text-[9px] sm:text-xs uppercase tracking-wider text-gray-400 mt-0.5 sm:mt-1">Seconds</small>
+        </div>
+      </div>
+
+      <div class="glass-card group relative mt-14 rounded-3xl overflow-hidden bg-ink-secondary border border-white/10 shadow-xl">
+        <!-- Interactive Glow Effects -->
+        <div class="glass-glow pointer-events-none absolute inset-0 rounded-3xl border border-gold/20 opacity-0 transition-opacity duration-300 z-[1]" style="background: radial-gradient(320px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(242, 185, 13, 0.22), rgba(201, 154, 0, 0.08) 40%, transparent 80%);"></div>
+        <div class="glass-border-glow pointer-events-none absolute inset-0 rounded-3xl border border-white/20 opacity-0 transition-opacity duration-300 z-[1]" style="mask-image: radial-gradient(320px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), black 30%, transparent 100%);"></div>
+
+        <div class="relative z-[2] grid md:grid-cols-2 items-center">
+
+          <div class="relative p-4 sm:p-6 flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10">
+            <div class="w-full rounded-2xl overflow-hidden border border-white/10 shadow-lg bg-black/30">
+              <img src="assets/gateway-2026.png" alt="Gateway 2026 key visual" class="w-full h-auto object-contain block" />
+            </div>
+          </div>
+
+          <div class="p-7 sm:p-10 flex flex-col justify-center">
+            <span class="inline-flex w-fit items-center gap-2 border border-gold/30 bg-gold/10 rounded-full px-4 py-1.5 text-xs font-display font-semibold text-gold mb-5">Recruitment Program</span>
+
+            <h2 class="font-display text-2xl sm:text-3xl font-bold text-white leading-snug">Step through the Gateway</h2>
+
+            <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-4 text-sm text-gray-400">
+              <span class="flex items-center gap-1.5">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+                June, 2026
+              </span>
+              <span class="flex items-center gap-1.5">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 105 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+                BUP Auditorium, Dhaka
+              </span>
+            </div>
+
+            <p class="mt-4 text-sm text-gray-400 leading-relaxed">
+              Gateway is how BUP BCC finds its next generation of leaders. Across four carefully designed rounds we look for individuals with exceptional skills and genuinely fresh, innovative thinking — and we help them find their place in the club.
+            </p>
+
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href="https://tiny.cc/gw26" target="_blank" rel="noopener noreferrer" class="bg-gold hover:bg-gold-dark text-ink font-display font-semibold px-6 py-3 rounded-full transition-colors">Apply Now</a>
+              <a href="#process" class="inline-flex items-center gap-2 border border-white/25 hover:border-gold hover:text-gold text-white font-display font-semibold px-6 py-3 rounded-full transition-colors">
+                See the Process
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="relative overflow-hidden bg-ink-secondary py-14">
+    <div class="max-w-4xl mx-auto px-5 sm:px-8 grid grid-cols-3 gap-8 text-center">
+      <div>
+        <strong class="block font-display font-black text-4xl sm:text-5xl text-gold tabular-nums">4</strong>
+        <span class="text-[11px] sm:text-xs uppercase tracking-[0.16em] text-white/50">Selection Rounds</span>
+      </div>
+      <div>
+        <strong class="count block font-display font-black text-4xl sm:text-5xl text-gold tabular-nums" data-target="10" data-suffix="+">0</strong>
+        <span class="text-[11px] sm:text-xs uppercase tracking-[0.16em] text-white/50">Departments to Join</span>
+      </div>
+      <div>
+        <strong class="count block font-display font-black text-4xl sm:text-5xl text-gold tabular-nums" data-target="0" data-prefix="৳" data-suffix="">৳0</strong>
+        <span class="text-[11px] sm:text-xs uppercase tracking-[0.16em] text-white/50">Application Fee</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FACEBOOK EVENT -->
+  <section class="relative overflow-hidden bg-white py-20 sm:py-24">
+    <div class="max-w-5xl mx-auto px-5 sm:px-8">
+      <div class="relative overflow-hidden rounded-3xl bg-ink px-7 py-12 sm:px-14 sm:py-14 shadow-[0_24px_60px_rgba(0,0,0,0.25)]">
+        <div class="absolute -top-24 -right-20 w-72 h-72 rounded-full bg-gold/15 blur-3xl" aria-hidden="true"></div>
+        <div class="absolute -bottom-28 -left-16 w-72 h-72 rounded-full bg-gold/8 blur-3xl" aria-hidden="true"></div>
+
+        <div class="relative z-[1] grid md:grid-cols-2 gap-9 md:gap-12 items-center text-center md:text-left">
+          <div>
+            <p class="text-gold font-display font-bold text-xs tracking-[0.14em] uppercase mb-3">Stay in the loop</p>
+            <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white leading-[1.08]">
+              Everything drops first on the <span class="text-gold">Facebook event</span>
+            </h2>
+            <p class="mt-4 text-white/60 text-base sm:text-lg max-w-lg mx-auto md:mx-0">
+              Application deadlines, focus-group schedules and interview call-ups — all posted there. Hit Interested so nothing slips past you.
+            </p>
+            <a
+              href="https://www.facebook.com/events/1422081562707510"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group mt-8 inline-flex items-center justify-center gap-3 bg-gold hover:bg-gold-dark text-ink font-display font-bold px-8 py-4 rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 transition-all"
+            >
+              <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94Z"/></svg>
+              Visit the Event Page
+            </a>
+          </div>
+
+          <a
+            href="https://www.facebook.com/events/1422081562707510"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block rounded-2xl overflow-hidden bg-white shadow-[0_16px_48px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-transform duration-300"
+          >
+            <div class="relative w-full aspect-[1.91/1] bg-ink overflow-hidden flex items-center justify-center">
+              <img src="assets/gateway-2026.png" alt="Gateway 2026 event cover" class="w-full h-full object-cover" />
+            </div>
+            <div class="px-5 py-4">
+              <div class="flex items-center gap-2 mb-2">
+                <svg class="w-4 h-4 shrink-0 text-[#1877f2]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94Z"/></svg>
+                <span class="text-xs font-bold text-ink uppercase tracking-widest">Gateway 2026</span>
+              </div>
+              <p class="text-sm text-gray-500 mt-1.5 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                June 2026
+              </p>
+              <p class="text-sm text-gray-500 mt-1 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                BUP Business &amp; Communication Club
+              </p>
+              <div class="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
+                <span class="text-sm text-[#1877f2] font-semibold">facebook.com/events/1422081562707510</span>
+                <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELECTION PROCESS -->
+  <section id="process" class="relative overflow-hidden bg-gray-50 py-16 sm:py-20">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="text-center mb-12">
+        <p class="text-gold font-display font-bold text-base tracking-[0.14em] uppercase mb-3">Selection Process</p>
+        <h2 class="font-display text-3xl sm:text-4xl font-extrabold">Four rounds to find you</h2>
+        <p class="mt-3 text-ink/50 text-base sm:text-lg max-w-xl mx-auto">Each stage is built to surface exceptional skills and innovative thinking.</p>
+      </div>
+      <div id="rounds-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+    </div>
+  </section>
+
+  <!-- KEY DATES -->
+  <section class="relative overflow-hidden bg-white py-16 sm:py-20">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="text-center mb-12">
+        <p class="text-gold font-display font-bold text-base tracking-[0.14em] uppercase mb-3">Key Dates</p>
+        <h2 class="font-display text-3xl sm:text-4xl font-extrabold">Mark your calendar</h2>
+      </div>
+
+      <ol id="timeline-stack" class="md:hidden rounded-2xl border border-black/10 bg-white px-5 py-7"></ol>
+
+      <div class="hidden md:block rounded-2xl border border-black/10 bg-white px-6 lg:px-10 pt-9 pb-7">
+        <div id="timeline-labels" class="flex justify-between gap-2"></div>
+        <div id="timeline-line" class="relative flex justify-between my-5 before:absolute before:inset-x-0 before:top-1/2 before:h-px before:bg-black/10"></div>
+        <div id="timeline-dates" class="flex justify-between gap-2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ECLIPSE / ORIENTATION -->
+  <section class="relative overflow-hidden bg-ink-secondary py-20 sm:py-24">
+    <div class="absolute top-1/2 -translate-y-1/2 left-[4%] w-80 h-80 rounded-full bg-gold/15 blur-3xl" aria-hidden="true"></div>
+    <div class="absolute top-1/2 -translate-y-1/2 right-[4%] w-80 h-80 rounded-full bg-gold/10 blur-3xl" aria-hidden="true"></div>
+    <div class="relative z-[1] max-w-6xl mx-auto px-5 sm:px-8 grid md:grid-cols-[0.9fr_1.1fr] gap-12 lg:gap-14 items-center">
+
+      <div class="relative h-80 sm:h-[26rem] rounded-2xl overflow-hidden bg-ink ring-1 ring-white/10">
+        <img src="assets/gateway-ori.jpeg" alt="Gateway recruitment" class="absolute inset-0 w-full h-full object-cover" />
+      </div>
+
+      <div>
+        <p class="text-gold font-display font-bold text-base tracking-[0.14em] uppercase mb-3">Orientation</p>
+        <h2 class="font-display text-4xl sm:text-6xl font-black leading-[1.0] mb-5 tracking-tight text-white">ECLIPSE</h2>
+        <p class="text-white/60 text-base sm:text-lg leading-relaxed">
+          Gateway 2026 invites undergraduates to step into the BUP Business &amp; Communication Club — a home for people who want to lead events, tell stories, build brands and grow alongside a driven community. There is no fee and no prior experience required, just the willingness to show us what you can do.
+        </p>
+        <div class="mt-7 pt-6 border-t border-white/10 flex flex-wrap gap-2.5">
+          <span class="border border-gold/30 bg-gold/10 text-gold text-sm px-3.5 py-1 rounded-full">Undergraduates only</span>
+          <span class="border border-gold/30 bg-gold/10 text-gold text-sm px-3.5 py-1 rounded-full">No experience needed</span>
+          <span class="border border-gold/30 bg-gold/10 text-gold text-sm px-3.5 py-1 rounded-full">Free to apply</span>
+          <span class="border border-gold/30 bg-gold/10 text-gold text-sm px-3.5 py-1 rounded-full">4 rounds</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GLIMPSES MARQUEE -->
+  <section class="relative overflow-hidden bg-ink-secondary pt-4 pb-20 sm:pb-24">
+    <div class="absolute -top-16 right-[10%] w-72 h-72 rounded-full bg-gold/12 blur-3xl" aria-hidden="true"></div>
+    <div class="absolute -bottom-24 left-[8%] w-72 h-72 rounded-full bg-gold/10 blur-3xl" aria-hidden="true"></div>
+
+    <div class="relative z-[1] max-w-6xl mx-auto px-5 sm:px-8 text-center mb-10 sm:mb-12">
+      <p class="text-gold font-display font-bold text-base tracking-[0.14em] uppercase mb-3">Moments</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Glimpses of Gateway 2026</h2>
+    </div>
+
+    <div class="relative z-[1] marquee-wrap">
+      <div id="glimpses-track" class="marquee-track"></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="relative overflow-hidden bg-white py-16 sm:py-20">
+    <div class="max-w-3xl mx-auto px-5 sm:px-8">
+      <div class="text-center mb-10">
+        <p class="text-gold font-display font-bold text-base tracking-[0.14em] uppercase mb-3">Questions</p>
+        <h2 class="font-display text-3xl sm:text-4xl font-extrabold">Before you apply</h2>
+      </div>
+      <div id="faq-list"></div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section id="apply" class="relative overflow-hidden bg-ink py-24 text-center">
+    <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-gold/10 blur-3xl pointer-events-none" aria-hidden="true"></div>
+    <div class="relative z-[1] max-w-3xl mx-auto px-5 sm:px-8">
+      <h2 class="font-display font-black text-white text-4xl sm:text-6xl leading-[0.98] tracking-tight mb-4">Ready to step<br />through?</h2>
+      <p class="text-white/55 text-base sm:text-lg mb-8">Applications are open — take the first step toward your BCC journey.</p>
+      <a href="https://tiny.cc/gw26" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-bold px-7 py-3.5 rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 transition-all">
+        Apply Now
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="relative overflow-hidden bg-ink-secondary pt-16 pb-16">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 grid md:grid-cols-2 gap-12 pb-9 border-b border-white/10">
+
+    <div>
+      <h3 class="font-display font-black uppercase text-white text-2xl sm:text-3xl leading-snug">
+        Allow Yourself<br />to <span class="text-gold">Dream Big</span>
+      </h3>
+
+      <div class="flex items-center gap-4 sm:gap-5 mt-6">
+        <img src="assets/bcc-logo.png" alt="BUP Business &amp; Communication Club" loading="lazy" class="h-12 sm:h-14 w-auto object-contain" />
+        <span class="w-px h-8 sm:h-10 bg-white/15" aria-hidden="true"></span>
+        <img src="assets/bup-logo.png" alt="Bangladesh University of Professionals" loading="lazy" class="h-12 sm:h-14 w-auto object-contain" />
+      </div>
+      <div class="flex items-center gap-3 mt-6">
+        <a href="https://www.facebook.com/bupbcc" aria-label="Facebook" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-ink hover:bg-gold hover:border-gold transition-colors">
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor"><path d="M22 12.06C22 6.5 17.5 2 12 2S2 6.5 2 12.06c0 5 3.66 9.17 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.89h2.78l-.45 2.91h-2.33v7.03C18.34 21.23 22 17.06 22 12.06z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/bupbcc/" aria-label="Instagram" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-ink hover:bg-gold hover:border-gold transition-colors">
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="0.9" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/bupbcc/" aria-label="LinkedIn" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-ink hover:bg-gold hover:border-gold transition-colors">
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor"><path d="M6.94 8.5H3.56V20.5H6.94V8.5z"/><path d="M5.25 3.5a2 2 0 100 4 2 2 0 000-4z"/><path d="M20.44 20.5h-3.37v-5.9c0-1.4-.03-3.2-1.96-3.2-1.96 0-2.26 1.53-2.26 3.1v6h-3.37V8.5h3.24v1.64h.04c.45-.86 1.55-1.76 3.19-1.76 3.42 0 4.49 2.25 4.49 5.17v6.95z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/channel/UCjqs3aUHctWzISjbX0IDTwg" aria-label="YouTube" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-ink hover:bg-gold hover:border-gold transition-colors">
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="6" width="19" height="12" rx="4"/><path d="M10.5 9.5l5 2.5-5 2.5v-5z" fill="currentColor" stroke="none"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4 md:items-end text-white/50 text-sm">
+      <div class="flex items-center gap-3 md:flex-row-reverse">
+        <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold shrink-0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.1 7-11.5A7 7 0 105 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+        <span>Mirpur Cantonment, Dhaka, Bangladesh</span>
+      </div>
+      <div class="flex items-center gap-3 md:flex-row-reverse">
+        <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold shrink-0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 005 5L14 13l5 2v3a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg>
+        <a href="tel:+8801854008410" class="hover:text-white transition-colors">+880 1854-008410</a>
+      </div>
+      <div class="flex items-center gap-3 md:flex-row-reverse">
+        <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold shrink-0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        <a href="mailto:bupbcc@gmail.com" class="hover:text-white transition-colors">bupbcc@gmail.com</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <p class="text-center text-xs text-white/30 mt-8">Copyright © <span id="year"></span> BUP Business &amp; Communication Club. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  const ROUNDS = [
+    ['Online Application', 'Tell us who you are. Submit the application form with a little about your interests, your strengths and why you want to be part of BCC.'],
+    ['Aptitude Test', 'A short written assessment right after your online application, designed to gauge how you reason, solve problems and think on your feet.'],
+    ['Focus Group Discussion', 'Sit down with fellow applicants for a guided discussion where we look for how you think, collaborate and communicate under a real-time prompt.'],
+    ['Final Interview', 'A one-on-one conversation with the panel to understand your goals, your fit and where you would thrive within the club.'],
+  ];
+
+  const DATES = [
+    ['Applications open', '25 Feb'],
+    ['CV Screening', '4 Mar'],
+    ['Aptitude Test', '5 Mar'],
+    ['Focus Group Discussion', '17 Mar'],
+    ['Final Interview', '21 Apr'],
+    ['Orientation', '19 May'],
+  ];
+
+  const FAQS = [
+    ['Who can apply to Gateway 2026?', 'Any currently enrolled undergraduate student is welcome to apply. No prior club or event experience is required.'],
+    ['Is there an application fee?', 'No. Applying to Gateway is completely free.'],
+    ['What are the rounds?', 'There are four: an online application, an aptitude test, a focus group discussion, and a final interview.'],
+    ['Where do I apply?', 'Fill out the application form at tiny.cc/gw26. All schedules and updates are posted on the Gateway 2026 Facebook event.'],
+    ['Do I need to choose a department beforehand?', 'You can share your interests in the application, but the final placement is discussed during the interview so we can find the best fit for you.'],
+  ];
+
+  document.addEventListener('DOMContentLoaded', function () {
+
+  // Selection rounds
+  const roundsGrid = document.getElementById('rounds-grid');
+  roundsGrid.innerHTML = ROUNDS.map(([title, copy], i) => `
+    <div class="bg-white border border-black/10 rounded-2xl p-6 hover:-translate-y-1.5 hover:shadow-[0_18px_36px_rgba(0,0,0,0.1)] transition-all duration-300">
+      <div class="flex items-center justify-between mb-4">
+        <span class="font-display font-black text-3xl text-gold/40 tabular-nums">0${i + 1}</span>
+        <span class="w-8 h-8 rounded-full bg-gold/15 border border-gold/30 flex items-center justify-center text-gold font-bold text-sm">${i + 1}</span>
+      </div>
+      <h3 class="font-display text-lg font-bold mb-2">${title}</h3>
+      <p class="text-base text-ink/55 leading-relaxed">${copy}</p>
+    </div>`).join('');
+
+  // Key-date timeline
+  const activeStage = 0;
+  document.getElementById('timeline-labels').innerHTML = DATES
+    .map(([label], i) => `<span class="flex-1 text-center text-base ${i === activeStage ? 'text-ink font-semibold' : 'text-ink/50'}">${label}</span>`)
+    .join('');
+
+  document.getElementById('timeline-line').innerHTML = DATES
+    .map((row, i) => `<div class="relative z-[1] flex-1 flex justify-center">${
+      i === activeStage
+        ? '<span class="w-4 h-4 rounded-full bg-gold border-2 border-gold-dark"></span>'
+        : '<span class="w-2.5 h-2.5 rounded-full bg-white border-2 border-black/20"></span>'
+    }</div>`)
+    .join('');
+
+  document.getElementById('timeline-dates').innerHTML = DATES
+    .map(([, date], i) => `<span class="flex-1 text-center font-display font-bold text-base px-1.5 py-2.5 rounded-lg border ${
+      i === activeStage ? 'bg-gold border-gold text-ink' : 'bg-gray-50 border-black/10 text-ink/50'
+    }">${date}</span>`)
+    .join('');
+
+  document.getElementById('timeline-stack').innerHTML = DATES
+    .map(([label, date], i) => `
+      <li class="relative flex items-start gap-4 ${i === DATES.length - 1 ? '' : 'pb-6'}">
+        ${i === DATES.length - 1 ? '' : '<span class="absolute left-[13px] top-7 bottom-0 w-px bg-black/10"></span>'}
+        <span class="relative z-[1] shrink-0 w-7 flex justify-center pt-1">${
+          i === activeStage
+            ? '<span class="w-3.5 h-3.5 mt-0.5 rounded-full bg-gold border-2 border-gold-dark"></span>'
+            : '<span class="w-2.5 h-2.5 mt-1 rounded-full bg-white border-2 border-black/20"></span>'
+        }</span>
+        <div class="flex-1 min-w-0">
+          <p class="text-base ${i === activeStage ? 'text-ink font-semibold' : 'text-ink/50'}">${label}</p>
+          <span class="inline-block mt-1.5 font-display font-bold text-base px-3 py-1.5 rounded-lg border ${
+            i === activeStage ? 'bg-gold border-gold text-ink' : 'bg-gray-50 border-black/10 text-ink/50'
+          }">${date}</span>
+        </div>
+      </li>`)
+    .join('');
+
+  // Glimpses marquee — 20 image-only cards, duplicated for a seamless loop
+  const glimpsesTrack = document.getElementById('glimpses-track');
+  if (glimpsesTrack) {
+    const cards = Array.from({ length: 20 }, (_, i) => {
+      const n = i + 1;
+      return `
+        <figure class="shrink-0 w-56 sm:w-72 h-40 sm:h-48 mr-4 sm:mr-5 rounded-2xl overflow-hidden bg-ink ring-1 ring-white/10 shadow-[0_16px_36px_rgba(0,0,0,0.4)]">
+          <img src="assets/glimpses/gateway-${n}.jpg" alt="Gateway 2026 moment ${n}" loading="lazy" class="w-full h-full object-cover" />
+        </figure>`;
+    }).join('');
+    // Two copies so the -50% translate loops without a visible seam
+    glimpsesTrack.innerHTML = cards + cards;
+  }
+
+  // FAQ accordion
+  const faqList = document.getElementById('faq-list');
+  faqList.innerHTML = FAQS.map(([question, answer]) => `
+    <div class="faq-item border-b border-black/10 py-5 cursor-pointer">
+      <div class="flex items-center justify-between gap-4 font-display font-semibold text-base sm:text-lg">
+        ${question}
+        <svg class="faq-icon w-4 h-4 shrink-0 text-gold transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      </div>
+      <div class="faq-answer text-base text-ink/55"><p class="pt-3">${answer}</p></div>
+    </div>`).join('');
+
+  const faqItems = faqList.querySelectorAll('.faq-item');
+  faqItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      faqItems.forEach((i) => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      iconOpen.classList.toggle('hidden', isOpen);
+      iconClose.classList.toggle('hidden', !isOpen);
+    });
+
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      });
+    });
+  }
+
+  // Navbar glass glow
+  const glassCard = document.getElementById('glass-card');
+  const glassGlow = document.getElementById('glass-glow');
+  const glassBorderGlow = document.getElementById('glass-border-glow');
+
+  if (glassCard) {
+    glassCard.addEventListener('mousemove', (e) => {
+      const rect = glassCard.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      glassCard.style.setProperty('--mouse-x', `${x}px`);
+      glassCard.style.setProperty('--mouse-y', `${y}px`);
+      glassGlow.style.opacity = '1';
+      glassBorderGlow.style.opacity = '1';
+    });
+    glassCard.addEventListener('mouseleave', () => {
+      glassGlow.style.opacity = '0';
+      glassBorderGlow.style.opacity = '0';
+    });
+  }
+
+  // Generic glass-card hover glow for class-based cards
+  document.querySelectorAll('.glass-card').forEach((card) => {
+    const glow = card.querySelector('.glass-glow');
+    const borderGlow = card.querySelector('.glass-border-glow');
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+      card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      if (glow) glow.style.opacity = '1';
+      if (borderGlow) borderGlow.style.opacity = '1';
+    });
+    card.addEventListener('mouseleave', () => {
+      if (glow) glow.style.opacity = '0';
+      if (borderGlow) borderGlow.style.opacity = '0';
+    });
+  });
+
+  // Stat counters
+  const countUp = (el) => {
+    const target = parseInt(el.dataset.target, 10);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix === undefined ? '+' : el.dataset.suffix;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.textContent = prefix + target.toLocaleString() + suffix;
+      return;
+    }
+
+    const start = performance.now();
+    const step = (now) => {
+      const progress = Math.min((now - start) / 1400, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = prefix + Math.floor(eased * target).toLocaleString() + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const counters = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      countUp(entry.target);
+      counters.unobserve(entry.target);
+    });
+  }, { threshold: 0.4 });
+
+  document.querySelectorAll('.count').forEach((el) => counters.observe(el));
+
+  // Countdown to the application deadline
+  const finale = new Date('2026-06-30T23:59:00+06:00');
+  const liveNotice = document.getElementById('countdown-live');
+  const unit = (name) => document.querySelector(`[data-unit="${name}"]`);
+  const pad = (n) => String(n).padStart(2, '0');
+
+  const tick = () => {
+    const diff = finale - new Date();
+    if (diff <= 0) {
+      ['days', 'hours', 'minutes', 'seconds'].forEach((name) => { unit(name).textContent = '00'; });
+      liveNotice.classList.remove('hidden');
+      clearInterval(timer);
+      return;
+    }
+    unit('days').textContent = pad(Math.floor(diff / 86400000));
+    unit('hours').textContent = pad(Math.floor((diff / 3600000) % 24));
+    unit('minutes').textContent = pad(Math.floor((diff / 60000) % 60));
+    unit('seconds').textContent = pad(Math.floor((diff / 1000) % 60));
+  };
+
+  const timer = setInterval(tick, 1000);
+  tick();
+
+  // Footer year
+  document.getElementById('year').textContent = new Date().getFullYear();
+  }); // end DOMContentLoaded
+</script>
+</body>
+</html>
