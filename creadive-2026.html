@@ -89,6 +89,10 @@
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
 
+  .archive-slide {
+    transition: opacity 1.4s ease-in-out;
+  }
+
   :focus-visible {
     outline: 2px solid #0f6bc0;
     outline-offset: 3px;
@@ -106,6 +110,7 @@
     html { scroll-behavior: auto; }
     body { animation: none; }
     .plane-field > span { animation: none; }
+    .archive-slide { transition: none; }
   }
 </style>
 </head>
@@ -142,7 +147,6 @@
         <a href="team.html" class="hover:text-sky-300 transition-colors py-1">Team</a>
         <a href="hall-of-fame.html" class="hover:text-sky-300 transition-colors py-1">Hall of Fame</a>
         <a href="accomplishments.html" class="hover:text-sky-300 transition-colors py-1">Accomplishments</a>
-        <a href="bizfeed.html" class="hover:text-sky-300 transition-colors py-1">BizFeed</a>
       </nav>
 
       <div class="flex items-center gap-2 sm:gap-3 shrink-0">
@@ -173,7 +177,6 @@
       <a href="team.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
       <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
       <a href="accomplishments.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Accomplishments</a>
-      <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
     </div>
 
   </div>
@@ -501,7 +504,17 @@
         <p class="text-sky-600 font-display font-bold text-base tracking-[0.14em] uppercase mb-3">The Archive</p>
         <h2 class="font-display text-3xl sm:text-4xl font-extrabold">CreADive through the years</h2>
       </div>
-      <div id="archive-grid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4"></div>
+      <div class="relative rounded-2xl overflow-hidden aspect-[16/9] sm:aspect-[21/9] bg-navy">
+        <div id="archive-slideshow" class="absolute inset-0"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-deep/70 via-transparent to-transparent pointer-events-none"></div>
+        <div id="archive-caption" class="absolute bottom-0 inset-x-0 p-5 sm:p-8 flex items-end justify-between gap-4">
+          <div>
+            <p id="archive-name" class="font-display font-black text-white text-xl sm:text-3xl leading-tight"></p>
+            <p id="archive-year" class="font-display text-sky-300 text-sm sm:text-base mt-1"></p>
+          </div>
+          <div class="flex gap-2" id="archive-dots"></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -780,15 +793,49 @@
       </ul>
     </div>`).join('');
 
-  // Past editions
-  document.getElementById('archive-grid').innerHTML = EDITIONS.map(([name, year], i) => `
-    <div class="group relative aspect-[4/3] rounded-xl overflow-hidden border border-sky-200 bg-gradient-to-br from-sky-100 to-sky-200">
-      <img src="assets/creadive-images/creadive-${i + 1}.jpg" alt="${name}" class="w-full h-full object-cover" onerror="this.style.display='none'">
-      <div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-navy-deep/80 to-transparent">
-        <p class="font-display font-bold text-base text-white leading-tight">${name}</p>
-        <p class="text-sm text-white">${year}</p>
-      </div>
-    </div>`).join('');
+  // Past editions — crossfade slideshow
+  (function () {
+    const slideshow = document.getElementById('archive-slideshow');
+    const nameEl = document.getElementById('archive-name');
+    const yearEl = document.getElementById('archive-year');
+    const dotsEl = document.getElementById('archive-dots');
+
+    const imgs = EDITIONS.map(([name, year], i) => {
+      const img = document.createElement('img');
+      img.src = `assets/creadive-images/creadive-${i + 1}.jpg`;
+      img.alt = name;
+      img.className = 'archive-slide absolute inset-0 w-full h-full object-cover opacity-0';
+      slideshow.appendChild(img);
+      return img;
+    });
+
+    const dots = EDITIONS.map((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'w-2 h-2 rounded-full transition-colors ' + (i === 0 ? 'bg-white' : 'bg-white/30');
+      d.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      d.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(d);
+      return d;
+    });
+
+    let current = 0;
+
+    function goTo(next) {
+      imgs[current].classList.add('opacity-0');
+      dots[current].className = 'w-2 h-2 rounded-full transition-colors bg-white/30';
+      current = next;
+      imgs[current].classList.remove('opacity-0');
+      dots[current].className = 'w-2 h-2 rounded-full transition-colors bg-white';
+      nameEl.textContent = EDITIONS[current][0];
+      yearEl.textContent = EDITIONS[current][1];
+    }
+
+    goTo(0);
+
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setInterval(() => goTo((current + 1) % EDITIONS.length), 2000);
+    }
+  })();
 
 
   // FAQ accordion

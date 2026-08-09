@@ -65,7 +65,7 @@ function renderCard(ev) {
         <div class="p-6 pt-12">
           <span class="inline-block text-[11px] font-display font-semibold uppercase tracking-wider text-gold bg-gold/10 border border-gold/20 rounded-full px-3 py-1 mb-3">${escapeHtml(label)}</span>
           <h3 class="font-display text-lg font-bold text-white">${escapeHtml(ev.title)}</h3>
-          <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-xs text-gray-400">
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-sm text-gray-400">
             ${date ? `<span class="flex items-center gap-1">${CAL_ICON}${escapeHtml(date)}</span>` : ''}
             ${ev.location ? `<span class="flex items-center gap-1">${PIN_ICON}${escapeHtml(ev.location)}</span>` : ''}
           </div>

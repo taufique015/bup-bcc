@@ -156,7 +156,6 @@
         <a href="team.html" class="hover:text-gold transition-colors py-1">Team</a>
         <a href="hall-of-fame.html" class="hover:text-gold transition-colors py-1">Hall of Fame</a>
         <a href="accomplishments.html" class="hover:text-gold text-white transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gold after:rounded-full">Accomplishments</a>
-        <a href="bizfeed.html" class="hover:text-gold transition-colors py-1">BizFeed</a>
       </nav>
 
       <div class="flex items-center gap-2 sm:gap-3 shrink-0">
@@ -187,7 +186,6 @@
       <a href="team.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Team</a>
       <a href="hall-of-fame.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Hall of Fame</a>
       <a href="accomplishments.html" class="block px-3 py-2 rounded-lg text-gold font-medium bg-white/5">Accomplishments</a>
-      <a href="bizfeed.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors">BizFeed</a>
     </div>
 
   </div>
@@ -274,25 +272,19 @@
     </div>
   </section>
 
-  <!-- 4-Column Horizontal Achievements Grid -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div id="accomplishments-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[480px]">
-      <!-- Rendered dynamically via app.js -->
-    </div>
-  </section>
+  <!-- Feed -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <div id="accomplishments-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-8"></div>
 
-  <!-- Empty State -->
-  <div id="empty-state" class="hidden max-w-7xl mx-auto px-4 text-center py-16 bg-ink-secondary/50 rounded-2xl border border-dashed border-white/20 my-8">
-    <div class="w-16 h-16 rounded-full bg-gold/10 text-gold flex items-center justify-center mx-auto mb-4">
-      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <div id="empty-state" class="hidden text-center py-16 bg-ink-secondary/50 rounded-2xl border border-dashed border-white/20 mt-8">
+      <div class="w-16 h-16 rounded-full bg-gold/10 text-gold flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <h3 class="font-display font-bold text-lg text-white mb-1">No Accomplishments Found</h3>
+      <p class="text-sm text-gray-400 max-w-sm mx-auto">Try adjusting your search terms or year filter.</p>
     </div>
-    <h3 class="font-display font-bold text-lg text-white mb-1">No Accomplishments Found</h3>
-    <p class="text-sm text-gray-400 max-w-sm mx-auto">Try adjusting your search terms or year filter.</p>
-  </div>
 
-  <!-- Pagination Controls (8 Cards Per Page) -->
-  <section id="pagination-container" class="max-w-7xl mx-auto px-4">
-    <!-- Pagination controls rendered dynamically via app.js -->
+    <div id="pagination-container" class="mt-8"></div>
   </section>
 
 </main>

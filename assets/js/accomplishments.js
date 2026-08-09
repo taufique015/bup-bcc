@@ -1,6 +1,6 @@
 // BUP Business & Communication Club (BUP BCC) Achievements Logic - Horizontal Cards Grid View
 // Records come from the Supabase `accomplishments` table.
-const CARDS_PER_PAGE = 8;
+const CARDS_PER_PAGE = 5;
 const FALLBACK_IMAGE = 'assets/corporiddlerz-2025.jpg';
 
 let currentPage = 1;
@@ -124,7 +124,7 @@ function applyFilters() {
   renderGrid();
 }
 
-// Render Horizontal Cards Grid (4 Columns x 2 Rows)
+// Render Facebook-style feed (one card at a time, full width)
 function renderGrid() {
   const gridContainer = document.getElementById('accomplishments-grid');
   const emptyState = document.getElementById('empty-state');
@@ -141,7 +141,6 @@ function renderGrid() {
   const endIndex = startIndex + CARDS_PER_PAGE;
   const pageItems = filteredAccomplishments.slice(startIndex, endIndex);
 
-  // Empty state check
   if (pageItems.length === 0) {
     gridContainer.innerHTML = '';
     if (emptyState) emptyState.classList.remove('hidden');
@@ -151,75 +150,59 @@ function renderGrid() {
     if (emptyState) emptyState.classList.add('hidden');
   }
 
-  // Render 4-Column Grid Cards (Text-only members, no avatars)
   gridContainer.innerHTML = pageItems.map(item => {
-    // Text-only member list (no profile pictures)
-    const membersText = escapeHtml(item.members.map(m => m.name).join(', '));
+    const membersList = item.members.map(m =>
+      `<span class="inline-flex items-center gap-1 bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5 text-xs text-gray-300">${escapeHtml(m.role ? `${m.name} · ${m.role}` : m.name)}</span>`
+    ).join('');
 
     return `
-      <article class="group bg-ink-secondary rounded-2xl border border-white/10 hover:border-gold/40 transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-xl hover:-translate-y-1">
+      <article class="bg-ink-secondary rounded-2xl border border-white/10 overflow-hidden shadow-xl">
 
-        <!-- Card Header Image & Rank Badge -->
-        <div class="relative h-48 w-full overflow-hidden bg-black/40 border-b border-white/10">
-          <img
-            src="${escapeHtml(item.image)}"
-            alt="${escapeHtml(item.title)}"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
-            onerror="this.src='${FALLBACK_IMAGE}'"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-ink-secondary via-transparent to-transparent"></div>
-
-          <!-- Rank Pill Badge -->
-          <span class="absolute top-3 left-3 bg-gold text-slate-950 font-display font-bold text-xs px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
-            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/></svg>
-            ${escapeHtml(item.rank)}
-          </span>
-
-          <!-- Year Badge -->
-          <span class="absolute top-3 right-3 bg-ink/80 backdrop-blur text-gray-300 text-xs px-2.5 py-1 rounded-full border border-white/10 font-display font-semibold">
-            ${escapeHtml(item.year)}
-          </span>
+        <!-- Post header -->
+        <div class="flex items-center gap-3 px-4 pt-4 pb-3">
+          <div class="w-10 h-10 rounded-full bg-gold/15 border border-gold/30 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-gold fill-current" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/></svg>
+          </div>
+          <div class="min-w-0">
+            <p class="font-display font-bold text-sm text-white leading-tight truncate">${escapeHtml(item.teamName || 'BUP BCC')}</p>
+            <p class="text-xs text-gray-500">${escapeHtml(item.organizer)} · ${escapeHtml(item.year)}</p>
+          </div>
+          <span class="ml-auto shrink-0 bg-gold text-ink font-display font-bold text-[11px] px-2.5 py-1 rounded-full">${escapeHtml(item.rank)}</span>
         </div>
 
-        <!-- Card Content Body -->
-        <div class="p-5 flex-1 flex flex-col justify-between">
-          <div>
-            <div class="text-xs text-gold font-display font-semibold uppercase tracking-wider mb-1 truncate">${escapeHtml(item.organizer)}</div>
-            <h3 class="font-display font-bold text-lg text-white group-hover:text-gold transition-colors line-clamp-1 mb-2">${escapeHtml(item.title)}</h3>
-            <p class="text-xs sm:text-sm text-gray-400 line-clamp-2 mb-4 leading-relaxed">${escapeHtml(item.description)}</p>
-          </div>
+        <!-- Post body text -->
+        <div class="px-4 pb-3">
+          <h3 class="font-display font-bold text-base text-white mb-1">${escapeHtml(item.title)}</h3>
+          ${item.description ? `<p class="text-sm text-gray-400 leading-relaxed">${escapeHtml(item.description)}</p>` : ''}
+        </div>
 
-          <div>
-            <!-- Team & Members Row (Text Only, No Profile Avatars) -->
-            <div class="border-t border-white/10 pt-3 text-xs space-y-1 mb-4">
-              <div class="flex items-center justify-between">
-                <span class="text-gold font-display font-semibold">Team:</span>
-                <span class="text-white font-medium truncate max-w-[150px]">${escapeHtml(item.teamName)}</span>
-              </div>
-              <div class="flex items-start justify-between gap-1">
-                <span class="text-gray-400 font-medium shrink-0">Members:</span>
-                <span class="text-gray-300 truncate max-w-[170px]" title="${membersText}">${membersText}</span>
-              </div>
-            </div>
+        <!-- Image -->
+        ${item.image ? `
+        <div class="w-full h-auto bg-black/40 overflow-hidden">
+          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover" loading="lazy" onerror="this.closest('div').style.display='none'">
+        </div>` : ''}
 
-            <!-- View Detail CTA -->
-            <button
-              type="button"
-              data-detail-id="${escapeHtml(item.id)}"
-              class="w-full py-2 px-3 rounded-xl bg-ink hover:bg-gold hover:text-slate-950 text-white text-xs font-display font-semibold border border-white/10 hover:border-gold transition-all flex items-center justify-center gap-2"
-            >
-              <span>View Details</span>
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </button>
-          </div>
+        <!-- Members row -->
+        ${membersList ? `
+        <div class="px-4 pt-3 pb-1 flex flex-wrap gap-1.5">
+          ${membersList}
+        </div>` : ''}
+
+        <!-- Action row -->
+        <div class="px-4 py-3 border-t border-white/10 mt-2">
+          <button
+            type="button"
+            data-detail-id="${escapeHtml(item.id)}"
+            class="w-full py-2 rounded-xl bg-white/5 hover:bg-gold hover:text-ink text-gray-300 text-sm font-display font-semibold border border-white/10 hover:border-gold transition-all"
+          >
+            View Full Details
+          </button>
         </div>
 
       </article>
     `;
   }).join('');
 
-  // Render Pagination Controls
   renderPagination(totalPages);
 }
 
@@ -302,7 +285,7 @@ function openDetailModal(id) {
   );
 
   modalBody.innerHTML = `
-    <div class="relative h-64 w-full rounded-2xl overflow-hidden mb-6 bg-black/50">
+    <div class="relative h-80 w-full rounded-2xl overflow-hidden mb-6 bg-black/50">
       <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover" onerror="this.src='${FALLBACK_IMAGE}'" />
       <div class="absolute inset-0 bg-gradient-to-t from-ink-secondary via-ink-secondary/30 to-transparent"></div>
       <div class="absolute bottom-4 left-4 right-4">
