@@ -111,6 +111,25 @@
     body { animation: none; }
     .plane-field > span { animation: none; }
     .archive-slide { transition: none; }
+    .creadive-marquee-track { animation: none; }
+  }
+
+  /* Club Partners marquee */
+  .creadive-marquee-wrap { overflow: hidden; }
+  .creadive-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: creadive-marquee 28s linear infinite;
+  }
+  .creadive-marquee-wrap:hover .creadive-marquee-track { animation-play-state: paused; }
+  @keyframes creadive-marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-25%); }
+  }
+  .creadive-marquee-reverse { animation-name: creadive-marquee-reverse; }
+  @keyframes creadive-marquee-reverse {
+    from { transform: translateX(-25%); }
+    to   { transform: translateX(0); }
   }
 </style>
 </head>
@@ -257,7 +276,7 @@
           <small class="text-xs font-bold uppercase tracking-[0.08em] text-sky-600 mt-1.5">Sec</small>
         </div>
       </div>
-      <p id="countdown-live" class="hidden text-center font-display font-bold text-sky-600 mt-5">CreADive 2026 is happening now!</p>
+      <p id="countdown-live" class="hidden text-center font-display font-bold text-sky-600 mt-5">Registrations have ended!</p>
 
       <div class="mt-14 grid md:grid-cols-2 items-center rounded-3xl overflow-hidden bg-paper border border-sky-200 shadow-[0_24px_60px_rgba(11,83,148,0.12)]">
 
@@ -288,7 +307,7 @@
           </p>
 
           <div class="mt-7 flex flex-wrap gap-3">
-            <a href="#register" class="bg-navy hover:bg-navy-deep text-white font-display font-bold px-6 py-3 rounded-full transition-colors">Register Now</a>
+            <a href="https://www.tickettomorrow.com.bd/event/creadive-2026" class="bg-navy hover:bg-navy-deep text-white font-display font-bold px-6 py-3 rounded-full transition-colors">Register Now</a>
             <a href="#eligibility" class="inline-flex items-center gap-2 border border-sky-300 text-sky-700 hover:bg-sky-100 font-display font-bold px-6 py-3 rounded-full transition-colors">
               Download the Brief
               <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
@@ -332,7 +351,7 @@
         <svg class="trail pale absolute inset-x-0 top-[26%] h-10" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20 C 160 2, 340 38, 520 12 S 860 2, 1000 24"/></svg>
         <svg class="trail pale absolute inset-x-0 bottom-[26%] h-10" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30 C 200 8, 380 38, 560 16 S 880 10, 1000 4"/></svg>
         <div class="plane-field" data-count="8" data-seed="5" data-dark="true" data-spread="full"></div>
-        <img src="assets/creadive-booth.jpg" alt="CreADive 2026 registration booth" class="absolute inset-0 w-full h-full object-cover" onerror="this.remove()" />
+        <img src="assets/creadive-images/creadive-booth.jpg" alt="CreADive 2026 registration booth" class="absolute inset-0 w-full h-full object-cover" onerror="this.remove()" />
       </div>
 
       <div>
@@ -404,10 +423,33 @@
     <div class="relative z-[1] max-w-4xl mx-auto px-5 sm:px-8">
       <div class="text-center mb-10">
         <p class="text-sky-600 font-display font-bold text-base tracking-[0.14em] uppercase mb-3">Powered By</p>
-        <h2 class="font-display text-3xl sm:text-4xl font-extrabold">Title Sponsor</h2>
+        <h2 class="font-display text-3xl sm:text-4xl font-extrabold">Our Sponsors</h2>
       </div>
-      <div class="rounded-3xl border border-sky-200 bg-white shadow-[0_12px_40px_rgba(10,21,80,0.08)] flex items-center justify-center p-14 sm:p-20">
-        <img src="assets/creadive-images/fresh-logo.png" alt="Fresh" class="h-24 sm:h-32 w-auto object-contain" onerror="this.replaceWith(Object.assign(document.createElement('p'), {className:'font-display font-black text-5xl sm:text-7xl text-navy tracking-tight', textContent:'Fresh'}))" />
+
+      <!-- Title Sponsor -->
+      <div class="mb-4 text-center">
+        <span class="inline-block text-xl font-display font-bold tracking-[0.16em] uppercase text-sky-500 mb-3">Title Sponsor</span>
+        <div class="rounded-3xl border-2 border-sky-300 bg-white shadow-[0_12px_40px_rgba(10,21,80,0.10)] flex items-center justify-center p-10 sm:p-16">
+          <img src="assets/creadive-images/fresh-logo.png" alt="Fresh" class="h-20 sm:h-28 w-auto object-contain" onerror="this.replaceWith(Object.assign(document.createElement('p'), {className:'font-display font-black text-4xl sm:text-6xl text-navy tracking-tight', textContent:'Fresh'}))" />
+        </div>
+      </div>
+
+      <!-- Bronze Sponsors -->
+      <div class="mt-8">
+        <div class="text-center mb-4">
+          <span class="inline-block text-xl font-display font-bold tracking-[0.16em] uppercase text-amber-700/70 mb-1">Bronze Sponsors</span>
+        </div>
+        <div class="grid grid-cols-3 gap-4 sm:gap-5">
+          <div class="rounded-2xl border border-sky-200 bg-white shadow-[0_6px_20px_rgba(10,21,80,0.06)] flex items-center justify-center p-6 sm:p-8 min-h-[120px] sm:min-h-[140px]">
+            <img src="assets/creadive-images/tbl-icon.png" alt="Trust Bank PLC.">
+          </div>
+          <div class="rounded-2xl border border-sky-200 bg-white shadow-[0_6px_20px_rgba(10,21,80,0.06)] flex items-center justify-center p-6 sm:p-8 min-h-[120px] sm:min-h-[140px]">
+            <img src="assets/creadive-images/sks-logo.png" alt="Sena Kalyan Sangstha">
+          </div>
+          <div class="rounded-2xl border border-sky-200 bg-white shadow-[0_6px_20px_rgba(10,21,80,0.06)] flex items-center justify-center p-6 sm:p-8 min-h-[120px] sm:min-h-[140px]">
+            <img src="assets/creadive-images/polar-logo.png" alt="Polar Ice Cream">
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -519,6 +561,106 @@
   </section>
 
 
+  <!-- CLUB PARTNERS -->
+  <section class="relative overflow-hidden bg-white py-16 sm:py-20 border-t border-sky-100">
+    <div class="relative z-[1]">
+      <div class="text-center mb-10 px-5">
+        <p class="text-sky-600 font-display font-bold text-base tracking-[0.14em] uppercase mb-3">In Collaboration With</p>
+        <h2 class="font-display text-3xl sm:text-4xl font-extrabold">Club Partners</h2>
+      </div>
+
+      <div class="space-y-4 sm:space-y-5">
+        <!-- Row 1 — left to right -->
+        <div class="relative">
+          <div aria-hidden="true" class="absolute left-0 top-0 bottom-0 w-20 sm:w-36 z-10 pointer-events-none" style="background:linear-gradient(to right,#ffffff,transparent)"></div>
+          <div class="creadive-marquee-wrap">
+            <div id="cp-row1" class="creadive-marquee-track gap-4 sm:gap-5"></div>
+          </div>
+          <div aria-hidden="true" class="absolute right-0 top-0 bottom-0 w-20 sm:w-36 z-10 pointer-events-none" style="background:linear-gradient(to left,#ffffff,transparent)"></div>
+        </div>
+
+        <!-- Row 2 — right to left -->
+        <div class="relative">
+          <div aria-hidden="true" class="absolute left-0 top-0 bottom-0 w-20 sm:w-36 z-10 pointer-events-none" style="background:linear-gradient(to right,#ffffff,transparent)"></div>
+          <div class="creadive-marquee-wrap">
+            <div id="cp-row2" class="creadive-marquee-track creadive-marquee-reverse gap-4 sm:gap-5"></div>
+          </div>
+          <div aria-hidden="true" class="absolute right-0 top-0 bottom-0 w-20 sm:w-36 z-10 pointer-events-none" style="background:linear-gradient(to left,#ffffff,transparent)"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+  (function () {
+    // 40 club partners split across two rows of 20.
+    // Replace the name/src values with real data as logos arrive.
+    const ROW1 = [
+      { name: 'Partner 1',  src: 'assets/club-partners/partner (1).png' },
+      { name: 'Partner 2',  src: 'assets/club-partners/partner (2).png' },
+      { name: 'Partner 3',  src: 'assets/club-partners/partner (3).png' },
+      { name: 'Partner 4',  src: 'assets/club-partners/partner (4).png' },
+      { name: 'Partner 5',  src: 'assets/club-partners/partner (5).png' },
+      { name: 'Partner 6',  src: 'assets/club-partners/partner (6).png' },
+      { name: 'Partner 7',  src: 'assets/club-partners/partner (7).png' },
+      { name: 'Partner 8',  src: 'assets/club-partners/partner (8).png' },
+      { name: 'Partner 9',  src: 'assets/club-partners/partner (9).png' },
+      { name: 'Partner 10', src: 'assets/club-partners/partner (10).png' },
+      { name: 'Partner 11', src: 'assets/club-partners/partner (11).png' },
+      { name: 'Partner 12', src: 'assets/club-partners/partner (12).png' },
+      { name: 'Partner 13', src: 'assets/club-partners/partner (13).png' },
+      { name: 'Partner 14', src: 'assets/club-partners/partner (14).png' },
+      { name: 'Partner 15', src: 'assets/club-partners/partner (15).png' },
+      { name: 'Partner 16', src: 'assets/club-partners/partner (16).png' },
+      { name: 'Partner 17', src: 'assets/club-partners/partner (17).png' },
+      { name: 'Partner 18', src: 'assets/club-partners/partner (18).png' },
+      { name: 'Partner 19', src: 'assets/club-partners/partner (19).png' },
+      { name: 'Partner 20', src: 'assets/club-partners/partner (20).png' },
+    ];
+    const ROW2 = [
+      { name: 'Partner 22', src: 'assets/club-partners/partner (21).png' },
+      { name: 'Partner 23', src: 'assets/club-partners/partner (22).png' },
+      { name: 'Partner 24', src: 'assets/club-partners/partner (23).png' },
+      { name: 'Partner 25', src: 'assets/club-partners/partner (24).png' },
+      { name: 'Partner 26', src: 'assets/club-partners/partner (25).png' },
+      { name: 'Partner 27', src: 'assets/club-partners/partner (26).png' },
+      { name: 'Partner 28', src: 'assets/club-partners/partner (27).png' },
+      { name: 'Partner 29', src: 'assets/club-partners/partner (28).png' },
+      { name: 'Partner 30', src: 'assets/club-partners/partner (29).png' },
+      { name: 'Partner 31', src: 'assets/club-partners/partner (30).png' },
+      { name: 'Partner 32', src: 'assets/club-partners/partner (31).png' },
+      { name: 'Partner 33', src: 'assets/club-partners/partner (32).png' },
+      { name: 'Partner 34', src: 'assets/club-partners/partner (33).png' },
+      { name: 'Partner 35', src: 'assets/club-partners/partner (34).png' },
+      { name: 'Partner 36', src: 'assets/club-partners/partner (35).png' },
+      { name: 'Partner 37', src: 'assets/club-partners/partner (36).png' },
+      { name: 'Partner 38', src: 'assets/club-partners/partner (37).png' },
+      { name: 'Partner 39', src: 'assets/club-partners/partner (38).png' },
+      { name: 'Partner 40', src: 'assets/club-partners/partner (39).png' },
+      { name: 'Partner 41', src: 'assets/club-partners/partner (40).png' },
+    ];
+
+    function makeCard(p, hidden) {
+      if (p.src) {
+        return `<div class="rounded-2xl border border-sky-200 bg-white shadow-[0_4px_16px_rgba(10,21,80,0.07)] w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center p-4 shrink-0 hover:border-sky-400 transition"${hidden ? ' aria-hidden="true"' : ''}><img src="${p.src}" alt="${p.name}" loading="lazy" class="max-w-full max-h-full object-contain hover:scale-105 transition-transform" /></div>`;
+      }
+      return `<div class="rounded-2xl border border-sky-200 bg-white shadow-[0_4px_16px_rgba(10,21,80,0.07)] w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center p-3 shrink-0 hover:border-sky-400 transition"${hidden ? ' aria-hidden="true"' : ''}><span class="font-display font-semibold text-xs text-navy/50 text-center leading-tight">${p.name}</span></div>`;
+    }
+
+    function buildTrack(trackEl, partners) {
+      // 4 copies for seamless -25% loop
+      let html = '';
+      for (let i = 0; i < 4; i++) {
+        partners.forEach((p) => { html += makeCard(p, i > 0); });
+      }
+      trackEl.innerHTML = html;
+    }
+
+    buildTrack(document.getElementById('cp-row1'), ROW1);
+    buildTrack(document.getElementById('cp-row2'), ROW2);
+  })();
+  </script>
+
   <!-- FAQ -->
   <section class="relative overflow-hidden bg-paper py-16 sm:py-20">
     <div class="plane-field" data-count="6" data-seed="13"></div>
@@ -618,9 +760,9 @@
   ];
 
   const PRIZES = [
-    ['1st Runner-up', '250,000', 'BDT', false, 'assets/trophy-runner-up-1.png'],
-    ['Champion', '350,000', 'BDT', true, 'assets/trophy-champion.png'],
-    ['2nd Runner-up', '150,000', 'BDT', false, 'assets/trophy-runner-up-2.png'],
+    ['1st Runner-up', '250,000', 'BDT', false, 'assets/creadive-images/trophy-runner-up-1.png'],
+    ['Champion', '350,000', 'BDT', true, 'assets/creadive-images/trophy-champion.png'],
+    ['2nd Runner-up', '150,000', 'BDT', false, 'assets/creadive-images/trophy-runner-up-2.png'],
   ];
 
   const RULES = [
@@ -935,7 +1077,7 @@
   document.querySelectorAll('.count').forEach((el) => counters.observe(el));
 
   // Countdown to the registration deadline
-  const finale = new Date('2026-08-13T12:00:00+06:00');
+  const finale = new Date('2026-08-13T23:59:59+06:00');
   const liveNotice = document.getElementById('countdown-live');
   const unit = (name) => document.querySelector(`[data-unit="${name}"]`);
   const pad = (n) => String(n).padStart(2, '0');

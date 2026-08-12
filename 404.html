@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Page Not Found | BUP Business &amp; Communication Club</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" href="assets/bcc-icon.png" sizes="32x32"/>
+<link rel="icon" href="assets/bcc-icon.png" sizes="192x192"/>
+<link rel="apple-touch-icon" href="assets/bcc-icon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink:  { DEFAULT: '#0B0B0D', secondary: '#17171B' },
+          gold: { DEFAULT: '#F2B90D', dark: '#C99A00' },
+          paper: '#F5F4F1',
+        },
+        fontFamily: {
+          display: ['Archivo', 'sans-serif'],
+          sans:    ['Instrument Sans', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+<style>
+  .dot-grid {
+    background-image: radial-gradient(rgba(255,255,255,0.10) 1px, transparent 1.5px);
+    background-size: 28px 28px;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-16px); }
+  }
+  .float { animation: float 4s ease-in-out infinite; }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in    { animation: fade-in 0.6s ease both; }
+  .fade-in-2  { animation: fade-in 0.6s 0.15s ease both; }
+  .fade-in-3  { animation: fade-in 0.6s 0.3s ease both; }
+</style>
+</head>
+<body class="bg-ink font-sans text-paper antialiased min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="fixed top-0 inset-x-0 z-50 px-3 sm:px-6 pt-3 sm:pt-5">
+    <div class="max-w-7xl mx-auto rounded-2xl bg-neutral-700/40 backdrop-blur-md border border-white/10 shadow-2xl">
+      <div class="flex items-center justify-between gap-3 h-16 px-4 sm:px-6 lg:px-8">
+        <a href="index.html" class="flex items-center gap-2.5 shrink-0 group">
+          <img src="assets/bcc-logo.png" class="w-8 sm:w-10 h-auto transition-transform duration-300 group-hover:scale-105" alt="BUP BCC logo" />
+          <span class="font-display font-light sm:inline text-[11px] leading-[1.15] sm:text-base tracking-tight sm:tracking-wide text-white">
+            BUP Business &amp;<br class="sm:hidden"> Communication Club
+          </span>
+        </a>
+        <a href="index.html" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-semibold text-sm px-4 py-2 rounded-full transition-all">
+          Go Home
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex-1 relative flex flex-col items-center justify-center text-center px-5 overflow-hidden">
+
+    <!-- Background -->
+    <div class="dot-grid absolute inset-0 pointer-events-none"></div>
+    <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-gold/6 blur-[120px] pointer-events-none"></div>
+    <div class="absolute -bottom-40 left-[15%] w-80 h-80 rounded-full bg-gold/5 blur-3xl pointer-events-none"></div>
+
+    <!-- 404 numeral -->
+    <div class="relative z-[1] fade-in">
+      <p class="font-display font-black text-[clamp(7rem,28vw,16rem)] leading-none text-white/5 select-none pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2" aria-hidden="true">404</p>
+      <div class="float relative">
+        <img src="assets/bcc-logo.png" alt="" class="w-20 sm:w-24 h-auto mx-auto opacity-80" aria-hidden="true" />
+      </div>
+    </div>
+
+    <div class="relative z-[1] mt-8 max-w-lg fade-in-2">
+      <h1 class="font-display font-extrabold text-3xl sm:text-4xl leading-tight">
+        This page doesn't exist<span class="text-gold">.</span>
+      </h1>
+      <p class="mt-4 text-gray-400 text-base sm:text-lg leading-relaxed">
+        The URL you typed might be misspelled, moved, or never existed. Let's get you back on track.
+      </p>
+    </div>
+
+    <!-- Quick links -->
+    <nav class="relative z-[1] mt-10 fade-in-3 w-full max-w-sm">
+      <div class="grid grid-cols-2 gap-3 text-sm">
+        <a href="index.html"            class="rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-gold/40 px-4 py-3 transition-all font-display font-semibold">Home</a>
+        <a href="about-us.html"         class="rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-gold/40 px-4 py-3 transition-all font-display font-semibold">About Us</a>
+        <a href="events.html"           class="rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-gold/40 px-4 py-3 transition-all font-display font-semibold">Events</a>
+        <a href="team.html"             class="rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-gold/40 px-4 py-3 transition-all font-display font-semibold">Team</a>
+        <a href="hall-of-fame.html"     class="rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-gold/40 px-4 py-3 transition-all font-display font-semibold">Hall of Fame</a>
+        <a href="accomplishments.html"  class="rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-gold/40 px-4 py-3 transition-all font-display font-semibold">Accomplishments</a>
+      </div>
+      <a href="index.html" class="mt-5 inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-ink font-display font-bold px-7 py-3 rounded-full transition-all shadow-[0_8px_24px_rgba(242,185,13,0.2)]">
+        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Back to Home
+      </a>
+    </nav>
+
+  </main>
+
+  <footer class="relative z-[1] text-center py-6 text-xs text-gray-600">
+    &copy; <span id="yr"></span> BUP Business &amp; Communication Club
+  </footer>
+  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>
